@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_pressed="true"><shape android:shape="rectangle">
+            <corners android:radius="@dimen/Widget.Light.IOS.Button.Radius" />
+
+            <gradient android:angle="0" android:endColor="#3A6085" android:startColor="#3A6085" android:type="linear" />
+        </shape></item>
+    <item><shape android:shape="rectangle">
+            <corners android:radius="@dimen/Widget.Light.IOS.Button.Radius" />
+
+            <gradient android:angle="0" android:endColor="#60A0DD" android:startColor="#60A0DD" android:type="linear" />
+        </shape></item>
+
+</selector>

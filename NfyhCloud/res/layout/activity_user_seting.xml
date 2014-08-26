@@ -1,0 +1,77 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fiv="http://schemas.android.com/apk/res/com.yixin.nfyh.cloud"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    tools:context=".UserSetingActivity" >
+
+    <cn.rui.framework.ui.FeatureListItemView
+        android:id="@+id/fiv_seting_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        fiv:viewModel="@string/titleModel"
+        fiv:viewTitle="设备" >
+    </cn.rui.framework.ui.FeatureListItemView>
+
+    <cn.rui.framework.ui.FeatureListItemView
+        android:id="@+id/fiv_seting_monitor"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fiv_seting_title"
+        fiv:viewContent="迈瑞"
+        fiv:viewModel="@string/textModel"
+        fiv:viewTitle="监测设备" >
+    </cn.rui.framework.ui.FeatureListItemView>
+
+    <cn.rui.framework.ui.FeatureListItemView
+        android:id="@+id/fiv_seting_tumble"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fiv_seting_monitor"
+        android:clickable="true"
+        fiv:viewModel="@string/switchAndGotoModel"
+        fiv:viewTitle="跌倒监测" >
+    </cn.rui.framework.ui.FeatureListItemView>
+
+    <cn.rui.framework.ui.FeatureListItemView
+        android:id="@+id/fiv_seting_jijiu"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_below="@+id/fiv_seting_tumble"
+        fiv:viewModel="@string/switchAndGotoModel"
+        fiv:viewTitle="桌面急救悬浮框" >
+    </cn.rui.framework.ui.FeatureListItemView>
+
+    <cn.rui.framework.ui.FeatureListItemView
+        android:id="@+id/fiv_seting_software"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fiv_seting_jijiu"
+        android:layout_marginTop="30dp"
+        fiv:viewModel="@string/titleModel"
+        fiv:viewTitle="软件" >
+    </cn.rui.framework.ui.FeatureListItemView>
+
+    <cn.rui.framework.ui.FeatureListItemView
+        android:id="@+id/fiv_seting_version"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fiv_seting_software"
+        fiv:viewContent="已经是最新版本1.03"
+        fiv:viewModel="@string/textAndGotoModel"
+        fiv:viewTitle="软件版本" >
+    </cn.rui.framework.ui.FeatureListItemView>
+
+    <cn.rui.framework.ui.FeatureListItemView
+        android:id="@+id/fiv_seting_info"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fiv_seting_version"
+        fiv:viewContent="南方宜信信息科技有限公司"
+        fiv:viewModel="@string/textAndGotoModel"
+        fiv:viewTitle="软件信息" >
+    </cn.rui.framework.ui.FeatureListItemView>
+    
+</RelativeLayout>

@@ -1,0 +1,83 @@
+<html>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<head>
+	<title>提示</title>
+	<link rel="stylesheet" href="bootstrap.min.css">
+	<style type="text/css">
+		body{
+			margin: 0;
+		}
+		#tips ul{
+			padding: 0;
+		}
+		#tips li{
+			list-style: none;
+			margin: 0;
+		}
+		.bs-callout {
+		  margin: 0px;
+		  padding: 10px;
+		  /* padding-left: 10px;
+		 border-left: 5px solid #eee;*/
+		  border-bottom: 1px solid #FFFFFF;
+		  /*text-shadow:#CCC 1px 1px 1px;*/
+		  color:#FFFFFF;
+		}
+		.load{
+		width: 100%;
+		position: absolute;
+		text-align: center;
+		font-size: 24px;
+		font-weight: bold;
+		top: 50%;
+		}
+		
+		
+
+	</style>
+	<script type="text/javascript" src="../js/jquery2.1.js" ></script>
+	<script type="text/javascript" src="../js/jquery-ui-min.js" ></script>
+	<script type="text/javascript">
+		function add(json)
+		{
+			var data = eval("("+json+")");
+			var li = $("#tipslist li[type="+data.signtype+"]");
+			var tips = $("<h4 class='bs-callout'></h4>");
+			if(li.length<1){			
+				li = $("<li ></li>");
+				$("#tipslist").append(li);				
+			}
+			
+			li.attr("type",data.signtype);
+			tips.css("background-color","#"+data.color);
+			
+			var title = data.type+"："+data.level;
+			if(data.inRange){
+				//不再范围内
+				title+="（"+data.left+"）";
+				title+="<br>趋势："
+				title+=data.span>0?"↑ "+data.span:"↓ "+data.span;
+
+			}
+			title+="<br/>";
+			
+			tips.html(title+data.tips);
+			
+			li.append(tips);
+			tips.effect("highlight",800);
+			// $("#tipslist li h4").effect("highlight",800);
+		}
+		
+		function init(type){
+			$("#tipslist li[type="+type+"]").html("");
+		}
+	</script>
+</head>
+<body>
+<div id="tips">
+	<ul id="tipslist">
+		
+	</ul>
+
+</body>
+</html>

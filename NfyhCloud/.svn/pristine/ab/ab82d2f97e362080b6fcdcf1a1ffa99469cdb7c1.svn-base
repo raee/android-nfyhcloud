@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yixin.nfyh.cloud.ui.ScrollLineLayoutView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical"
+        android:paddingBottom="30dp" >
+
+        <LinearLayout
+            style="@style/setting_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/setting_item_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/setting_comm"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+
+        <View
+            style="@style/h4"
+            android:layout_width="wrap_content" />
+
+        <LinearLayout
+            android:id="@+id/ll_setting_pullmsg"
+            style="@style/setting_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/setting_item_text_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/setting_pullmsg" />
+
+            <cn.rui.framework.widget.RuiSwitch
+                android:id="@+id/sw_setting_pullmsg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_setting_yuanhou"
+            style="@style/setting_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/setting_item_text_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/setting_yuanhou" />
+
+            <cn.rui.framework.widget.RuiSwitch
+                android:id="@+id/sw_setting_yuanhou"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/ll_setting_tips"
+            style="@style/setting_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/setting_item_text_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/setting_tips" />
+
+            <cn.rui.framework.widget.RuiSwitch
+                android:id="@+id/sw_setting_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/setting_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="left"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/setting_item_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/setting_device"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+
+        <View
+            style="@style/h4"
+            android:layout_width="wrap_content" />
+
+        <LinearLayout
+            android:id="@+id/ll_setting_device"
+            style="@style/setting_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/setting_item_text_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/setting_jiance_device" />
+
+            <TextView
+                android:id="@+id/tv_setting_device_name"
+                style="@style/setting_item_text_sub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/canshuxuanzhe" />
+
+            <ImageView
+                android:id="@+id/ImageView01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/editcomplete_right" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_setting_autodevice"
+            style="@style/setting_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/setting_item_text_content"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/setting_autodevice" />
+
+            <cn.rui.framework.widget.RuiSwitch
+                android:id="@+id/sw_setting_autodevice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_setting_pall"
+            style="@style/setting_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/setting_item_text_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/setting_fall" />
+
+            <cn.rui.framework.widget.RuiSwitch
+                android:id="@+id/sw_setting_pall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/img_xr_webview_loadding"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/editcomplete_right" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_setting_desktop"
+            style="@style/setting_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/setting_item_text_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/setting_desktop" />
+
+            <cn.rui.framework.widget.RuiSwitch
+                android:id="@+id/sw_setting_desktop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/img_xr_webview_loadding"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/editcomplete_right" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/setting_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/setting_item_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/setting_app"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+
+        <View
+            style="@style/h4"
+            android:layout_width="wrap_content" />
+
+        <LinearLayout
+            style="@style/setting_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/setting_item_text_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/setting_appinfo" />
+
+            <TextView
+                style="@style/setting_item_text_sub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/company" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_setting_version"
+            style="@style/setting_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/setting_item_text_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/setting_appversion" />
+
+            <TextView
+                android:id="@+id/tv_setting_app_version"
+                style="@style/setting_item_text_sub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/canshuxuanzhe" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_exit"
+            style="@style/Theme.IOS.Light.Button.Orange"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/xr_exit" />
+    </LinearLayout>
+
+</com.yixin.nfyh.cloud.ui.ScrollLineLayoutView>

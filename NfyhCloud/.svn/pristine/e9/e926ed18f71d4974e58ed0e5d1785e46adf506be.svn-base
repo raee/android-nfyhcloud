@@ -1,0 +1,133 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".EditAlarmActivity" >
+
+    <!-- 标题 -->
+<!-- 
+    <com.yixin.nfyh.cloud.widget.ActionBar
+        android:id="@+id/actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:tag="@string/edit_alarm_title" >
+    </com.yixin.nfyh.cloud.widget.ActionBar> -->
+
+    <LinearLayout
+        android:id="@+id/ll_alarmcontent_title"
+        android:layout_width="fill_parent"
+        android:layout_height="25dp"
+        android:layout_below="@+id/actionbar"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/weekday_box_unselected" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="30dp"
+            android:text="@string/edit_alarm_content_title" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_content"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_alarmcontent_title"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/common_setting_sigle"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/alarm_icon_hours" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+
+            <EditText
+                android:id="@+id/et_editalarm_content"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="2dp"
+                android:background="@null"
+                android:gravity="center"
+                android:paddingBottom="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp" >
+            </EditText>
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:alpha="0.35"
+                android:background="@color/black"
+                android:gravity="bottom" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_content"
+        android:orientation="vertical" >
+		
+        <com.yixin.nfyh.cloud.widget.SubMenu
+            android:id="@+id/sm_edit_alarm_time"
+            style="@style/submenu"
+            android:layout_gravity="top"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/icon_diaocha"
+            android:tag="@string/alarm_schedule_time" >
+        </com.yixin.nfyh.cloud.widget.SubMenu>
+        
+        <com.yixin.nfyh.cloud.widget.SubMenu
+            android:id="@+id/sm_edit_alarm_startDate"
+            style="@style/submenu"
+            android:layout_gravity="center"
+            android:background="@drawable/icon_diaocha"
+            android:tag="@string/alarm_startdate" >
+        </com.yixin.nfyh.cloud.widget.SubMenu>
+        
+        <com.yixin.nfyh.cloud.widget.SubMenu
+            android:id="@+id/sm_edit_alarm_endDate"
+            style="@style/submenu"
+            android:layout_gravity="center"
+            android:background="@drawable/icon_diaocha"
+            android:tag="@string/alarm_enddate" >
+        </com.yixin.nfyh.cloud.widget.SubMenu>
+
+        <com.yixin.nfyh.cloud.widget.SubMenu
+            android:id="@+id/sm_edit_operate"
+            style="@style/submenu"
+            android:layout_gravity="bottom"
+            android:background="@drawable/icon_diaocha"
+            android:tag="@string/alarm_operate" >
+        </com.yixin.nfyh.cloud.widget.SubMenu>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_submit"
+        style="@style/btn_green"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayout1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="50dp"
+        android:onClick="btnSubmit"
+        android:text="@string/edit_alarm_submit" />
+
+</RelativeLayout>

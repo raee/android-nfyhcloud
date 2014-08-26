@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/common_bg"
+    android:orientation="vertical" >
+
+<!-- 
+    满意度
+
+    <com.yixin.nfyh.cloud.widget.SubMenu
+        android:id="@+id/menu_myddc"
+        style="@style/submenu"
+        android:layout_gravity="top"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/icon_diaocha"
+        android:onClick="onClick"
+        android:tag="@string/menu_myddc" >
+    </com.yixin.nfyh.cloud.widget.SubMenu>
+
+    出院小结
+
+    <com.yixin.nfyh.cloud.widget.SubMenu
+        android:id="@+id/menu_cyxj"
+        style="@style/submenu"
+        android:layout_gravity="center"
+        android:background="@drawable/icon_cyxj"
+        android:onClick="onClick"
+        android:tag="@string/menu_cyxj" >
+    </com.yixin.nfyh.cloud.widget.SubMenu>
+
+    随访
+
+    <com.yixin.nfyh.cloud.widget.SubMenu
+        android:id="@+id/menu_sf"
+        style="@style/submenu"
+        android:layout_gravity="center"
+        android:background="@drawable/icon_sf"
+        android:onClick="onClick"
+        android:tag="@string/menu_sf" >
+    </com.yixin.nfyh.cloud.widget.SubMenu>
+
+    医患互动
+
+    <com.yixin.nfyh.cloud.widget.SubMenu
+        android:id="@+id/menu_yhhd"
+        style="@style/submenu"
+        android:layout_gravity="bottom"
+        android:background="@drawable/icon_chat"
+        android:onClick="onClick"
+        android:tag="@string/menu_yhhd" >
+    </com.yixin.nfyh.cloud.widget.SubMenu> -->
+
+</LinearLayout>

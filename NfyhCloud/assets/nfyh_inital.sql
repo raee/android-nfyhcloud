@@ -1,0 +1,12 @@
+﻿insert into device_dic (id,device_name) values (1,'ORMON');
+insert into device_dic (id,device_name) values (0,'Mindray');
+insert into itemtype_dic(id,itemtype_name,simple_name) values(1,'收缩压','NIBP');
+insert into itemtype_dic(id,itemtype_name,simple_name) values(2,'舒张压','NIBP');
+insert into itemtype_dic(id,itemtype_name,simple_name) values(3,'脉搏','Pulse');
+insert into itemtype_dic(id,itemtype_name,simple_name) values(4,'体重','Weight');
+insert into itemtype_dic(id,itemtype_name,simple_name) values(5,'血糖','Sugar');
+insert into itemtype_dic(id,itemtype_name,simple_name) values(6,'运动','NIBP');
+insert into itemtype_dic(id,itemtype_name,simple_name) values(7,'血氧','Oxygen');
+insert into itemtype_dic(id,itemtype_name,simple_name) values(8,'呼吸','Breath');
+insert into itemtype_dic(id,itemtype_name,simple_name) values(9,'心电','ECG');
+insert into itemtype_dic(id,itemtype_name,simple_name) values(10,'体温','Temperature');

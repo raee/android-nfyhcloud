@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!-- 标题 -->
+
+    <!-- <com.yixin.nfyh.cloud.widget.ActionBar
+        android:id="@+id/actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:tag="@string/setting_floatsos" >
+    </com.yixin.nfyh.cloud.widget.ActionBar> -->
+
+    <com.yixin.nfyh.cloud.widget.SubMenu
+        android:id="@+id/submenu_setting_sos"
+        style="@style/submenu"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/actionbar"
+        android:layout_marginTop="17dp"
+        android:onClick="onClick"
+        android:tag="@string/setting_floatsos" >
+    </com.yixin.nfyh.cloud.widget.SubMenu>
+
+    <com.yixin.nfyh.cloud.widget.SubMenu
+        android:id="@+id/submenu_setting_sos_add"
+        style="@style/submenu"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/submenu_setting_sos"
+        android:layout_marginTop="17dp"
+        android:onClick="onClick"
+        android:tag="@string/sos_add" >
+    </com.yixin.nfyh.cloud.widget.SubMenu>
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/submenu_setting_sos_add"
+        android:layout_marginTop="14dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tv_alarm_normal_span"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"
+                android:paddingLeft="15dp"
+                android:text="@string/sos_contarct" />
+
+            <LinearLayout
+                android:id="@+id/ll_setting_sos_contarct_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_view_setting_sos_list"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"
+                android:paddingLeft="15dp"
+                android:text="@string/sos_event_name" />
+
+            <LinearLayout
+                android:id="@+id/ll_setting_sos_event_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

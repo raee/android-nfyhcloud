@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="setting">
+        <item name="android:layout_height">60dp</item>
+        <!-- <item name="android:clickable">true</item> -->
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingTop">5dp</item>
+    </style>
+
+    <style name="setting_top" parent="@style/setting">
+        <item name="android:background">@drawable/common_setting_top</item>
+    </style>
+
+    <style name="setting_top.wf_hc">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="setting_center" parent="@style/setting">
+        <item name="android:background">@drawable/common_setting_middle</item>
+    </style>
+
+    <style name="setting_bottom" parent="@style/setting">
+        <item name="android:background">@drawable/common_setting_bottom</item>
+        <item name="android:layout_marginBottom">5dp</item>
+    </style>
+
+    <style name="setting_bottom.wf_hc">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="setting_default" parent="@style/setting">
+        <item name="android:background">@drawable/common_setting_sigle</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="setting_default.wf_hc">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+</resources>

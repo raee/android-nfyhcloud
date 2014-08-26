@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/common_bg"
+    android:orientation="vertical" >
+
+    <!-- 院后照片 -->
+
+    <com.yixin.nfyh.cloud.widget.SubMenu
+        android:id="@+id/menu_yhzp"
+        style="@style/submenu"
+        android:layout_gravity="top"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/icon_photo"
+        android:onClick="onClick"
+        android:tag="@string/menu_yhzp" >
+    </com.yixin.nfyh.cloud.widget.SubMenu>
+
+    <!-- 院中信息 -->
+
+    <com.yixin.nfyh.cloud.widget.SubMenu
+        android:id="@+id/menu_yzxx"
+        style="@style/submenu"
+        android:layout_gravity="center"
+        android:background="@drawable/icon_yzxx"
+        android:onClick="onClick"
+        android:tag="@string/menu_yzxx" >
+    </com.yixin.nfyh.cloud.widget.SubMenu>
+
+    <!-- ct -->
+
+    <com.yixin.nfyh.cloud.widget.SubMenu
+        android:id="@+id/menu_ct_dicom"
+        style="@style/submenu"
+        android:layout_gravity="center"
+        android:background="@drawable/icon_ct"
+        android:onClick="onClick"
+        android:tag="@string/menu_ct_dicom" >
+    </com.yixin.nfyh.cloud.widget.SubMenu>
+
+    <!-- 健康评估 -->
+
+    <com.yixin.nfyh.cloud.widget.SubMenu
+        android:id="@+id/menu_jkpg"
+        style="@style/submenu"
+        android:layout_gravity="bottom"
+        android:background="@drawable/icon_jkpg"
+        android:onClick="onClick"
+        android:tag="@string/menu_jkpg" >
+    </com.yixin.nfyh.cloud.widget.SubMenu>
+
+</LinearLayout>

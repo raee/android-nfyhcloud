@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/common_bg" >
+
+    <ImageView
+        android:id="@+id/img_recdata_icon"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/undefind"
+        android:scaleType="fitXY"
+        android:src="@drawable/bg_actionbar_top" />
+
+    <ImageView
+        android:id="@+id/img_widget_sos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="89dp"
+        android:src="@drawable/user_pic_default_1" />
+
+    <TextView
+        android:id="@+id/tv_view_setting_sos_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/img_recdata_icon"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/img_widget_sos" />
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/img_widget_sos"
+        android:layout_below="@+id/img_widget_sos"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="20dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tv_view_liset_item_sub_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="15dp"
+                android:text="@string/usersetting" />
+
+            <com.yixin.nfyh.cloud.widget.SubMenu
+                android:id="@+id/setting_sos"
+                style="@style/submenu"
+                android:layout_gravity="start"
+                android:background="@drawable/icon_diaocha"
+                android:onClick="onClick"
+                android:tag="@string/setting_floatsos" >
+            </com.yixin.nfyh.cloud.widget.SubMenu>
+
+            <com.yixin.nfyh.cloud.widget.SubMenu
+                android:id="@+id/setting_check_version"
+                style="@style/submenu"
+                android:layout_gravity="start"
+                android:layout_marginTop="20dp"
+                android:onClick="onClick"
+                android:tag="@string/setting_checkversion" >
+            </com.yixin.nfyh.cloud.widget.SubMenu>
+
+            <Button
+                android:id="@+id/btn_setting_logout"
+                style="@style/btn_orange"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/xr_logout" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

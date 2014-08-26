@@ -1,0 +1,26 @@
+<resources>
+
+    <style name="AppTheme" parent="@android:style/Theme.Light.NoTitleBar"></style>
+
+    <style name="nav_top">
+        <item name="android:background">@drawable/all_setting_list_center_bg_2</item>
+    </style>
+
+    <style name="activity_tv_title">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+    
+    <style name="submenu">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+    </style>
+
+</resources>

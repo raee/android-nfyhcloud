@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yixin.nfyh.cloud.ui.ScrollLineLayoutView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#faf4e5"
+    android:orientation="vertical"
+    android:scrollbars="none" >
+
+    <LinearLayout
+        android:id="@android:id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/ll_dialog_titleview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#24a613"
+            android:orientation="vertical" >
+
+            <ImageButton
+                android:id="@android:id/closeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:background="@android:color/transparent"
+                android:src="@drawable/icon_false" />
+
+            <TextView
+                android:id="@+id/tv_dialog_result_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center"
+                android:paddingBottom="30dp"
+                android:paddingTop="30dp"
+                android:shadowColor="@color/gray"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="1"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/white"
+                android:textSize="56sp" />
+
+            <TextView
+                android:id="@+id/tv_dialog_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                android:text="点击屏幕即可返回"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_dialog_tagview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:background="#24a613"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/ll_dialog_star"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp" >
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/img_dialog_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_tag" />
+
+        <LinearLayout
+            android:id="@+id/ll_dialog_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center|top"
+            android:orientation="vertical"
+            android:padding="10dp" >
+
+        </LinearLayout>
+    </LinearLayout>
+
+</com.yixin.nfyh.cloud.ui.ScrollLineLayoutView>

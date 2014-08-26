@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="ScrollLayout">
+        <attr name="labelerClass" format="string" />
+        <attr name="labelerFormat" format="string" />
+        <attr name="childWidth" format="dimension" />
+        <attr name="childHeight" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="CustomerHealthType">
+        <attr name="name" format="reference" />
+        <attr name="background" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="AllImgTvBtnAttrs">
+        <attr name="imgResource" format="reference"></attr>
+        <attr name="tvResource" format="string"></attr>
+    </declare-styleable>
+	<declare-styleable name="AllActivityTitleAttrs">
+        <attr name="allTitleText" format="string"></attr>
+    </declare-styleable>
+</resources>

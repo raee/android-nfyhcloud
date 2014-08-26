@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yixin.nfyh.cloud.ui.ScrollLineLayoutView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_bg"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@id/contentview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_actionbar_top" />
+
+        <LinearLayout
+            android:id="@+id/ll_menu_yhzp"
+            style="@style/list"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/default_text_img"
+                android:drawableLeft="@drawable/icon_pic"
+                android:text="@string/yhzp" />
+        </LinearLayout>
+
+<!--         <LinearLayout
+            android:id="@+id/ll_menu_yzxx"
+            style="@style/list"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/default_text_img"
+                android:drawableLeft="@drawable/icon_cloud_async"
+                android:text="@string/yzxx" />
+        </LinearLayout> -->
+
+        <LinearLayout
+            android:id="@+id/ll_menu_jkpg"
+            style="@style/list"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/default_text_img"
+                android:drawableLeft="@drawable/icon_offic_chat"
+                android:text="@string/jkpg" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_menu_xxts"
+            style="@style/list"
+            android:layout_width="match_parent"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/default_text_img"
+                android:drawableLeft="@drawable/icon_chats"
+                android:text="@string/xxts" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.yixin.nfyh.cloud.ui.ScrollLineLayoutView>

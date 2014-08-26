@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="btnbase">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
+
+    <style name="btn_blue" parent="btnbase">
+        <item name="android:background">@drawable/btn_blue</item>
+    </style>
+
+    <style name="btn_defalut" parent="btnbase">
+        <item name="android:background">@drawable/btn_defalut</item>
+    </style>
+
+    <style name="btn_green" parent="btnbase">
+        <item name="android:background">@drawable/btn_green</item>
+    </style>
+
+    <style name="btn_orange" parent="btnbase">
+        <item name="android:background">@drawable/btn_orange</item>
+    </style>
+
+    <style name="btn_disable" parent="btnbase">
+        <item name="android:background">@drawable/btn_disable</item>
+    </style>
+
+    <style name="btn_red" parent="btnbase">
+        <item name="android:background">@drawable/btn_red</item>
+    </style>
+
+    <style name="Theme.IOS.Light.Button">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/Widget.Light.IOS.Button.Normal</item>
+    </style>
+
+    <style name="Theme.IOS.Light.Button.Green" parent="@style/Theme.IOS.Light.Button">
+        <item name="android:background">@drawable/widget_light_ios_button_bg_normal</item>
+    </style>
+
+    <style name="Theme.IOS.Light.Button.Blue" parent="@style/Theme.IOS.Light.Button">
+        <item name="android:background">@drawable/btn_blue</item>
+    </style>
+
+    <style name="Theme.IOS.Light.Button.Orange" parent="@style/Theme.IOS.Light.Button">
+        <item name="android:background">@drawable/btn_orange</item>
+    </style>
+    
+</resources>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yixin.nfyh.cloud.ui.ScrollLineLayoutView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="30dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                style="@style/setting_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="left"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/setting_item_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/setting_fall"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <cn.rui.framework.widget.RuiSwitch
+                    android:id="@+id/sw_setting_fall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0" />
+
+            </LinearLayout>
+
+            <View
+                style="@style/h4"
+                android:layout_width="wrap_content" />
+
+            <LinearLayout
+                android:id="@+id/ll_setting_fall_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <EditText
+                    android:id="@+id/tv_setting_fall_number"
+                    style="@style/setting_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="@string/setting_fall_phone" >
+
+                    <requestFocus />
+                </EditText>
+
+                <Button
+                    android:id="@+id/btn_setting_fall_send"
+                    style="@style/Theme.IOS.Light.Button.Green"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:enabled="false"
+                    android:text="@string/setting_fall_bind" />
+
+                <LinearLayout
+                    style="@style/setting_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        style="@style/setting_item_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/setting_shuoming"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                </LinearLayout>
+
+                <View
+                    style="@style/h4"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/tv_alarm_list_item_title"
+                    style="@style/setting_item_text_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="1"
+                    android:text="@string/setting_fall_info" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.yixin.nfyh.cloud.ui.ScrollLineLayoutView>

@@ -1,0 +1,43 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fiv="http://schemas.android.com/apk/res/com.yixin.nfyh.cloud"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FirstAidSettingActivity" >
+
+    <cn.rui.framework.ui.FeatureListItemView
+        android:id="@+id/fiv_firstAid_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        fiv:viewModel="@string/titleModel"
+        fiv:viewTitle="选浮框" >
+    </cn.rui.framework.ui.FeatureListItemView>
+
+    <cn.rui.framework.ui.FeatureListItemView
+        android:id="@+id/fiv_firstAid_jijiu"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fiv_firstAid_title"
+        fiv:viewModel="@string/switchModel"
+        fiv:viewTitle="桌面急救悬浮框" >
+    </cn.rui.framework.ui.FeatureListItemView>
+    
+    <cn.rui.framework.ui.FeatureListItemView
+        android:id="@+id/fiv_firstAid_phone"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fiv_firstAid_jijiu"
+        fiv:viewModel="@string/gotoModel"
+        fiv:viewTitle="手机号码设置" >
+    </cn.rui.framework.ui.FeatureListItemView>
+    
+    <cn.rui.framework.ui.FeatureListItemView
+        android:id="@+id/fiv_firstAid_event"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fiv_firstAid_phone"
+        fiv:viewModel="@string/gotoModel"
+        fiv:viewTitle="发生事件设置" >
+    </cn.rui.framework.ui.FeatureListItemView>
+    
+</RelativeLayout>

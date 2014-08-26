@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white" >
+
+    <com.yixin.nfyh.cloud.ui.ScrollLineLayoutView
+        android:id="@+id/sl_alarm_add_normal_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ll_alarm_add_normal_operation"
+        android:layout_alignParentTop="true" >
+
+        <LinearLayout
+            android:id="@+id/ll_alarm_add_normal_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical"
+            android:paddingBottom="30dp"
+            android:paddingTop="10dp" >
+
+            <EditText
+                android:id="@+id/et_alarm_normal_add_title"
+                style="@style/setting_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="left"
+                android:hint="@string/alarm_title_hint"
+                android:paddingLeft="5dp" >
+            </EditText>
+
+            <EditText
+                android:id="@+id/et_alarm_normal_add_content"
+                style="@style/setting_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="left"
+                android:hint="@string/alarm_content_hint"
+                android:inputType="textMultiLine"
+                android:paddingLeft="5dp" />
+
+            <LinearLayout
+                style="@style/setting_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:orientation="vertical" >
+
+                <TextView
+                    style="@style/setting_item_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/alarm_title_date"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+            </LinearLayout>
+
+            <View
+                style="@style/h4"
+                android:layout_width="wrap_content"
+                android:layout_marginBottom="10dp" />
+
+            <LinearLayout
+                android:id="@+id/ll_alarm_normal_add_repeat"
+                style="@style/setting_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="false"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/setting_item_text_content"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/alarm_start_repeat" />
+
+                <cn.rui.framework.widget.RuiSwitch
+                    android:id="@+id/sw_alarm_normal_add_enable_repeat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_alram_normal_add_start"
+                style="@style/setting_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="false"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/setting_item_text_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/alarm_start_date" />
+
+                <TextView
+                    android:id="@+id/tv_alarm_normal_add_start"
+                    style="@style/setting_item_text_sub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:text="@string/wu" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_alram_normal_add_end"
+                style="@style/setting_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone" >
+
+                <TextView
+                    style="@style/setting_item_text_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/alarm_end_date" />
+
+                <TextView
+                    android:id="@+id/tv_alarm_normal_add_end"
+                    style="@style/setting_item_text_sub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:text="@string/wu" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_alram_normal_add_span"
+                style="@style/setting_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone" >
+
+                <TextView
+                    style="@style/setting_item_text_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/alarm_repeat_span" />
+
+                <TextView
+                    android:id="@+id/tv_alarm_normal_span"
+                    style="@style/setting_item_text_sub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:text="@string/wu" />
+            </LinearLayout>
+        </LinearLayout>
+    </com.yixin.nfyh.cloud.ui.ScrollLineLayoutView>
+
+    <LinearLayout
+        android:id="@+id/ll_alarm_add_normal_operation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/aquamarine"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btn_alarm_normal_add_del"
+            style="@style/Theme.IOS.Light.Button.Orange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/delete" />
+
+        <Button
+            android:id="@+id/btn_alarm_normal_add_save"
+            style="@style/Theme.IOS.Light.Button.Green"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/save" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="slidingmenu_offset">120dp</dimen>
+    <dimen name="default_text_img_size">16dp</dimen>
+    
+    <dimen name="Widget.Light.IOS.Button.Normal">18sp</dimen>
+    <dimen name="Widget.Light.IOS.Text.Size">20sp</dimen>
+    <dimen name="Widget.Light.IOS.Text.TitleSize">20sp</dimen>
+    <dimen name="Widget.Light.IOS.Text.SignSize">28sp</dimen>
+    <dimen name="Widget.Light.IOS.Text.SignTitle">24sp</dimen>
+    <dimen name="Widget.Light.IOS.Button.Radius">2dp</dimen>
+    <dimen name="album_name">25sp</dimen>
+    <dimen name="album_describe">15sp</dimen>
+    <dimen name="common_margin_left">10dp</dimen>
+    <dimen name="common_margin_right">10dp</dimen>
+    <dimen name="common_margin_lr">10dp</dimen>
+    <dimen name="common_margin_tb">5dp</dimen>
+    <!-- 评估二级标题字体大小 -->
+    <dimen name="second_tittle">18sp</dimen>
+    <!-- 三级标题 -->
+    <dimen name="third_tittle">15sp</dimen>
+    <!-- 用户姓名 -->
+    <dimen name="user_name">30sp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_medium">8dp</dimen>
+    <dimen name="padding_large">16dp</dimen>
+    <dimen name="Medium_TextSize">20.0dip</dimen>
+    <dimen name="phote_des_size">20sp</dimen>
+    <dimen name="Small_TextSize">15.0dip</dimen>
+    <dimen name="Tiny_TextSize">10.0dip</dimen>
+    <dimen name="actions_spacing">0dp</dimen>
+    <dimen name="spacing">550dp</dimen>
+    <dimen name="divider_large_size">2dp</dimen>
+
+</resources>

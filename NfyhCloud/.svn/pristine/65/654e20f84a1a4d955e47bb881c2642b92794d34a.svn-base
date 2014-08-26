@@ -1,0 +1,323 @@
+package com.yixin.nfyh.cloud.bll;
+
+import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.List;
+
+import android.app.Activity;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+
+import com.yixin.nfyh.cloud.R;
+
+/**
+ * 相册适配器
+ * 
+ * @author zhulin
+ * 
+ */
+public class PhotoAlbumAdapter extends BaseAdapter
+{
+
+	private Context					mContext		= null;
+	private LayoutInflater			mLayoutInflater	= null;
+	private List<String>			mList			= null; // 全部的地址
+
+	private int						width;					// 宽
+	private int						height;				// 高
+	private HashMap<Integer, View>	mapGridView;
+	List<String>					litSelectedPhoto;		// 选中的地址
+
+	public class MyGridViewHolder
+	{
+		public ImageView		imageview_thumbnail;	// 显示的图片
+		public RelativeLayout	rl_select_img;			// 选中改变的背景
+		public String			imgPath;				// 图片的路径
+		public boolean			isSelect;				// 是否被选中
+		public int				poistion;				// view在gridView的第几个
+	}
+
+	public PhotoAlbumAdapter(Context context, List<String> list,
+			List<String> litSelectedPhoto)
+	{
+		this.mContext = context;
+		this.mList = list;// 路径
+		mLayoutInflater = LayoutInflater.from(context);
+		this.litSelectedPhoto = litSelectedPhoto;
+
+		// 设置图片的高和宽
+		DisplayMetrics metric = new DisplayMetrics();
+		((Activity) mContext).getWindowManager().getDefaultDisplay()
+				.getMetrics(metric);
+		width = metric.widthPixels / 3 - 6;
+		height = width;
+
+		mapGridView = new HashMap<Integer, View>();
+
+	}
+
+	@Override
+	public int getCount()
+	{
+		return mList.size();
+	}
+
+	@Override
+	public Object getItem(int arg0)
+	{
+		return null;
+	}
+
+	@Override
+	public long getItemId(int position)
+	{
+		return 0;
+	}
+
+	/**
+	 * gridView 取得view
+	 */
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent)
+	{
+		MyGridViewHolder viewHolder = null;
+
+		if (convertView == null)
+		{
+			convertView = initConverView(position, convertView);
+			viewHolder = (MyGridViewHolder) convertView.getTag();
+			mapGridView.put(position, convertView);
+		}
+		else
+		{
+			viewHolder = (MyGridViewHolder) convertView.getTag();
+			if (!mapGridView.containsKey(position))
+			{
+				convertView = initConverView(position, convertView);
+				viewHolder = (MyGridViewHolder) convertView.getTag();
+				mapGridView.put(position, convertView);
+			}
+			else
+			{
+				convertView = mapGridView.get(position);
+				viewHolder = (MyGridViewHolder) convertView.getTag();
+			}
+		}
+
+		String url = mList.get(position);
+
+		if (cancelPotentialLoad(url, viewHolder.imageview_thumbnail))// 判断有没有异步在加载
+		{
+			AsyncLoadImageTask task = new AsyncLoadImageTask(
+					viewHolder.imageview_thumbnail);
+			LoadedDrawable loadedDrawable = new LoadedDrawable(task);
+			viewHolder.imageview_thumbnail.setImageDrawable(loadedDrawable);
+			task.execute(position);
+		}
+		return convertView;
+	}
+
+	/**
+	 * 初始化一个gridVIew的子view
+	 */
+	private View initConverView(int position, View convertView)
+	{
+		MyGridViewHolder viewHolder = new MyGridViewHolder();
+		convertView = mLayoutInflater.inflate(R.layout.photo_album_item, null);
+		viewHolder.imageview_thumbnail = (ImageView) convertView
+				.findViewById(R.id.img_view_photo);
+		// 设置imageView的大小
+		LayoutParams layoutParams = viewHolder.imageview_thumbnail
+				.getLayoutParams();
+		layoutParams.width = width;
+		layoutParams.height = height;
+
+		viewHolder.rl_select_img = (RelativeLayout) convertView
+				.findViewById(R.id.rl_select_img);
+		viewHolder.imgPath = mList.get(position);// 保存出地址
+		if (litSelectedPhoto.contains(viewHolder.imgPath))// 判断是否为选中状态
+		{
+			viewHolder.isSelect = true;
+			viewHolder.rl_select_img.setVisibility(View.VISIBLE);
+		}
+		viewHolder.isSelect = false;// 初始化没被选择
+		viewHolder.poistion = position;
+		convertView.setTag(viewHolder);
+
+		return convertView;
+	}
+
+	/**
+	 * 用异步加载位图
+	 * 
+	 * @author zhulin
+	 * 
+	 */
+	private class AsyncLoadImageTask extends AsyncTask<Integer, Void, Bitmap>
+	{
+		private String							url	= null;
+		private final WeakReference<ImageView>	imageViewReference;
+
+		public AsyncLoadImageTask(ImageView imageview)
+		{
+			super();
+			imageViewReference = new WeakReference<ImageView>(imageview);
+		}
+
+		/**
+		 * 后台加载的对象
+		 */
+		@Override
+		protected Bitmap doInBackground(Integer... params)
+		{
+			Bitmap bitmap = null;
+			this.url = mList.get(params[0]);
+			bitmap = BitmapHandle.reduceImg(url, width, height);
+			if (bitmap == null)
+			{
+				for (int i = 0; i < 5; i++)
+				{
+					bitmap = BitmapHandle.reduceImg(url, width, height);
+					if (bitmap != null)
+					{
+						break;
+					}
+					
+				}
+				
+			}
+//			PhotoAlbumActivity.gridviewBitmapCaches.put(mList.get(params[0]),
+//					bitmap);
+			return bitmap;
+		}
+
+		/**
+		 * 后台加载完成后显示
+		 */
+		@Override
+		protected void onPostExecute(Bitmap resultBitmap)
+		{
+			if (isCancelled())
+			{
+				resultBitmap = null;
+				Log.v("bitmap", "bitmap set null!!");
+			}
+			if (imageViewReference != null)
+			{
+				ImageView imageview = imageViewReference.get();
+				AsyncLoadImageTask loadImageTask = getAsyncLoadImageTask(imageview);
+				// Change bitmap only if this process is still associated with
+				// it
+				if (this == loadImageTask)
+				{
+					imageview.setImageBitmap(resultBitmap);
+					imageview.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+				}
+			}
+			super.onPostExecute(resultBitmap);
+		}
+	}
+
+	/**
+	 * 判断imageview是否显示有位图
+	 * 
+	 * @param url
+	 * @param imageview
+	 * @return
+	 */
+	private boolean cancelPotentialLoad(String url, ImageView imageview)
+	{
+		AsyncLoadImageTask loadImageTask = getAsyncLoadImageTask(imageview);
+
+		if (loadImageTask != null)
+		{
+			String bitmapUrl = loadImageTask.url;
+			if ((bitmapUrl == null) || (!bitmapUrl.equals(url)))
+			{
+				loadImageTask.cancel(true);
+			}
+			else
+			{
+				return false;
+			}
+		}
+		return true;
+
+	}
+
+	/**
+	 * 取得位图所对应的异步加载
+	 * 
+	 * @param imageview
+	 * @return
+	 */
+	private AsyncLoadImageTask getAsyncLoadImageTask(ImageView imageview)
+	{
+		if (imageview != null)
+		{
+			Drawable drawable = imageview.getDrawable();
+			if (drawable instanceof LoadedDrawable)
+			{
+				LoadedDrawable loadedDrawable = (LoadedDrawable) drawable;
+				return loadedDrawable.getLoadImageTask();
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 加载图片
+	 * 
+	 * @author zhulin
+	 * 
+	 */
+	public static class LoadedDrawable extends ColorDrawable
+	{
+		private final WeakReference<AsyncLoadImageTask>	loadImageTaskReference;
+
+		public LoadedDrawable(AsyncLoadImageTask loadImageTask)
+		{
+			super(Color.TRANSPARENT);
+			loadImageTaskReference = new WeakReference<AsyncLoadImageTask>(
+					loadImageTask);
+		}
+
+		public AsyncLoadImageTask getLoadImageTask()
+		{
+			return loadImageTaskReference.get();
+		}
+
+	}
+	
+	public Bitmap getBitmapThumbnail(Bitmap bmp,int width,int height){
+		Bitmap bitmap = null;
+		if(bmp != null ){
+			int bmpWidth = bmp.getWidth();
+			int bmpHeight = bmp.getHeight();
+			if(width != 0 && height !=0){
+				Matrix matrix = new Matrix();
+				float scaleWidth = ((float) width / bmpWidth);
+				float scaleHeight = ((float) height / bmpHeight);
+				matrix.postScale(scaleWidth, scaleHeight);
+				bitmap = Bitmap.createBitmap(bmp, 0, 0, bmpWidth, bmpHeight, matrix, true);
+			}else{
+				bitmap = bmp;
+			}
+		}
+		return bitmap;
+	}
+}

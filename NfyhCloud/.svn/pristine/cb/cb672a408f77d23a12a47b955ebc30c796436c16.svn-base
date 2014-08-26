@@ -1,0 +1,82 @@
+//package com.yixin.nfyh.cloud.bll;
+//
+//import android.annotation.SuppressLint;
+//import android.content.Context;
+//
+//import com.yixin.nfyh.cloud.entitys.UsersOrders;
+//
+//public class UserOrdersHandle {
+//
+//	/**
+//	 * 获得医嘱修改的内容
+//	 */
+//	@SuppressLint("SimpleDateFormat")
+//	public static String getEditOrderJson(UsersOrders uo, String smStartDate,
+//			String smEndDate, String smAlarmTime, String context,
+//			String Executetime, String Administrator) {
+//
+//		/*JSONObject order = new JSONObject();
+//
+//		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//		SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+//		try {
+//			Date mStartDate = dateFormat.parse(smStartDate);
+//			Date mEndTime = dateFormat.parse(smEndDate);
+//			Date mExecuteTime = timeFormat.parse(smAlarmTime);
+//			int version = Integer.valueOf(uo.getRow_version());
+//
+//			JSONObject patient = new JSONObject();
+//			patient.put("Id", uo.getPatientid());
+//			JSONObject ordertype = new JSONObject();
+//			ordertype.put("Id", uo.getOrdertypeid());
+//
+//			order.put("Id", uo.Orderid);
+//			order.put("Context", context);
+//			order.put("Executetime", Executetime);
+//			order.put("Patient", patient);
+//			order.put("Ordertypes", ordertype);
+//			order.put("Exexoutespan", uo.getExexoutespan());
+//			order.put("Frequnit", uo.getFrequnit());
+//			order.put("Freaquency", uo.getFreaquency());
+//			order.put("Freqtimes", uo.getFreqtimes());
+//			order.put("Remark", uo.getRmark());
+//			order.put("Starttime", "/Date(" + mStartDate.getTime() + ")/");
+//			order.put("Endtime", "/Date(" + mEndTime.getTime() + ")/");
+//			order.put("Administrator", Administrator);
+//			order.put("Row_version", String.valueOf((version + 1)));
+//		} catch (ParseException e1) {
+//			e1.printStackTrace();
+//		} catch (JSONException e) {
+//			e.printStackTrace();
+//		}*/
+//
+//		//return order.toString();
+//		return "";
+//	}
+//
+//	/**
+//	 * 在本地数据库中修改医嘱
+//	 */
+//	public static void EditNativeUserOrder(Context mContext, UsersOrders uo,
+//			String context, String executetime, String starttime,
+//			String endDate, String administrator) {
+//
+//		/*uo.setContext(context);
+//		uo.setExecutetime(executetime);
+//		uo.setStarttime(starttime);
+//		uo.setEndtime(endDate);
+//		uo.setAdministrator(administrator);
+//		uo.setRow_version(String.valueOf(Integer.valueOf(uo.getRow_version() + 1)));
+//		try {
+//			Dao<UsersOrders, Integer> uoDao = Dbhelper.getInstance(mContext,
+//					mContext.getResources().getString(R.string.dbname)).getDao(
+//					UsersOrders.class);
+//			uoDao.update(uo);
+//		} catch (NotFoundException e) {
+//			e.printStackTrace();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}*/
+//	}
+//	
+//}

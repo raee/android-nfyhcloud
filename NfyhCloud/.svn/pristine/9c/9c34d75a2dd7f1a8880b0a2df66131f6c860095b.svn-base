@@ -1,0 +1,327 @@
+package com.yixin.nfyh.cloud.bll;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.util.Log;
+import android.util.Pair;
+import cn.rui.framework.utils.SoapCallback;
+import cn.rui.framework.utils.UploadUtil;
+import cn.rui.framework.utils.UploadUtil.OnUploadProcessListener;
+
+import com.yixin.nfyh.cloud.R;
+import com.yixin.nfyh.cloud.service.SoapService;
+
+public class UploadPhoto implements OnUploadProcessListener, SoapCallback
+{
+	public interface UploadPhotoCallback
+	{
+		void onUploadSuccess(String imgPath, String msg);
+		
+		void onUploadError(int index, String msg);
+		
+		void onUploadProcess(String imgPath, float progress);
+	}
+	
+	public static final int		HANDLER_WAHT_ALBUM	= 7200;
+	
+	private UploadPhotoCallback	callback;
+	private GlobalSetting		setting;
+	private Context				mContext;
+	private UploadUtil			uploadUtil;
+	public int					what				= 1;	// 第几个
+	private int					startFileSize;
+	private UploadEntity		uploadEntity;
+	private int					curIndex;
+	private String				curPath;
+	
+	private Handler				handler;
+	
+	public static final class UploadEntity
+	{
+		private ArrayList<Pair<String, Drawable>>	datas;
+		
+		public UploadEntity()
+		{
+			datas = new ArrayList<Pair<String, Drawable>>();
+		}
+		
+		public void setEntity(String filePath, Drawable img)
+		{
+			Pair<String, Drawable> object = new Pair<String, Drawable>(
+					filePath, img);
+			datas.add(object);
+		}
+		
+		public ArrayList<Pair<String, Drawable>> getDatas()
+		{
+			return datas;
+		}
+		
+		public Pair<String, Drawable> getEntity(int position)
+		{
+			return datas.get(position);
+		}
+		
+		public Pair<String, Drawable> getEntity(String key)
+		{
+			for (Pair<String, Drawable> item : datas)
+			{
+				if (item.first.equals(key)) return item;
+			}
+			
+			return null;
+		}
+		
+		public void clear()
+		{
+			Pair<String, Drawable> addView = this.datas.get(0);
+			this.datas.clear();
+			this.datas.add(addView);
+		}
+		
+		public void remove(String key)
+		{
+			datas.remove(getEntity(key));
+		}
+		
+		public void remove(int position)
+		{
+			datas.remove(position);
+		}
+		
+		public int size()
+		{
+			return this.datas.size();
+		}
+	}
+	
+	public UploadPhoto(Context context)
+	{
+		this.mContext = context;
+		this.uploadUtil = UploadUtil.getInstance();
+		this.uploadUtil.setOnUploadProcessListener(this);
+		this.setting = new GlobalSetting(context);
+		//		mquery = new DataContext(context).createQuery(Albums.class);
+	}
+	
+	/**
+	 * 获取服务器中的相册
+	 */
+	public void getServerAlbum(Handler handler)
+	{
+		
+		this.handler = handler;
+		//		List<Albums> items = mquery.toList();
+		//
+		//		// 删除数据库中的
+		//		for (Albums item : items)
+		//		{
+		//			mquery.del(item);
+		//		}
+		
+		SoapService soap = new SoapService(mContext);
+		Map<String, Object> params = new HashMap<String, Object>();
+//		params.put("uid", setting.getUid());
+		soap.setParams(params);
+		soap.setCallbackListener(this);
+		soap.call("GetAlbumListApp");
+	}
+	
+	//	/**
+	//	 * 获取数据库中的相册列表
+	//	 * 
+	//	 * @return
+	//	 */
+	//	public List<Albums> getDbAlbums()
+	//	{
+	//		return mquery.toList();
+	//	}
+	
+	public void setUploadList(UploadEntity entity)
+	{
+		this.uploadEntity = entity;
+	}
+	
+	public UploadEntity getUploadList()
+	{
+		return uploadEntity;
+	}
+	
+	/**
+	 * 上传单个图片
+	 * 
+	 * @param filePath
+	 *            图片路径
+	 * @param saySomethink
+	 *            说点什么
+	 * @param type
+	 *            相册类型
+	 */
+	public void uploadFile(String filePath, String saySomethink, String type)
+	{
+		String url = mContext.getResources().getString(
+				R.string.upload_photo_url);
+		Map<String, String> parma = new HashMap<String, String>();
+		parma.put("dir", "photo,image");
+//		parma.put("username", setting.getUsername());
+//		parma.put("pwd", setting.getPwd());
+		
+		parma.put("albumId", type);
+		parma.put("Photodescribe", "");
+		parma.put("Photoname", saySomethink);
+		
+		uploadUtil.uploadFile(new File(filePath), "imgFile", url, parma,
+				filePath);
+	}
+	
+	public void upload(String saySomethink, String type)
+	{
+		
+		/**
+		 * 使用线程一个个的上传， 上传完后使用Message发回消息告诉完成了哪个
+		 * */
+		curIndex = 0;
+		List<Pair<String, Drawable>> datas = uploadEntity.getDatas();
+		for (Pair<String, Drawable> item : datas)
+		{
+			try
+			{
+				if (!item.first.equals(""))
+				{
+					this.curPath = item.first;
+					uploadFile(item.first, saySomethink, type);
+				}
+				curIndex++;
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+				callback.onUploadError(curIndex, e.getMessage());
+			}
+		}
+	}
+	
+	/**
+	 * 设置上传监听
+	 * 
+	 * @param l
+	 */
+	public void setUploadListener(UploadPhotoCallback l)
+	{
+		this.callback = l;
+	}
+	
+	@Override
+	public void onUploadDone(int responseCode, String message, Object data)
+	{
+		if (responseCode == UploadUtil.UPLOAD_SUCCESS_CODE)
+		{
+			this.uploadEntity.remove(data.toString());
+			callback.onUploadSuccess(curPath.toString(), message);
+		}
+		else
+		{
+			callback.onUploadError(curIndex, message);
+		}
+	}
+	
+	@Override
+	public void onUploadProcess(int uploadSize, Object data)
+	{
+		int index = (int) (((float) uploadSize / (float) startFileSize) * 100); // 上传百分比
+		if (index > 100) index = 100;
+		index = Math.round(index);
+		callback.onUploadProcess(data.toString(), index);
+	}
+	
+	@Override
+	public void initUpload(int fileSize)
+	{
+		this.startFileSize = fileSize;
+	}
+	
+	private void seachAlbum(JSONArray obj, String preId) throws JSONException
+	{
+		if (obj.length() <= 0 || obj.equals("null")) { return; }
+		
+		// 获取二级目录
+		for (int j = 0; j < obj.length(); j++)
+		{
+			JSONObject item = obj.getJSONObject(j);
+			JSONObject chrAlbum = item.getJSONObject("album");
+//			saveToDbAlbum(chrAlbum, preId);
+			
+			if (!item.get("albumModellist").toString().equals("null"))
+			{
+				JSONArray arrs = item.getJSONArray("albumModellist");
+				seachAlbum(arrs, preId);
+			}
+			
+		}
+	}
+	
+	//	// 获取顶层的相册
+	//	private String saveToDbAlbum(JSONObject obj, String preId)
+	//			throws JSONException
+	//	{
+	//		String chirendName = obj.getString("Albumname");
+	//		String chirendId = obj.getString("Id");
+	//		String hasParent = obj.getString("Parentaid");
+	//		String isRoot = hasParent.equals("0") ? "true" : "false";
+	//		Albums m = new Albums(chirendName, isRoot, preId, chirendId);
+	//		Albums madded = mquery.add(m); // 保存
+	//		return chirendId;
+	//	}
+	
+	@Override
+	public void onSoapResponse(Object response)
+	{
+		try
+		{
+			JSONArray arrs = new JSONArray(response.toString());
+			int len = arrs.length();
+			for (int i = 0; i < len; i++)
+			{
+				JSONObject obj = arrs.getJSONObject(i);
+				JSONObject root = obj.getJSONObject("album");
+				
+				// 顶级
+//				String id = saveToDbAlbum(root, "0");
+//				
+//				if (!obj.get("albumModellist").equals("null"))
+//				{
+//					JSONArray chirend = obj.getJSONArray("albumModellist");
+//					// 二级
+//					seachAlbum(chirend, id);
+//				}
+				
+			}
+			
+//			Message.obtain(handler, HANDLER_WAHT_ALBUM, getDbAlbums())
+//					.sendToTarget();
+		}
+		catch (JSONException e)
+		{
+			Log.e("test", "相册分类获取失败");
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void onSoapError(int code, String msg)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+}

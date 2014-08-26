@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ui_device_receive_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/ll_ui_device_receive_tips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/img_ui_device_connect_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/dev" />
+
+        <TextView
+            android:id="@+id/tv_ui_menu_setting_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/please_connect"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_ui_deveice_receive_dev"
+        style="@style/ui_device_receive_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/img_ui_upload_server"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/dev_blue" />
+
+        <ImageView
+            android:id="@+id/img_ui_device_recevice_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:src="@drawable/dev_send" />
+
+        <ImageView
+            android:id="@+id/img_ui_device_recevice_dev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/dev" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_ui_upload_server_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/loading_data"
+        android:textColor="@color/white"
+        android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/pb_ui_device_recevie"
+        android:layout_width="fill_parent"
+        android:layout_height="10dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:indeterminateOnly="false"
+        android:max="100"
+        android:progress="50"
+        android:progressDrawable="@drawable/progress_green"
+        android:visibility="gone" />
+
+</LinearLayout>

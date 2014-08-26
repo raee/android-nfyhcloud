@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_pressed="true"><layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+            <item><shape android:shape="oval">
+                   <!--  <stroke android:width="3dp" android:color="#e3e3e3" /> -->
+
+                    <gradient android:angle="0" android:endColor="#fff111" android:startColor="#fff111" />
+                </shape></item>
+        </layer-list></item>
+    <item><layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+            <item><shape android:shape="oval">
+                   <!--  <stroke android:width="3dp" android:color="#cc4502" />
+ -->
+                    <gradient android:angle="0" android:endColor="#ff7700" android:startColor="#ff7700" />
+                </shape></item>
+        </layer-list></item>
+
+</selector>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1A1D24" >
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ll_menu_setting"
+        android:layout_alignParentTop="true" >
+
+        <LinearLayout
+            android:id="@+id/ll_ui_menu_main_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/menu_bg"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:id="@+id/img_menu_user_center"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/user_center_new_default_avatar" />
+
+                <TextView
+                    android:id="@+id/tv_menu_user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/please_login"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/menu_tzcl"
+                style="@style/menu_list" >
+
+                <TextView
+                    style="@style/menu_list_text"
+                    android:text="@string/tab_title_tzcl" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/menu_jjhj"
+                style="@style/menu_list"
+                android:orientation="vertical" >
+
+                <TextView
+                    style="@style/menu_list_text"
+                    android:drawableLeft="@drawable/icon_hand"
+                    android:text="@string/tab_title_jjhj" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/menu_yhda"
+                style="@style/menu_list" >
+
+                <TextView
+                    style="@style/menu_list_text"
+                    android:drawableLeft="@drawable/icon_menu_note"
+                    android:text="@string/tab_title_yhda" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/menu_yhgl"
+                style="@style/menu_list" >
+
+                <TextView
+                    style="@style/menu_list_text"
+                    android:drawableLeft="@drawable/icon_cloud"
+                    android:text="@string/tab_title_yhgl" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/ll_menu_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:background="#0D0E12"
+        android:gravity="right|center"
+        android:orientation="vertical"
+        android:padding="10dp" >
+
+        <TextView
+            android:id="@+id/tv_ui_menu_setting_version"
+            style="@style/menu_list_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@null"
+            android:drawablePadding="20dp"
+            android:drawableRight="@drawable/app_panel_setting_icon"
+            android:text="@string/version_code"
+            android:textColor="#818181"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

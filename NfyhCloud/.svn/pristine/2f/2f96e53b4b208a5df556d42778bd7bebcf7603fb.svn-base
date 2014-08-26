@@ -1,0 +1,73 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fiv="http://schemas.android.com/apk/res/com.yixin.nfyh.cloud"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    tools:context=".TumbleSettingActivity" >
+
+    <cn.rui.framework.ui.FeatureListItemView
+        android:id="@+id/fiv_tumble_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        fiv:viewModel="@string/titleModel"
+        fiv:viewTitle="设备" >
+    </cn.rui.framework.ui.FeatureListItemView>
+
+    <cn.rui.framework.ui.FeatureListItemView
+        android:id="@+id/fiv_tumble_monitor"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fiv_tumble_title"
+        fiv:viewModel="@string/switchModel"
+        fiv:viewTitle="跌倒监测" >
+    </cn.rui.framework.ui.FeatureListItemView>
+
+    <cn.rui.framework.ui.FeatureListItemView
+        android:id="@+id/fiv_tumble_phone"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fiv_tumble_monitor"
+        fiv:viewContent="1110010010"
+        fiv:viewModel="@string/textModel"
+        fiv:viewTitle="设备手机号码" >
+    </cn.rui.framework.ui.FeatureListItemView>
+
+    <Button
+        android:id="@+id/btn_send_command"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/fiv_tumble_phone"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/btn_top_green"
+        android:text="发送绑定指令" />
+
+    <cn.rui.framework.ui.FeatureListItemView
+        android:id="@+id/fiv_tumble_careful"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        fiv:viewModel="@string/titleModel"
+        android:layout_below="@+id/btn_send_command"
+        fiv:viewTitle="注意事项" >
+    </cn.rui.framework.ui.FeatureListItemView>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fiv_tumble_careful"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tv_careful_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:layout_marginLeft="10dp"
+            android:text="xxx" />
+        
+    </LinearLayout>
+    
+</RelativeLayout>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/common_bg" >
+
+    <!-- 标题 -->
+
+    <com.yixin.nfyh.cloud.widget.ActionBar
+        android:id="@+id/actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:tag="@string/upload_photo" >
+    </com.yixin.nfyh.cloud.widget.ActionBar>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/actionbar"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp" >
+
+        <com.yixin.nfyh.cloud.widget.SubMenu
+            android:id="@+id/submenu_album"
+            style="@style/wrap_width_and_height"
+            android:layout_width="match_parent"
+            android:tag="@string/album" >
+        </com.yixin.nfyh.cloud.widget.SubMenu>
+
+        <EditText
+            android:id="@+id/et_saysomethink"
+            style="@style/edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/submenu_album"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/common_seting_list_sigle"
+            android:ems="10"
+            android:hint="@string/saysomethink" />
+    </RelativeLayout>
+
+    <GridView
+        android:id="@+id/gv_photolist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/relativeLayout1"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/relativeLayout1"
+        android:layout_below="@+id/relativeLayout1"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/common_seting_list_sigle"
+        android:horizontalSpacing="5dp"
+        android:listSelector="@android:color/transparent"
+        android:numColumns="3"
+        android:padding="10dp"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="5dp" >
+
+    </GridView>
+
+</RelativeLayout>
