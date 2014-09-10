@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="mihuang">#F7CA00</color>
     <color name="white">#FFFFFF</color>
     <!-- 白色 -->
     <color name="ivory">#FFFFF0</color>
@@ -295,8 +296,8 @@
     <!-- 黑色 -->
 
     <color name="Widget.Light.IOS.Button.Blue">#4dad31</color>
-    <color name="Widget.Light.IOS.Button.Blue.Pressed">#4dad31</color>
-<color name="time_yellow">#FFFBE1</color>
+    <!-- <color name="Widget.Light.IOS.Button.Blue.Pressed">#4dad31</color> -->
+    <color name="time_yellow">#FFFBE1</color>
     <color name="Widget.Light.IOS.Button.Blue.Normal">#4dad31</color>
     <color name="Widget.Light.IOS.Button.Blue.Pressed">#5ac126</color>
     <color name="Widget.Light.IOS.Tab.Item.TextColor">#b7e83a</color>
@@ -304,4 +305,5 @@
     <color name="activity_bg">#FFFFFF</color>
     <color name="device_yellow">#eca907</color>
     <color name="device_red">#ec6807</color>
+
 </resources>

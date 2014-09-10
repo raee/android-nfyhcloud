@@ -19,7 +19,7 @@ public class PushNotificationService extends Service implements IPushMessageCall
 	
 	private NfyhApplication		mApplication;
 	
-	private int					mInterval	= 10;		// 定期检查消息，单位/秒
+	private int					mInterval	= 3000;		// 定期检查消息，单位/秒
 														
 	private NotificationManager	mNotificationManager;
 	

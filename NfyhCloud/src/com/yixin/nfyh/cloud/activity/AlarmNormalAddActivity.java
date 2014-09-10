@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.yixin.nfyh.cloud.R;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,7 +23,6 @@ import cn.rui.framework.widget.RuiSwitch;
 import cn.rui.framework.widget.RuiSwitch.OnCheckedChangeListener;
 
 import com.yixin.nfyh.cloud.BaseActivity;
-import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.alarm.AlarmControl;
 import com.yixin.nfyh.cloud.dialog.DialogManager;
 import com.yixin.nfyh.cloud.dialog.DialogPopupWindowListener;

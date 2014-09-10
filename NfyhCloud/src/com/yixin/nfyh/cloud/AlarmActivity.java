@@ -2,6 +2,7 @@ package com.yixin.nfyh.cloud;
 
 import java.io.IOException;
 import java.util.Calendar;
+import com.yixin.nfyh.cloud.R;
 
 import android.app.Activity;
 import android.content.ComponentName;

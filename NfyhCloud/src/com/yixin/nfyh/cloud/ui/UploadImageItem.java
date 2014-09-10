@@ -1,5 +1,6 @@
 package com.yixin.nfyh.cloud.ui;
 
+import com.yixin.nfyh.cloud.R;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -9,8 +10,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.yixin.nfyh.cloud.R;
 
 /**
  * 上传图片单个控件

@@ -1,7 +1,6 @@
 package com.yixin.nfyh.cloud.ui;
 
 import com.yixin.nfyh.cloud.R;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;

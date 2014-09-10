@@ -1,5 +1,6 @@
 package com.yixin.nfyh.cloud.ui;
 
+import com.yixin.nfyh.cloud.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,8 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.rui.framework.ui.IToast;
-
-import com.yixin.nfyh.cloud.R;
 
 public class TimerToast extends Toast implements IToast
 {

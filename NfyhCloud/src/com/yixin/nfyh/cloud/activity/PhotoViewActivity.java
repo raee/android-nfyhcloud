@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.yixin.nfyh.cloud.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -18,7 +19,6 @@ import com.rae.core.image.photoview.PhotoGridView;
 import com.rae.core.image.utils.CameraUtils;
 import com.rae.core.image.utils.CameraUtils.CameraCallbackListener;
 import com.yixin.nfyh.cloud.BaseActivity;
-import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.bll.PhotoCategoryControl;
 import com.yixin.nfyh.cloud.model.Photocategory;
 import com.yixin.nfyh.cloud.model.Photos;

@@ -2,6 +2,7 @@ package com.yixin.nfyh.cloud.activity;
 
 import java.util.List;
 
+import com.yixin.nfyh.cloud.R;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,7 +17,6 @@ import android.widget.TextView;
 import cn.rui.framework.utils.DateUtil;
 
 import com.yixin.nfyh.cloud.BaseActivity;
-import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.alarm.AlarmControl;
 import com.yixin.nfyh.cloud.model.Clocks;
 

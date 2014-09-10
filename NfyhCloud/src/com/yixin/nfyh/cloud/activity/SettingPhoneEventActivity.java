@@ -3,6 +3,7 @@ package com.yixin.nfyh.cloud.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.yixin.nfyh.cloud.R;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,7 +22,6 @@ import cn.rui.framework.ui.RuiDialog;
 import cn.rui.framework.utils.InputUtils;
 
 import com.yixin.nfyh.cloud.BaseActivity;
-import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.bll.ConfigServer;
 import com.yixin.nfyh.cloud.ui.EmpteyView;
 

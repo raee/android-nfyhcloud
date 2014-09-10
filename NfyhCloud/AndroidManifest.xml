@@ -72,7 +72,7 @@
         <activity
             android:name="com.yixin.nfyh.cloud.WelcomeActivity"
             android:theme="@android:style/Theme.NoTitleBar" >
-             <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -90,8 +90,9 @@
 
 
         <!-- 登录 -->
-        <activity android:name="com.yixin.nfyh.cloud.LoginActivity" android:theme="@android:style/Theme.NoTitleBar">
-           
+        <activity
+            android:name="com.yixin.nfyh.cloud.LoginActivity"
+            android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
 
         <!-- 消息列表 -->
@@ -218,6 +219,16 @@
             android:name="com.yixin.nfyh.cloud.alarm.AlarmServer"
             android:label="云端提醒服务" >
         </service>
+        <!-- 欧姆龙核心服务 -->
+        <service
+            android:name="com.signove.health.service.HealthService"
+            android:enabled="true"
+            android:label="欧姆龙服务"
+            android:permission="android.permission.BLUETOOTH"
+            android:stopWithTask="false" >
+        </service>
+        <!-- 欧姆龙蓝牙服务 -->
+        <service android:name="com.signove.health.service.BluetoothHDPService" />
 
         <!-- 广播接收 -->
         <!-- 桌面Widget接收提供者 -->

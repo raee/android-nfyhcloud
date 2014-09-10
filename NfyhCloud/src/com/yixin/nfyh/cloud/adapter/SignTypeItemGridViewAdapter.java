@@ -3,6 +3,7 @@ package com.yixin.nfyh.cloud.adapter;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.yixin.nfyh.cloud.R;
 import android.app.Activity;
 import android.graphics.Color;
 import android.util.Log;
@@ -12,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.data.ISignCompareable;
 import com.yixin.nfyh.cloud.data.RangeCompareable;
 import com.yixin.nfyh.cloud.model.SignTypes;

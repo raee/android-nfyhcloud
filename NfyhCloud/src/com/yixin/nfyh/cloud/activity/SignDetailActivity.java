@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.yixin.nfyh.cloud.R;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,7 +24,6 @@ import cn.rui.framework.ui.RuiDialog;
 
 import com.yixin.nfyh.cloud.BaseActivity;
 import com.yixin.nfyh.cloud.NfyhApplication;
-import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.adapter.SignTypeItemGridViewAdapter;
 import com.yixin.nfyh.cloud.bll.SignCore;
 import com.yixin.nfyh.cloud.bll.sign.SignCoreInterface;

@@ -2,11 +2,10 @@ package com.yixin.nfyh.cloud.service;
 
 import java.util.Map;
 
+import com.yixin.nfyh.cloud.R;
 import android.content.Context;
 import cn.rui.framework.utils.SoapCallback;
 import cn.rui.framework.utils.SoapConnection;
-
-import com.yixin.nfyh.cloud.R;
 
 /**
  * 调用WebSerivce类

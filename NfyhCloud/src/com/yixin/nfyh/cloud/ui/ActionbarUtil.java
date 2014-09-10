@@ -1,7 +1,6 @@
 package com.yixin.nfyh.cloud.ui;
 
 import com.yixin.nfyh.cloud.R;
-
 import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.drawable.Drawable;

@@ -1,12 +1,11 @@
 package com.yixin.nfyh.cloud.widget;
 
+import com.yixin.nfyh.cloud.R;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.yixin.nfyh.cloud.R;
 
 public class AlarmCategoryTitle extends RelativeLayout {
 	private TextView tvOne;

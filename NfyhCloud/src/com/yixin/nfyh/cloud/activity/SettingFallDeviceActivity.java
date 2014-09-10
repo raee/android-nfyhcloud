@@ -3,6 +3,7 @@ package com.yixin.nfyh.cloud.activity;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.yixin.nfyh.cloud.R;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,7 +18,6 @@ import cn.rui.framework.widget.RuiSwitch;
 import cn.rui.framework.widget.RuiSwitch.OnCheckedChangeListener;
 
 import com.yixin.nfyh.cloud.BaseActivity;
-import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.bll.ConfigServer;
 import com.yixin.nfyh.cloud.server.FallServer;
 import com.yixin.nfyh.cloud.server.IFallCallback;

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.yixin.nfyh.cloud.R;
 import android.content.Context;
 import android.content.Intent;
 import android.text.format.DateFormat;
@@ -14,7 +15,6 @@ import android.util.Log;
 import com.rae.core.http.async.AsyncHttpClient;
 import com.rae.core.http.async.AsyncHttpResponseHandler;
 import com.rae.core.http.async.RequestParams;
-import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.activity.UploadPhotoActivity;
 import com.yixin.nfyh.cloud.adapter.PhotocategoryAdapter;
 import com.yixin.nfyh.cloud.data.NfyhCloudDataFactory;

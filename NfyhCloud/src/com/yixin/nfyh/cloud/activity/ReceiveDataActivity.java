@@ -1,5 +1,6 @@
 package com.yixin.nfyh.cloud.activity;
 
+import com.yixin.nfyh.cloud.R;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,7 +9,6 @@ import android.view.View;
 import android.view.Window;
 
 import com.yixin.nfyh.cloud.BaseActivity;
-import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.service.CoreServerBinder;
 import com.yixin.nfyh.cloud.ui.ActionbarUtil;
 import com.yixin.nfyh.cloud.ui.DeviceConnectView;

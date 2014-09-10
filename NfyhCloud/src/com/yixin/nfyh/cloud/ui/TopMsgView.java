@@ -4,7 +4,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.yixin.nfyh.cloud.R;
-
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;

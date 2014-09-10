@@ -1,5 +1,6 @@
 package com.yixin.nfyh.cloud;
 
+import com.yixin.nfyh.cloud.R;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;

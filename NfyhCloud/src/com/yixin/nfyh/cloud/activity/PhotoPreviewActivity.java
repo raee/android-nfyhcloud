@@ -2,13 +2,13 @@ package com.yixin.nfyh.cloud.activity;
 
 import java.util.ArrayList;
 
+import com.yixin.nfyh.cloud.R;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.widget.TextView;
 
 import com.rae.core.image.photoview.PhotoViewPager;
 import com.yixin.nfyh.cloud.BaseActivity;
-import com.yixin.nfyh.cloud.R;
 
 /**
  * @author Chenrui 照片预览窗体

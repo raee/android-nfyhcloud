@@ -2,6 +2,7 @@ package com.yixin.nfyh.cloud.broadcastreceiver;
 
 import java.io.IOException;
 
+import com.yixin.nfyh.cloud.R;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +12,6 @@ import android.view.ViewGroup;
 import cn.rui.framework.utils.CommonUtil;
 import cn.rui.framework.utils.MediaUtil;
 
-import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.service.CoreServerBinder;
 import com.yixin.nfyh.cloud.ui.TopMsgView;
 

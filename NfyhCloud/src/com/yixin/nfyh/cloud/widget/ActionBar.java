@@ -1,5 +1,6 @@
 package com.yixin.nfyh.cloud.widget;
 
+import com.yixin.nfyh.cloud.R;
 import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
@@ -8,8 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.yixin.nfyh.cloud.R;
 
 public class ActionBar extends LinearLayout implements
 		android.view.View.OnClickListener

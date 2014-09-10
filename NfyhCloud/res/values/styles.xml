@@ -188,5 +188,63 @@
     <style name="setting_item_text_sub" parent="@style/setting_item_text_content">
         <item name="android:textColor">#84B734</item>
     </style>
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="android:Theme.Light"></style>
+
+    <style name="RuiDialog" parent="@android:style/Theme.Dialog">
+
+        <!-- 是否显示标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 是否显示遮罩层 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!-- 背景为透明 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="ResultDialog" parent="@android:style/Theme.Dialog">
+
+        <!-- 是否不显示标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 是否显示遮罩层 -->
+        <item name="android:backgroundDimEnabled">false</item>
+        <!-- 背景为透明 -->
+        <item name="android:windowBackground">@android:color/white</item>
+    </style>
+
+    <!-- 左右填充15个像素 -->
+    <style name="xr_style_left_right_pading15">
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingRight">15dp</item>
+    </style>
+
+    <!-- 宽高填充 -->
+    <style name="xr_style_width_height_fill">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+    </style>
+
+    <style name="feature_list_item_right_item">
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_marginRight">25dp</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
+    <style name="Theme.Light.Dialog.Bottom" parent="@android:style/Theme.Dialog">
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="android:windowTitleStyle">@style/DialogWindowTitle</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@style/DialogAimation</item>
+    </style>
+
+    <style name="DialogWindowTitle">
+        <item name="android:maxLines">1</item>
+        <item name="android:scrollHorizontally">true</item>
+    </style>
+
+    <style name="DialogAimation">
+        <item name="android:windowEnterAnimation">@anim/slide_in_from_bottom</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_to_bottom</item>
+    </style>
 
 </resources>

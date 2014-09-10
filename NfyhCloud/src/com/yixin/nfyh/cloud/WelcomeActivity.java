@@ -1,5 +1,6 @@
 package com.yixin.nfyh.cloud;
 
+import com.yixin.nfyh.cloud.R;
 import android.content.Intent;
 import android.os.Bundle;
 

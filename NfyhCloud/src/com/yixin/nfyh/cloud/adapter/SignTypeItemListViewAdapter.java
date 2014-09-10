@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import com.yixin.nfyh.cloud.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.util.Log;
@@ -14,7 +15,6 @@ import android.view.ViewGroup;
 import com.yixin.nfyh.cloud.model.SignTypes;
 import com.yixin.nfyh.cloud.model.UserSigns;
 import com.yixin.nfyh.cloud.ui.ListItemView;
-import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.utils.ReflectUtil;
 
 /**

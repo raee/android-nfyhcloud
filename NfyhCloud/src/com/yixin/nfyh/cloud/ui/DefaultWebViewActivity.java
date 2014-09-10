@@ -1,7 +1,6 @@
 package com.yixin.nfyh.cloud.ui;
 
 import com.yixin.nfyh.cloud.R;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;

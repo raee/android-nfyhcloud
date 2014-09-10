@@ -3,6 +3,7 @@ package com.yixin.nfyh.cloud.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.yixin.nfyh.cloud.R;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +16,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.yixin.nfyh.cloud.BaseActivity;
-import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.adapter.PhotocategoryAdapter;
 import com.yixin.nfyh.cloud.bll.PhotoCategoryControl;
 import com.yixin.nfyh.cloud.bll.PhotoCategoryControl.PhotoCategoryListener;

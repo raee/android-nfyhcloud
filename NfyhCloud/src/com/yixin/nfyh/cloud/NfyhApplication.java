@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.yixin.nfyh.cloud.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
