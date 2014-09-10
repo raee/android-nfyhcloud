@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <!-- 返回键 -->
-    <item android:drawable="@drawable/xr_icon_back_2" android:state_pressed="true"></item>
-    <item android:drawable="@drawable/xr_icon_back"></item>
-
-</selector>
