@@ -32,19 +32,18 @@ import com.yixin.nfyh.cloud.widget.TabHostView;
  * @author MrChenrui
  * 
  */
-public class MainActivity extends TabHostActivity implements OnClickListener
-{
-	private CoreServerBinder					binder;
+public class MainActivity extends TabHostActivity implements OnClickListener {
 	private NfyhApplication						app;
 	private boolean								isCreated;
 	private DeviceReceviceBroadcasetreceiver	receiver;
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		app = (NfyhApplication) getApplication();
+		app.addActivity(this);
+		
 		ActionBar bar = ActionbarUtil.setActionbar(this, this.getActionBar());
 		ActionBarView actionView = (ActionBarView) bar.getCustomView();
 		actionView.setTitle(app.getCurrentUser() == null ? "未登录" : app.getCurrentUser().getName());
@@ -71,19 +70,14 @@ public class MainActivity extends TabHostActivity implements OnClickListener
 		// 紧急呼救
 		add(R.string.tab_title_jjhj, R.drawable.icon_hand, R.drawable.icon_hand_2, R.drawable.tab_hover, sosIntent);
 		
-		NfyhApplication app = (NfyhApplication) getApplication();
-		app.addActivity(this);
-		binder = app.getBinder();
 		ConfigServer config = new ConfigServer(this);
-		if (binder != null && !binder.getDevice().isConnected() && config.getBooleanConfig(ConfigServer.KEY_AUTO_CONNECTED)) // 提示连接设备
+		if (!app.isConnected() && config.getBooleanConfig(ConfigServer.KEY_AUTO_CONNECTED)) // 提示连接设备
 		{
-			new RuiDialog.Builder(this).buildTitle("设备连接提示").buildMessage("您没有连接设备，是否现在就连接设备？").buildLeftButton("不连接", null).buildRight("连接", new DialogInterface.OnClickListener()
-			{
+			new RuiDialog.Builder(this).buildTitle("设备连接提示").buildMessage("您没有连接设备，是否现在就连接设备？").buildLeftButton("不连接", null).buildRight("连接", new DialogInterface.OnClickListener() {
 				
 				@Override
-				public void onClick(DialogInterface dialog, int which)
-				{
-					binder.conncet();
+				public void onClick(DialogInterface dialog, int which) {
+					app.connect();
 					dialog.dismiss();
 				}
 			}).show();
@@ -93,14 +87,12 @@ public class MainActivity extends TabHostActivity implements OnClickListener
 	}
 	
 	@Override
-	public void onWindowFocusChanged(boolean hasFocus)
-	{
+	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
 		if (isCreated || !hasFocus) return;
 		View actionView = findViewById(R.id.menu_main_device);
 		
-		if (binder != null && binder.getDevice().isConnected() && actionView != null)
-		{
+		if (app.isConnected() && actionView != null) {
 			CommonUtil.setActionViewItemIcon(actionView, R.drawable.ic_switch_device_connected);
 		}
 		registerReceiver(this, findViewById(R.id.contentview), actionView);
@@ -113,8 +105,7 @@ public class MainActivity extends TabHostActivity implements OnClickListener
 	 * @param context
 	 * @param contentView
 	 */
-	public void registerReceiver(Context context, View contentView, View actionView)
-	{
+	public void registerReceiver(Context context, View contentView, View actionView) {
 		Log.i("tt", "--> 注册广播！");
 		receiver = new DeviceReceviceBroadcasetreceiver(context, contentView, actionView);
 		IntentFilter filter = new IntentFilter();
@@ -128,17 +119,14 @@ public class MainActivity extends TabHostActivity implements OnClickListener
 	}
 	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
+	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_main, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 	
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
-		switch (item.getItemId())
-		{
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
 			case R.id.menu_main_device:
 				connectDevice();
 				break;
@@ -149,48 +137,36 @@ public class MainActivity extends TabHostActivity implements OnClickListener
 		return super.onOptionsItemSelected(item);
 	}
 	
-	private void connectDevice()
-	{
-		if (binder == null)
-		{
-			return;
-		}
+	private void connectDevice() {
 		
-		if (this.binder.getDevice().isConnected())
-		{
-			new RuiDialog.Builder(this).buildTitle("断开连接").buildMessage("设备已经连接，是否要断开监测设备？").buildLeftButton("否", null).buildRight("断开", new DialogInterface.OnClickListener()
-			{
+		if (app.isConnected()) {
+			new RuiDialog.Builder(this).buildTitle("断开连接").buildMessage("设备已经连接，是否要断开监测设备？").buildLeftButton("否", null).buildRight("断开", new DialogInterface.OnClickListener() {
 				
 				@Override
-				public void onClick(DialogInterface dialog, int which)
-				{
-					binder.getDevice().disConnect();
+				public void onClick(DialogInterface dialog, int which) {
+					app.disconnect();
 					dialog.dismiss();
 					
 				}
 			}).show();
 		}
-		else
-		{
+		else {
 			Toast.makeText(this, "正在连接设备...", Toast.LENGTH_LONG).show();
-			this.binder.conncet();
+			app.connect();
 		}
 	}
 	
 	@Override
-	public int getBackgournd()
-	{
+	public int getBackgournd() {
 		return R.drawable.bg_tab;
 	}
 	
-	private void add(int title, int icon, int hicon, int bg, Class<?> cls)
-	{
+	private void add(int title, int icon, int hicon, int bg, Class<?> cls) {
 		
 		add(title, icon, hicon, bg, new Intent(this, cls));
 	}
 	
-	private void add(int title, int icon, int hicon, int bg, Intent intent)
-	{
+	private void add(int title, int icon, int hicon, int bg, Intent intent) {
 		TabHostView tabView = new TabHostView(this);
 		tabView.setTitle(getResources().getString(title));
 		tabView.setIconId(icon);
@@ -201,10 +177,8 @@ public class MainActivity extends TabHostActivity implements OnClickListener
 	}
 	
 	@Override
-	public void onClick(View v)
-	{
-		switch (v.getId())
-		{
+	public void onClick(View v) {
+		switch (v.getId()) {
 			case android.R.id.home:
 				Intent intent = new Intent(this, UserSettingActivity.class);
 				startActivity(intent);
@@ -217,8 +191,7 @@ public class MainActivity extends TabHostActivity implements OnClickListener
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	protected void onDestroy()
-	{
+	protected void onDestroy() {
 		super.onDestroy();
 		unregisterReceiver(receiver);
 	}

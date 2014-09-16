@@ -11,10 +11,8 @@ import android.graphics.drawable.Drawable;
  * @author MrChenrui
  * 
  */
-public class ActionbarUtil
-{
-	private ActionbarUtil()
-	{
+public class ActionbarUtil {
+	private ActionbarUtil() {
 	}
 	
 	/**
@@ -22,9 +20,8 @@ public class ActionbarUtil
 	 * 
 	 * @param bar
 	 */
-	public static ActionBar setActionbar(Context context, ActionBar bar)
-	{
-		if(bar == null) return bar;
+	public static ActionBar setActionbar(Context context, ActionBar bar) {
+		if (bar == null) return bar;
 		ActionBarView actionbarView = new ActionBarView(context); // 自定义的ActionbarView
 		
 		bar.setDisplayShowTitleEnabled(false); // 不显示标题
@@ -39,36 +36,33 @@ public class ActionbarUtil
 	/**
 	 * 设置默认的Actionbar
 	 */
-	public static ActionBar setDefaultActionBar(Context context, ActionBar bar)
-	{
-		Drawable bg = context.getResources().getDrawable(
-				R.drawable.actionbar_bg);
+	public static ActionBar setDefaultActionBar(Context context, ActionBar bar) {
+		Drawable bg = context.getResources().getDrawable(R.drawable.actionbar_bg);
 		bar.setBackgroundDrawable(bg);
 		return bar;
 	}
 	
-	public static ActionBar setTitleAsUpHome(Context context, ActionBar bar,
-			String title)
-	{
-		if(bar == null) return bar;
+	public static ActionBar setTitleAsUpHome(Context context, ActionBar bar, String title) {
+		if (bar == null) return bar;
 		bar.setDisplayHomeAsUpEnabled(true);
 		bar.setDisplayShowCustomEnabled(false);
 		bar.setDisplayShowTitleEnabled(true);
-		bar.setDisplayShowHomeEnabled(true);
+		bar.setDisplayShowHomeEnabled(false);
+		bar.setDisplayUseLogoEnabled(false);
 		bar.setTitle(title);
 		return bar;
 	}
 	
 	/**
 	 * 设置背景颜色
+	 * 
 	 * @param context
 	 * @param bar
 	 * @param resid
 	 * @return
 	 */
-	public static ActionBar setBackgroud(Context context,ActionBar bar ,int resid)
-	{
-		if(bar == null) return bar;
+	public static ActionBar setBackgroud(Context context, ActionBar bar, int resid) {
+		if (bar == null) return bar;
 		bar.setBackgroundDrawable(context.getResources().getDrawable(resid));
 		return bar;
 	}

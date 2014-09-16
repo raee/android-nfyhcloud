@@ -29,19 +29,16 @@ import com.yixin.nfyh.cloud.ui.ActionbarUtil;
 import com.yixin.nfyh.cloud.ui.TimerProgressDialog;
 import com.yixin.nfyh.cloud.ui.TimerToast;
 
-public abstract class BaseActivity extends Activity implements OnClickListener
-{
+public abstract class BaseActivity extends Activity implements OnClickListener {
 	
 	protected NfyhApplication	app;
 	private Users				mUser;
 	private ProgressDialog		progressDialog;
 	
-	protected void findView()
-	{
+	protected void findView() {
 	}
 	
-	public Users getUser()
-	{
+	public Users getUser() {
 		if (mUser == null) mUser = app.getCurrentUser();
 		return mUser;
 	}
@@ -51,25 +48,21 @@ public abstract class BaseActivity extends Activity implements OnClickListener
 	 * 
 	 * @return
 	 */
-	protected String getActivityName()
-	{
+	protected String getActivityName() {
 		return "";
 	}
 	
 	private GlobalSetting						setting;
 	private DeviceReceviceBroadcasetreceiver	receiver;
-	protected CoreServerBinder					binder;
 	private boolean								isCreated	= false;
 	
-	public GlobalSetting getSetting()
-	{
+	public GlobalSetting getSetting() {
 		if (setting == null) setting = new GlobalSetting(this);
 		return setting;
 	}
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ActionbarUtil.setActionbar(this, getActionBar());
 		ActionbarUtil.setTitleAsUpHome(this, getActionBar(), getActivityName());
@@ -78,41 +71,37 @@ public abstract class BaseActivity extends Activity implements OnClickListener
 		startService(intent);
 		app = (NfyhApplication) getApplication();
 		app.addActivity(this);
-		binder = app.getBinder();
 		
 	}
 	
-	protected void setLinsener()
-	{
+	protected void setLinsener() {
 	}
 	
 	@Override
-	protected void onDestroy()
-	{
-		if (receiver != null)
-		{
+	protected void onDestroy() {
+		if (receiver != null) {
 			this.unregisterReceiver(receiver);
 		}
 		ImageLoader.getInstance().clearMemoryCache();
-//		ImageLoader.getInstance().stop();
+		//		ImageLoader.getInstance().stop();
 		super.onDestroy();
 		
 	}
 	
-//	@Override
-//	protected void onPause()
-//	{
-////		ImageLoader.getInstance().clearMemoryCache();
-//		ImageLoader.getInstance().pause();
-//		super.onPause();
-//	}
-//	
-//	@Override
-//	protected void onResume()
-//	{
-//		ImageLoader.getInstance().resume();
-//		super.onResume();
-//	}
+	//	@Override
+	//	protected void onPause()
+	//	{
+	////		ImageLoader.getInstance().clearMemoryCache();
+	//		ImageLoader.getInstance().pause();
+	//		super.onPause();
+	//	}
+	//	
+	//	@Override
+	//	protected void onResume()
+	//	{
+	//		ImageLoader.getInstance().resume();
+	//		super.onResume();
+	//	}
 	
 	/**
 	 * 注册
@@ -120,12 +109,9 @@ public abstract class BaseActivity extends Activity implements OnClickListener
 	 * @param context
 	 * @param contentView
 	 */
-	public void registerReceiver(Context context, View contentView,
-			View actionView)
-	{
+	public void registerReceiver(Context context, View contentView, View actionView) {
 		Log.i("tt", "--> 注册广播！");
-		receiver = new DeviceReceviceBroadcasetreceiver(context, contentView,
-				actionView);
+		receiver = new DeviceReceviceBroadcasetreceiver(context, contentView, actionView);
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(CoreServerBinder.ACTION_BLUETOOTH_DEVICE_CONNECTED);
 		filter.addAction(CoreServerBinder.ACTION_BLUETOOTH_DEVICE_CONNECTING);
@@ -137,23 +123,20 @@ public abstract class BaseActivity extends Activity implements OnClickListener
 	}
 	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
+	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_main, menu);
 		boolean result = super.onCreateOptionsMenu(menu);
 		return result;
 	}
 	
 	@Override
-	public void onWindowFocusChanged(boolean hasFocus)
-	{
+	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
 		if (isCreated || !hasFocus) return;
 		init();
 	}
 	
-	private void init()
-	{
+	private void init() {
 		View contentView = findViewById(R.id.contentview);
 		View actionView = findViewById(R.id.menu_main_device);
 		
@@ -162,48 +145,32 @@ public abstract class BaseActivity extends Activity implements OnClickListener
 		
 		registerReceiver(this, contentView, actionView);
 		
-		if (binder != null && binder.getDevice().isConnected()
-				&& actionView != null)
-		{
-			CommonUtil.setActionViewItemIcon(actionView,
-					R.drawable.ic_switch_device_connected);
+		if (app.isConnected() && actionView != null) {
+			CommonUtil.setActionViewItemIcon(actionView, R.drawable.ic_switch_device_connected);
 		}
 	}
 	
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
+	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
-		switch (id)
-		{
+		switch (id) {
 			case android.R.id.home:
 				this.finish();
 				break;
 			case R.id.menu_main_device:
-				if (this.binder.getDevice().isConnected())
-				{
-					new RuiDialog.Builder(this)
-							.buildTitle("断开连接")
-							.buildMessage("设备已经连接，是否要断开监测设备？")
-							.buildLeftButton("否", null)
-							.buildRight("断开",
-									new DialogInterface.OnClickListener()
-									{
-										
-										@Override
-										public void onClick(
-												DialogInterface dialog,
-												int which)
-										{
-											binder.getDevice().disConnect();
-											dialog.dismiss();
-											
-										}
-									}).show();
+				if (app.isConnected()) {
+					new RuiDialog.Builder(this).buildTitle("断开连接").buildMessage("设备已经连接，是否要断开监测设备？").buildLeftButton("否", null).buildRight("断开", new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							app.disconnect();
+							dialog.dismiss();
+							
+						}
+					}).show();
 				}
-				else
-				{
-					this.binder.conncet();
+				else {
+					app.connect();
 				}
 				
 				break;
@@ -214,8 +181,7 @@ public abstract class BaseActivity extends Activity implements OnClickListener
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public NfyhApplication getNfyhApplication()
-	{
+	public NfyhApplication getNfyhApplication() {
 		return (NfyhApplication) getApplication();
 	}
 	
@@ -224,45 +190,36 @@ public abstract class BaseActivity extends Activity implements OnClickListener
 	 * 
 	 * @param msg
 	 */
-	public void showMsg(String msg)
-	{
+	public void showMsg(String msg) {
 		if (msg == null) msg = "";
 		TimerToast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 	}
 	
-	public void exit()
-	{
-		try
-		{
+	public void exit() {
+		try {
 			List<Activity> ats = this.app.getActivitys();
-			for (Activity activity : ats)
-			{
+			for (Activity activity : ats) {
 				activity.finish();
 			}
 			System.exit(0);
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
 	@Override
-	public void onClick(View v)
-	{
+	public void onClick(View v) {
 		
 	}
 	
 	@Override
-	public void setTitle(CharSequence title)
-	{
+	public void setTitle(CharSequence title) {
 		getActionBar().setTitle(title);
 	}
 	
-	protected void showProgressDialog(String message)
-	{
-		if (this.progressDialog == null)
-		{
+	protected void showProgressDialog(String message) {
+		if (this.progressDialog == null) {
 			this.progressDialog = new TimerProgressDialog(this);
 			this.progressDialog.setCanceledOnTouchOutside(false); // 点击不取消
 		}
@@ -270,15 +227,12 @@ public abstract class BaseActivity extends Activity implements OnClickListener
 		this.progressDialog.show();
 	}
 	
-	protected void showProgressDialog()
-	{
+	protected void showProgressDialog() {
 		this.showProgressDialog("正在获取数据...");
 	}
 	
-	protected void dismissProgressDialog()
-	{
-		if (this.progressDialog != null && this.progressDialog.isShowing())
-		{
+	protected void dismissProgressDialog() {
+		if (this.progressDialog != null && this.progressDialog.isShowing()) {
 			this.progressDialog.dismiss();
 		}
 	}

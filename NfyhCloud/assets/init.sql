@@ -1,8 +1,8 @@
 ﻿
 -- 初始化 设备
 delete from devices;
-insert into devices(devid,name, isused,logo,comment)values('devices01','迈瑞设备',1,'logo_mindray','迈瑞设备连接注意事项！');
-insert into devices(devid,name, isused,logo,comment)values('devices02','欧姆龙设备',0,'logo_omron','欧姆龙设备连接注意事项！');
+	insert into devices(devid,name, isused,logo,comment)values('Mindray-H900','迈瑞设备',1,'logo_mindray','迈瑞设备连接注意事项！<br>点击设备上的开始按钮进行血压测量。');
+insert into devices(devid,name, isused,logo,comment)values('HEM-7081-IT','欧姆龙设备',0,'logo_omron','欧姆龙血压仪，按住[上传]进行蓝牙配对。<br>多次连接不上请取消配对，并关闭蓝牙，并开始重新连接，重新连接时需要重新配对。');
 
 -- 初始化 字典表
 delete from dicts;

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.yixin.monitors.sdk.api.ApiMonitor;
 import com.yixin.nfyh.cloud.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -44,167 +45,177 @@ import com.yixin.nfyh.cloud.utils.LogUtil;
  * 
  */
 @SuppressLint("SimpleDateFormat")
-public class NfyhApplication extends Application
-{
-
+public class NfyhApplication extends Application {
+	
 	private Context					context;
-
+	
 	private GlobalSetting			globalsetting;
-
+	
 	public static final int			ACTIVITY_RESULT_CAMARA_OK	= 0;
-
+	
 	private String					takePhotoCurrentPath;
-
+	
 	private DesktopSOS				desktopSos;
-
+	
 	private boolean					isLogined					= false;
-
+	
 	private List<Activity>			activitys					= new ArrayList<Activity>();
-
+	
 	private ConfigServer			config;
-
+	
 	private IUser					apiUser;
-
+	
 	private CoreServicerConnection	conn;
-
+	
 	private CoreServerBinder		binder;
-
-	public void addActivity(Activity at)
-	{
+	
+	public void addActivity(Activity at) {
 		this.activitys.add(at);
 	}
-
-	public void delActivity(Activity at)
-	{
-		if (this.activitys.contains(at))
-		{
+	
+	public void delActivity(Activity at) {
+		if (this.activitys.contains(at)) {
 			this.activitys.remove(at);
 		}
 	}
-
-	public List<Activity> getActivitys()
-	{
+	
+	public List<Activity> getActivitys() {
 		return this.activitys;
 	}
-
-	public CoreServerBinder getBinder()
-	{
+	
+	public CoreServerBinder getBinder() {
 		return binder;
 	}
-
+	
+	/**
+	 * 连接设备
+	 */
+	public void connect() {
+		if (binder != null) {
+			binder.conncet();
+		}
+	}
+	
+	/**
+	 * 断开设备
+	 */
+	public void disconnect() {
+		if (binder != null) {
+			binder.disconnect();
+		}
+	}
+	
+	/**
+	 * 是否连接
+	 * 
+	 * @return
+	 */
+	public boolean isConnected() {
+		if (binder == null) return false;
+		ApiMonitor api = binder.getDevice();
+		if (api == null) return false;
+		return api.isConnected();
+	}
+	
 	/**
 	 * 设置是否登录
 	 * 
 	 * @param value
 	 */
-	public void setIsLogin(boolean value)
-	{
+	public void setIsLogin(boolean value) {
 		this.isLogined = value;
 	}
-
+	
 	/**
 	 * 是否已经登录
 	 * 
 	 * @return
 	 */
-	public boolean isLogin()
-	{
+	public boolean isLogin() {
 		return isLogined;
 	}
-
+	
 	// private boolean isInDesktop = false;
 	@Override
-	public void onCreate()
-	{
+	public void onCreate() {
 		context = getApplicationContext();
 		initImageLoader(context);
 		globalsetting = new GlobalSetting(context);
 		config = new ConfigServer(context);
 		this.desktopSos = new DesktopSOS(context);
-		this.apiUser = NfyhCloudDataFactory.getFactory(getApplicationContext())
-				.getUser();
+		this.apiUser = NfyhCloudDataFactory.getFactory(getApplicationContext()).getUser();
 		startServices();
 		commitLogFile();// 上传日志文件
 		NfyhCloudUnHanderException.init(getApplicationContext());
 		LogUtil.getLog().info("Appliaction", "应用程序启动");
 	}
-
+	
 	/**
 	 * 启动各项服务
 	 */
-	private void startServices()
-	{
+	private void startServices() {
+		bindMonitorService();
+		
+		// 推送服务
+		startService(new Intent(context, PushNotificationService.class));
+	}
+	
+	private void bindMonitorService() {
 		// 核心服务
 		Intent service = new Intent(context, CoreService.class);
 		conn = new CoreServicerConnection();
 		bindService(service, conn, Context.BIND_AUTO_CREATE);
-
-		// 推送服务
-		startService(new Intent(context, PushNotificationService.class));
 	}
-
+	
 	/**
 	 * 上传日志文件
 	 */
-	private void commitLogFile()
-	{
+	private void commitLogFile() {
 		String key = "last-log-commit";
 		String now = DateUtil.getCurrentDateString("yyyy-MM-dd hh:mm:ss");
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		try
-		{
+		try {
 			Date nowDate = new Date();
 			Date lastDate = df.parse(globalsetting.getValue(key, now));
 			long diff = nowDate.getTime() - lastDate.getTime();
 			long minute = diff / (1000 * 60);
-			if (minute > 1 && minute < 30)
-			{
+			if (minute > 1 && minute < 30) {
 				return; // 提交间隔小于30分钟不提交
 			}
-			else
-			{
+			else {
 				LogUtil.getLog().commit(getApplicationContext());
 				globalsetting.setValue(key, now);
 				globalsetting.commit();
 			}
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
-	private class CoreServicerConnection implements ServiceConnection
-	{
-
+	
+	private class CoreServicerConnection implements ServiceConnection {
+		
 		@Override
-		public void onServiceConnected(ComponentName name, IBinder service)
-		{
-			if (service instanceof CoreServerBinder)
-				binder = (CoreServerBinder) service;
+		public void onServiceConnected(ComponentName name, IBinder service) {
+			if (service instanceof CoreServerBinder) binder = (CoreServerBinder) service;
 		}
-
+		
 		@Override
-		public void onServiceDisconnected(ComponentName name)
-		{
-			// TODO Auto-generated method stub
+		public void onServiceDisconnected(ComponentName name) {
 		}
 	}
-
-	public void showSOSinDesktop()
-	{
-		if (this.config.getBooleanConfig(ConfigServer.KEY_ENABLE_DESKTOP))
-		{
+	
+	public void showSOSinDesktop() {
+		if (this.config.getBooleanConfig(ConfigServer.KEY_ENABLE_DESKTOP)) {
 			this.removeSOSinDesktop();
 			this.desktopSos.initFloatView();
 		}
 	}
-
-	public void removeSOSinDesktop()
-	{
+	
+	public void removeSOSinDesktop() {
 		this.desktopSos.remove();
 	}
-
+	
 	// /**
 	// * 获取当前用户的基本信息
 	// *
@@ -218,18 +229,15 @@ public class NfyhApplication extends Application
 	// userinfo = MonitorDataHandle.getUserInfo(uid);
 	// return userinfo;
 	// }
-	public void setUserInfo(Users user)
-	{
-		try
-		{
+	public void setUserInfo(Users user) {
+		try {
 			apiUser.createUser(user);
 		}
-		catch (SQLException e)
-		{
+		catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-
+	
 	// /**
 	// * 打开照相机
 	// *
@@ -263,21 +271,18 @@ public class NfyhApplication extends Application
 	 * 
 	 * @return
 	 */
-	public String getCurrentCameraPath()
-	{
+	public String getCurrentCameraPath() {
 		return takePhotoCurrentPath;
 	}
-
-	public static class DesktopBroderRecevice extends BroadcastReceiver
-	{
-
+	
+	public static class DesktopBroderRecevice extends BroadcastReceiver {
+		
 		@Override
-		public void onReceive(Context context, Intent intent)
-		{
+		public void onReceive(Context context, Intent intent) {
 			context.startActivity(new Intent(context, OneKeySoSActivity.class));
 		}
 	}
-
+	
 	//
 	// /**
 	// * 创建图片的文件名：2013-12-12-12-10-10-10-23566.jpg
@@ -299,24 +304,20 @@ public class NfyhApplication extends Application
 	/**
 	 * @return the globalsetting
 	 */
-	public GlobalSetting getGlobalsetting()
-	{
+	public GlobalSetting getGlobalsetting() {
 		return globalsetting;
 	}
-
-	public Users getCurrentUser()
-	{
+	
+	public Users getCurrentUser() {
 		String uid = this.globalsetting.getUser().getUid();
 		Users user = null;
-		try
-		{
+		try {
 			user = apiUser.getUser(uid);
 		}
-		catch (SQLException e)
-		{
+		catch (SQLException e) {
 			e.printStackTrace();
 		}
-
+		
 		// if (user == null || TextUtils.isEmpty(user.getCookie()))
 		// {
 		// Intent intent = new Intent(this, LoginActivity.class);
@@ -325,27 +326,16 @@ public class NfyhApplication extends Application
 		// Toast.makeText(context, "登录异常，请重新登陆！", Toast.LENGTH_LONG).show();
 		// // Process.killProcess(Process.myPid()); // 重新启动
 		// }
-
+		
 		return user;
 	}
-
-	public static void initImageLoader(final Context context)
-	{
-		DisplayImageOptions options = new DisplayImageOptions.Builder()
-				.showImageOnLoading(R.drawable.ic_stub)
-				.showImageForEmptyUri(R.drawable.ic_empty)
-				.showImageOnFail(R.drawable.ic_error).cacheInMemory(true)
-				.cacheOnDisk(true).considerExifParams(true)
-				// .displayer(new FadeInBitmapDisplayer(1000))
+	
+	public static void initImageLoader(final Context context) {
+		DisplayImageOptions options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.ic_stub).showImageForEmptyUri(R.drawable.ic_empty).showImageOnFail(R.drawable.ic_error).cacheInMemory(true).cacheOnDisk(true).considerExifParams(true)
+		// .displayer(new FadeInBitmapDisplayer(1000))
 				.bitmapConfig(Bitmap.Config.RGB_565).build();
-		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-				context).memoryCacheExtraOptions(480, 800).threadPoolSize(3)
-				.threadPriority(Thread.NORM_PRIORITY - 1)
-				.denyCacheImageMultipleSizesInMemory()
-				.memoryCache(new UsingFreqLimitedMemoryCache(2 * 1024 * 1024))
-				.diskCacheFileNameGenerator(new HashCodeFileNameGenerator())
-				.tasksProcessingOrder(QueueProcessingType.LIFO)
-				.writeDebugLogs() // TODO:发布时，移除调试模式
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context).memoryCacheExtraOptions(480, 800).threadPoolSize(3).threadPriority(Thread.NORM_PRIORITY - 1).denyCacheImageMultipleSizesInMemory().memoryCache(new UsingFreqLimitedMemoryCache(2 * 1024 * 1024))
+				.diskCacheFileNameGenerator(new HashCodeFileNameGenerator()).tasksProcessingOrder(QueueProcessingType.LIFO).writeDebugLogs() // TODO:发布时，移除调试模式
 				.defaultDisplayImageOptions(options) // 默认配置
 				.build();
 		ImageLoader.getInstance().init(config);

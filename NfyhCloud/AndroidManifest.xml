@@ -72,11 +72,6 @@
         <activity
             android:name="com.yixin.nfyh.cloud.WelcomeActivity"
             android:theme="@android:style/Theme.NoTitleBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <!-- 闹钟 -->
         <activity android:name="com.yixin.nfyh.cloud.activity.AlarmNormalAddActivity" >
@@ -93,6 +88,11 @@
         <activity
             android:name="com.yixin.nfyh.cloud.LoginActivity"
             android:theme="@android:style/Theme.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <!-- 消息列表 -->

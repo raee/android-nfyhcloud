@@ -21,8 +21,7 @@ import com.yixin.nfyh.cloud.ui.TopMsgView;
  * @author MrChenrui
  * 
  */
-public class DeviceReceviceBroadcasetreceiver extends BroadcastReceiver
-{
+public class DeviceReceviceBroadcasetreceiver extends BroadcastReceiver {
 	private TopMsgView			mMsgView;
 	
 	private ViewGroup			mContentView;
@@ -33,34 +32,27 @@ public class DeviceReceviceBroadcasetreceiver extends BroadcastReceiver
 	
 	private static MediaPlayer	player;
 	
-	public DeviceReceviceBroadcasetreceiver(Context context, View contentView,
-			View actionView)
-	{
+	public DeviceReceviceBroadcasetreceiver(Context context, View contentView, View actionView) {
 		this.mContext = context;
 		mMsgView = new TopMsgView(context, null);
 		mContentView = (ViewGroup) contentView;
 	}
 	
 	@Override
-	public void onReceive(Context context, Intent intent)
-	{
+	public void onReceive(Context context, Intent intent) {
 		String action = intent.getAction();
 		String msg = intent.getStringExtra(Intent.EXTRA_TEXT);
-		if (action != null)
-		{
+		if (action != null) {
 			changeState(action, msg); //改变状态
 		}
 	}
 	
-	private void showMsg(String msg, int iconId, int color)
-	{
+	private void showMsg(String msg, int iconId, int color) {
 		if (mContentView == null || msg == null || msg.equals("")) { return; }
-		if (iconId != 0)
-		{
+		if (iconId != 0) {
 			mMsgView.setIcon(iconId);
 		}
-		if (color != 0)
-		{
+		if (color != 0) {
 			color = mContext.getResources().getColor(color);
 			mMsgView.setBackgroundColor(color);
 		}
@@ -69,11 +61,15 @@ public class DeviceReceviceBroadcasetreceiver extends BroadcastReceiver
 		mMsgView.show(mContentView);
 	}
 	
-	private void unShowMsg()
-	{
-		MediaUtil.stopPlayMusic(player);
+	private void unShowMsg() {
+		stopMusic();
 		mMsgView.stopAnim();
 		mMsgView.setVisibility(View.GONE);
+	}
+	
+	private void stopMusic() {
+		
+		MediaUtil.stopPlayMusic(player);
 	}
 	
 	/**
@@ -82,31 +78,28 @@ public class DeviceReceviceBroadcasetreceiver extends BroadcastReceiver
 	 * @param action
 	 * @param msg
 	 */
-	private void changeState(String action, String msg)
-	{
+	private void changeState(String action, String msg) {
 		
 		if (CoreServerBinder.ACTION_BLUETOOTH_DEVICE_CONNECTED.equals(action)) // 已经连接
 		{
 			showMsg(msg, R.drawable.ic_connected, R.color.green);
-			CommonUtil.setActionViewItemIcon(mActionView,
-					R.drawable.ic_switch_device_connected);
+			CommonUtil.setActionViewItemIcon(mActionView, R.drawable.ic_switch_device_connected);
 		}
 		if (CoreServerBinder.ACTION_BLUETOOTH_DEVICE_CONNECTING.equals(action)) // 正在连接
 		{
 			showMsg(msg, R.drawable.ic_bluetooth, R.color.green);
 		}
-		if (action
-				.equals(CoreServerBinder.ACTION_BLUETOOTH_DEVICE_DISCONNECTED)) // 断开连接
+		if (action.equals(CoreServerBinder.ACTION_BLUETOOTH_DEVICE_DISCONNECTED)) // 断开连接
 		{
 			showMsg(msg, R.drawable.ic_diable_connect, R.color.device_yellow);
-			CommonUtil.setActionViewItemIcon(mActionView,
-					R.drawable.ic_menu_switch_device);
+			CommonUtil.setActionViewItemIcon(mActionView, R.drawable.ic_menu_switch_device);
+			stopMusic();
 		}
 		if (CoreServerBinder.ACTION_BLUETOOTH_DEVICE_FAILD.equals(action)) // 连接失败
 		{
 			showMsg(msg, R.drawable.ic_diable_connect, R.color.device_red);
-			CommonUtil.setActionViewItemIcon(mActionView,
-					R.drawable.ic_menu_switch_device);
+			CommonUtil.setActionViewItemIcon(mActionView, R.drawable.ic_menu_switch_device);
+			stopMusic();
 		}
 		
 		if (CoreServerBinder.ACTION_BLUETOOTH_DEVICE_RECEVICED.equals(action)) // 接收到数据
@@ -121,31 +114,23 @@ public class DeviceReceviceBroadcasetreceiver extends BroadcastReceiver
 		
 	}
 	
-	private void playMusic()
-	{
-		if (player == null)
-		{
+	private void playMusic() {
+		if (player == null) {
 			player = MediaUtil.playMusic(mContext, R.raw.ring);
 		}
-		else
-		{
-			if (!player.isPlaying())
-			{
-				try
-				{
+		else {
+			if (!player.isPlaying()) {
+				try {
 					player.prepare();
 					player.start();
 				}
-				catch (IllegalStateException e)
-				{
+				catch (IllegalStateException e) {
 					e.printStackTrace();
 				}
-				catch (IOException e)
-				{
+				catch (IOException e) {
 					e.printStackTrace();
 				}
-				catch (Exception e)
-				{
+				catch (Exception e) {
 					e.printStackTrace();
 				}
 				
