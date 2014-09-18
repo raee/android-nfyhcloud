@@ -22,7 +22,9 @@
         android:layout_marginRight="15dp"
         android:layout_marginTop="25dp"
         android:background="@drawable/common_seting_list_top"
-        android:paddingLeft="15dp" >
+        android:gravity="center"
+        android:paddingLeft="15dp"
+        android:paddingRight="10dp" >
 
         <TextView
             style="@style/text_normal_gary"
@@ -36,13 +38,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="12"
-            android:background="#00000000"
+            android:background="@android:color/transparent"
             android:imeOptions="normal"
             android:inputType="textCapCharacters"
             android:maxLength="16"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
-            android:text="test" >
+            android:singleLine="true" >
 
             <requestFocus />
         </EditText>
@@ -55,7 +57,9 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:background="@drawable/common_setting_bottom"
-        android:paddingLeft="15dp" >
+        android:gravity="center"
+        android:paddingLeft="15dp"
+        android:paddingRight="10dp" >
 
         <TextView
             style="@style/text_normal_gary"
@@ -70,12 +74,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="12"
-            android:background="#00000000"
+            android:background="@android:color/transparent"
+            android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:maxLength="16"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
-            android:text="123" />
+            android:singleLine="true" />
     </LinearLayout>
 
     <Button

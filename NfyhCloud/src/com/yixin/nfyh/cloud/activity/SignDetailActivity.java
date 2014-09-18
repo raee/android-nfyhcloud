@@ -4,12 +4,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -60,7 +60,8 @@ public class SignDetailActivity extends BaseActivity implements OnItemClickListe
 	private List<SignTypes>				signTypes			= null;	// 二级的分类
 	private Users						user				= null;
 	private TopMsgView					viewMsg				= null;
-	
+	private boolean						mIsNoUpload			= false;	//是否没上传
+																		
 	/**
 	 * 自动比较数据
 	 */
@@ -110,6 +111,7 @@ public class SignDetailActivity extends BaseActivity implements OnItemClickListe
 				mResultDialog.setTagLevel(taglevel);
 				mResultDialog.setBackgournd(colorResid);
 				mResultDialog.show();
+				mIsNoUpload = true;
 			}
 		}
 		catch (Exception e) {
@@ -117,7 +119,6 @@ public class SignDetailActivity extends BaseActivity implements OnItemClickListe
 		}
 	}
 	
-	@SuppressLint("SetJavaScriptEnabled")
 	@Override
 	protected void findView() {
 		try {
@@ -157,7 +158,6 @@ public class SignDetailActivity extends BaseActivity implements OnItemClickListe
 	}
 	
 	// 初始化体征
-	@SuppressWarnings("unchecked")
 	private void initSign() throws SQLException {
 		// 获取体征类型
 		String type = getIntent().getStringExtra(Intent.EXTRA_TEXT);
@@ -168,7 +168,7 @@ public class SignDetailActivity extends BaseActivity implements OnItemClickListe
 			signTypes = parserModel(models.getSignDatas());
 			getActionBar().setTitle(user.getName() + "的测量数据");
 			showType = -1;
-			
+			mIsNoUpload = true;
 		}
 		else {
 			
@@ -285,6 +285,9 @@ public class SignDetailActivity extends BaseActivity implements OnItemClickListe
 					break;
 				}
 				showDataDialog();
+				break;
+			case android.R.id.home:
+				if (mIsNoUpload) { return showUploadTips(); }
 				break;
 			
 			default:
@@ -404,5 +407,52 @@ public class SignDetailActivity extends BaseActivity implements OnItemClickListe
 		}
 		
 		signInterface.upload();
+		
+		mIsNoUpload = false;
+	}
+	
+	private boolean	keyDownResult	= false;
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		
+		if (keyCode == KeyEvent.KEYCODE_BACK && mIsNoUpload) {
+			showUploadTips();
+		}
+		else {
+			keyDownResult = super.onKeyDown(keyCode, event);
+		}
+		
+		return keyDownResult;
+	}
+	
+	/**
+	 * 显示体征上传提示
+	 */
+	public boolean showUploadTips() {
+		new RuiDialog.Builder(this).buildTitle("数据上传").buildMessage("您的数据还没上传，是否需要上传到云服务？").buildLeftButton("放弃", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				mIsNoUpload = false;
+				dialog.dismiss();
+				finish();
+			}
+		}).buildRight("上传", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				keyDownResult = true;
+				showDataDialog();
+				dialog.dismiss();
+			}
+		}).show();
+		
+		return keyDownResult;
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		
 	}
 }

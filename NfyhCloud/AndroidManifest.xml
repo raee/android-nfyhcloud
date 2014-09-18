@@ -1,7 +1,7 @@
 ﻿<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.yixin.nfyh.cloud"
-    android:versionCode="1"
-    android:versionName="1.0.0" >
+    android:versionCode="101"
+    android:versionName="1.0.1" >
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -54,6 +54,7 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <!-- 锁屏 -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 
     <instrumentation
         android:name="android.test.InstrumentationTestRunner"
@@ -72,6 +73,11 @@
         <activity
             android:name="com.yixin.nfyh.cloud.WelcomeActivity"
             android:theme="@android:style/Theme.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <!-- 闹钟 -->
         <activity android:name="com.yixin.nfyh.cloud.activity.AlarmNormalAddActivity" >
@@ -88,11 +94,6 @@
         <activity
             android:name="com.yixin.nfyh.cloud.LoginActivity"
             android:theme="@android:style/Theme.NoTitleBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- 消息列表 -->
@@ -223,12 +224,14 @@
         <service
             android:name="com.signove.health.service.HealthService"
             android:enabled="true"
-            android:label="欧姆龙服务"
+            android:label="欧姆龙底层服务"
             android:permission="android.permission.BLUETOOTH"
             android:stopWithTask="false" >
         </service>
         <!-- 欧姆龙蓝牙服务 -->
-        <service android:name="com.signove.health.service.BluetoothHDPService" />
+        <service
+            android:name="com.signove.health.service.BluetoothHDPService"
+            android:label="欧姆龙蓝牙服务" />
 
         <!-- 广播接收 -->
         <!-- 桌面Widget接收提供者 -->

@@ -14,6 +14,9 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import cn.rui.framework.widget.RuiSwitch;
+import cn.rui.framework.widget.RuiSwitch.OnCheckedChangeListener;
+
 import com.baidu.location.v;
 import com.yixin.monitors.sdk.api.ApiMonitor;
 import com.yixin.nfyh.cloud.BaseActivity;
@@ -34,14 +37,14 @@ import com.yixin.nfyh.cloud.utils.ReflectUtil;
  * @author MrChenrui
  * 
  */
-public class SettingDeviceActivity extends BaseActivity {
+public class SettingDeviceActivity extends BaseActivity implements OnCheckedChangeListener {
 	private GridView				gvDevices;
 	private GridViewDevicesAdapter	gvAdapter;
 	private ISignDevice				apiDevices;
 	private NfyhApplication			app;
 	private TextView				tvDeviceInfo;
 	private ConfigServer			config;
-	private int						currentSelectPosion	= -1;
+	private RuiSwitch				swAutoRun;
 	
 	void show(Object msg) {
 		Log.i("bbbb", msg.toString());
@@ -62,8 +65,13 @@ public class SettingDeviceActivity extends BaseActivity {
 			this.gvAdapter = new GridViewDevicesAdapter(apiDevices.getDevices());
 			this.gvDevices.setOnItemClickListener(gvAdapter);
 			this.gvDevices.setAdapter(gvAdapter);
+			
+			swAutoRun = (RuiSwitch) findViewById(R.id.sw_setting_sign);
+			swAutoRun.setOnCheckedChangeListener(this);
+			boolean isAutoRun = config.getBooleanConfig(ConfigServer.KEY_ENABLE_AUTO_RUN);
+			swAutoRun.setChecked(isAutoRun);
 		}
-		catch (SQLException e) {
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -118,7 +126,6 @@ public class SettingDeviceActivity extends BaseActivity {
 				// 默认设备
 				if (m.getIsUsed() == 1) {
 					tvDeviceInfo.setText(m.getComment());
-					currentSelectPosion = position;
 					view.setBackgroundResource(R.drawable.btn_big_normal_selected);
 					// gvDevices.requestFocusFromTouch();
 					// gvDevices.setSelection(position);
@@ -172,5 +179,10 @@ public class SettingDeviceActivity extends BaseActivity {
 		//			gvDevices.setSelection(position); // 设置选择状态
 		//		}
 		
+	}
+	
+	@Override
+	public void onCheckedChanged(RuiSwitch switchView, boolean isChecked) {
+		config.setConfig(ConfigServer.KEY_ENABLE_AUTO_RUN, isChecked + "");
 	}
 }

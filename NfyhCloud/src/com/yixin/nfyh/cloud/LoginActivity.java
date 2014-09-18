@@ -4,12 +4,17 @@ import com.yixin.nfyh.cloud.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 import cn.rui.framework.utils.IInputValidate;
 import cn.rui.framework.utils.InputUtils;
@@ -27,8 +32,7 @@ import com.yixin.nfyh.cloud.utils.LogUtil;
  * @author MrChenrui
  * 
  */
-public class LoginActivity extends Activity implements IInputValidate, ILoginCallback, OnClickListener
-{
+public class LoginActivity extends Activity implements IInputValidate, ILoginCallback, OnClickListener, OnEditorActionListener {
 	
 	private EditText			etUserName, etPwd;
 	
@@ -41,81 +45,78 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 	private GlobalSetting		setting;
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
-		try
-		{
+	protected void onCreate(Bundle savedInstanceState) {
+		try {
 			super.onCreate(savedInstanceState);
 			setContentView(R.layout.activity_login);
 			findView();
 			setLinsener();
 			account = new Account(this);
 			account.setLoginCallbackListener(this);
-			if (etUserName.getText().toString().length() > 0 && etPwd.getText().toString().length() > 0)
-			{
-				btnLogin.setEnabled(true);
-				btnLogin.setBackgroundResource(R.drawable.btn_green);
-			}
-			// 退出登录，返回到登录界面
-			if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().containsKey(Intent.EXTRA_TEXT))
-			{
-				return;
-			}
 			loadSave();
 			
+			// 退出登录，返回到登录界面
+			if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().containsKey(Intent.EXTRA_TEXT)) { return; }
+			
 			// 已经登录
-			if (getNfyhApplication().isLogin())
-			{
+			if (getNfyhApplication().isLogin()) {
 				gotoMainActivity();
 			}
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			LogUtil.getLog().setExcetion("LoginActivity", e);
 			gotoMainActivity();
 		}
 	}
 	
-	protected void findView()
-	{
+	protected void findView() {
 		etUserName = (EditText) findViewById(R.id.et_login_username);
 		etPwd = (EditText) findViewById(R.id.et_login_password);
+		etUserName.setOnEditorActionListener(this);
+		etPwd.setOnEditorActionListener(this);
+		
 		btnLogin = (Button) findViewById(R.id.btn_login);
 		dialog = new TimerProgressDialog(this);
 		dialog.setMessage("正在登录，请稍候...");
 	}
 	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
+	public boolean onCreateOptionsMenu(Menu menu) {
 		return false;
 	}
 	
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
+	public boolean onOptionsItemSelected(MenuItem item) {
 		return false;
 	}
 	
 	/**
 	 * 加载保存好的用户名和密码
 	 */
-	private void loadSave()
-	{
+	private void loadSave() {
 		String username = getSetting().getUser().getUsername();
 		String pwd = getSetting().getUser().getPwd();
-		if (username != null) this.etUserName.setText(username);
-		if (pwd != null) this.etPwd.setText(pwd);
+		
+		if (!TextUtils.isEmpty(username)) {
+			this.etUserName.setText(username);
+		}
+		else {
+			etUserName.setText("test");
+		}
+		if (!TextUtils.isEmpty(pwd)) {
+			this.etPwd.setText(pwd);
+		}
+		else {
+			etPwd.setText("123");
+		}
 	}
 	
-	public GlobalSetting getSetting()
-	{
+	public GlobalSetting getSetting() {
 		if (setting == null) setting = new GlobalSetting(this);
 		return setting;
 	}
 	
-	protected void setLinsener()
-	{
+	protected void setLinsener() {
 		btnLogin.setOnClickListener(this);
 		InputUtils inputUtil = new InputUtils();
 		inputUtil.setButtonEnableOnEditTextChange(btnLogin, etPwd, etUserName);
@@ -123,10 +124,8 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 	}
 	
 	@Override
-	public void onClick(View v)
-	{
-		switch (v.getId())
-		{
+	public void onClick(View v) {
+		switch (v.getId()) {
 			case R.id.btn_login:
 				login();
 				break;
@@ -135,24 +134,32 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 		}
 	}
 	
-	private void login()
-	{
+	private void login() {
+		if (!btnLogin.isEnabled()) { return; }
 		String username = etUserName.getText().toString().trim();
 		String pwd = etPwd.getText().toString().trim();
+		if (TextUtils.isEmpty(username)) {
+			Toast.makeText(this, "请输入用户名！", Toast.LENGTH_SHORT).show();
+			etUserName.requestFocus();
+			return;
+		}
+		
+		if (TextUtils.isEmpty(pwd)) {
+			Toast.makeText(this, "请输入密码！", Toast.LENGTH_SHORT).show();
+			etPwd.requestFocus();
+			return;
+		}
+		
 		btnLogin.setEnabled(false);
 		btnLogin.setBackgroundResource(R.drawable.btn_disable);
 		dialog.show();
-		// TODO：先本地登录
-		if (!loginInLocal(username, pwd))
-		{
+		if (!loginInLocal(username, pwd)) {
 			account.login(username, pwd);
 		}
 	}
 	
-	private boolean loginInLocal(String username, String pwd)
-	{
-		if (!getNfyhApplication().isLogin() && this.account.loginInLocal(username, pwd))
-		{
+	private boolean loginInLocal(String username, String pwd) {
+		if (!getNfyhApplication().isLogin() && this.account.loginInLocal(username, pwd)) {
 			TimerToast toast = TimerToast.makeText(this, "离线登录成功", Toast.LENGTH_SHORT);
 			toast.setType(TimerToast.TYPE_SUCCESS);
 			toast.show();
@@ -162,35 +169,30 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 		return false;
 	}
 	
-	private void gotoMainActivity()
-	{
+	private void gotoMainActivity() {
 		getNfyhApplication().setIsLogin(true);
 		startActivity(new Intent(this, MainActivity.class));
 		this.finish();
 	}
 	
-	private NfyhApplication getNfyhApplication()
-	{
+	private NfyhApplication getNfyhApplication() {
 		return (NfyhApplication) getApplication();
 	}
 	
 	@Override
-	public void OnSuccees()
-	{
+	public void OnSuccees() {
 		btnLogin.setEnabled(true);
 		btnLogin.setBackgroundResource(R.drawable.btn_green);
 	}
 	
 	@Override
-	public void OnFaild(EditText et)
-	{
+	public void OnFaild(EditText et) {
 		btnLogin.setEnabled(true);
 		btnLogin.setBackgroundResource(R.drawable.btn_disable);
 	}
 	
 	@Override
-	public void OnLoginSuccess(String username, String pwd)
-	{
+	public void OnLoginSuccess(String username, String pwd) {
 		btnLogin.setEnabled(true);
 		btnLogin.setBackgroundResource(R.drawable.btn_green);
 		dialog.dismiss();
@@ -198,8 +200,7 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 	}
 	
 	@Override
-	public void OnLoginFaild(String msg)
-	{
+	public void OnLoginFaild(String msg) {
 		btnLogin.setEnabled(true);
 		btnLogin.setBackgroundResource(R.drawable.btn_green);
 		dialog.dismiss();
@@ -207,5 +208,11 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 		toast.setType(TimerToast.TYPE_FIALID);
 		toast.show();
 		loginInLocal(etUserName.getText().toString().trim(), etPwd.getText().toString().trim());
+	}
+	
+	@Override
+	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+		login();
+		return false;
 	}
 }

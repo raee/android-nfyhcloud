@@ -26,6 +26,29 @@
         style="@style/setting_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="left"
+        android:orientation="horizontal" >
+
+        <TextView
+            style="@style/setting_item_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="自动启动服务"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <cn.rui.framework.widget.RuiSwitch
+            android:id="@+id/sw_setting_sign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/setting_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="left"
         android:orientation="vertical" >
 
