@@ -1,7 +1,7 @@
 ﻿<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.yixin.nfyh.cloud"
-    android:versionCode="101"
-    android:versionName="1.0.1" >
+    android:versionCode="102"
+    android:versionName="1.0.2" >
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -79,26 +79,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- 闹钟 -->
-        <activity android:name="com.yixin.nfyh.cloud.activity.AlarmNormalAddActivity" >
-        </activity>
-        <activity android:name="com.yixin.nfyh.cloud.activity.AlarmListActivity" >
-
-            <!-- 闹钟列表 -->
-
-        </activity>
-        <!-- 结束 闹钟 -->
-
-
-        <!-- 登录 -->
-        <activity
-            android:name="com.yixin.nfyh.cloud.LoginActivity"
-            android:theme="@android:style/Theme.NoTitleBar" >
-        </activity>
-
-        <!-- 消息列表 -->
-        <activity android:name="com.yixin.nfyh.cloud.activity.MessageActivity" >
-        </activity>
 
         <!-- 主界面 -->
         <activity
@@ -106,10 +86,23 @@
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" >
         </activity>
+
+        <!-- 登录 -->
+        <activity
+            android:name="com.yixin.nfyh.cloud.LoginActivity"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+
+        <!-- 测试 -->
         <activity android:name="com.yixin.nfyh.cloud.TestActivity" >
         </activity>
-        <activity android:name="com.yixin.nfyh.cloud.activity.SMSListActivity" >
+        <!-- 消息列表 -->
+        <activity android:name="com.yixin.nfyh.cloud.activity.MessageActivity" >
         </activity>
+        <!-- 闹钟 -->
+        <activity android:name="com.yixin.nfyh.cloud.activity.AlarmNormalAddActivity" />
+        <activity android:name="com.yixin.nfyh.cloud.activity.AlarmListActivity" />
+        <activity android:name="com.yixin.nfyh.cloud.activity.SMSListActivity" />
         <!-- 添加分类 -->
         <activity android:name="com.yixin.nfyh.cloud.activity.AddCategoryActivity" >
         </activity>
@@ -124,6 +117,7 @@
         <!-- 体征详细 -->
         <activity
             android:name="com.yixin.nfyh.cloud.activity.SignDetailActivity"
+            android:launchMode="standard"
             android:screenOrientation="portrait" >
         </activity>
         <activity

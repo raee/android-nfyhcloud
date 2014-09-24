@@ -2,13 +2,13 @@ package com.yixin.nfyh.cloud.adapter;
 
 import java.util.List;
 
-import com.yixin.nfyh.cloud.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.model.Photocategory;
 
 /**

@@ -12,7 +12,6 @@ import com.yixin.nfyh.cloud.model.Clocks;
 public class AlarmHandler implements IAlarmHandler
 {
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	public void handler(Context context, AlarmManager manager, Clocks model)
 	{

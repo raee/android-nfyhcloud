@@ -6,8 +6,6 @@ import kankan.wheel.widget.OnWheelChangedListener;
 import kankan.wheel.widget.OnWheelScrollListener;
 import kankan.wheel.widget.WheelView;
 import kankan.wheel.widget.adapters.AbstractWheelTextAdapter;
-import com.yixin.nfyh.cloud.R;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.dialog.WheelViewValueChangeListener;
 import com.yixin.nfyh.cloud.model.view.DialogViewModel;
 

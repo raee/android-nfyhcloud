@@ -1,74 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@id/contentview"
+<com.yixin.nfyh.cloud.ui.ScrollLineLayoutView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="30dp" >
-
-    <com.yixin.nfyh.cloud.widget.GridView
-        android:id="@+id/gv_setting_devices"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="15dp"
-        android:cacheColorHint="@android:color/transparent"
-        android:gravity="center|top"
-        android:horizontalSpacing="5dp"
-        android:numColumns="2"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="5dp" >
-
-    </com.yixin.nfyh.cloud.widget.GridView>
+    android:layout_height="match_parent" >
 
     <LinearLayout
-        style="@style/setting_item"
+        android:id="@id/contentview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:gravity="left"
-        android:orientation="horizontal" >
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="30dp" >
+
+        <com.yixin.nfyh.cloud.widget.GridView
+            android:id="@+id/gv_setting_devices"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp"
+            android:cacheColorHint="@android:color/transparent"
+            android:gravity="center|top"
+            android:horizontalSpacing="5dp"
+            android:numColumns="2"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="5dp" >
+        </com.yixin.nfyh.cloud.widget.GridView>
+
+        <LinearLayout
+            style="@style/setting_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/setting_item_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="自动启动服务"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <cn.rui.framework.widget.RuiSwitch
+                android:id="@+id/sw_setting_sign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/et_setting_device_devicename"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="设备名称"
+            android:padding="20dp" />
+
+        <EditText
+            android:id="@+id/et_setting_device_pin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="配对码"
+            android:padding="20dp" >
+        </EditText>
+
+        <Button
+            android:id="@+id/btn_setting_device_update"
+            style="@style/btn_green"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="20dp"
+            android:padding="12dp"
+            android:text="更新设备" />
+
+        <LinearLayout
+            style="@style/setting_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/setting_item_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/setting_shuoming"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+
+        <View
+            style="@style/h4"
+            android:layout_width="wrap_content" />
 
         <TextView
-            style="@style/setting_item_text"
-            android:layout_width="0dp"
+            android:id="@+id/tv_setting_device_info"
+            style="@style/setting_item_text_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="自动启动服务"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <cn.rui.framework.widget.RuiSwitch
-            android:id="@+id/sw_setting_sign"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0" />
+            android:layout_marginTop="10dp" />
     </LinearLayout>
 
-    <LinearLayout
-        style="@style/setting_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:orientation="vertical" >
-
-        <TextView
-            style="@style/setting_item_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/setting_shuoming"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
-
-    <View
-        style="@style/h4"
-        android:layout_width="wrap_content" />
-
-    <TextView
-        android:id="@+id/tv_setting_device_info"
-        style="@style/setting_item_text_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
-
-</LinearLayout>
+</com.yixin.nfyh.cloud.ui.ScrollLineLayoutView>

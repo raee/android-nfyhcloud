@@ -1,6 +1,5 @@
 package com.yixin.nfyh.cloud;
 
-import com.yixin.nfyh.cloud.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -22,7 +20,6 @@ import cn.rui.framework.utils.InputUtils;
 import com.yixin.nfyh.cloud.bll.Account;
 import com.yixin.nfyh.cloud.bll.GlobalSetting;
 import com.yixin.nfyh.cloud.bll.ILoginCallback;
-import com.yixin.nfyh.cloud.ui.TimerProgressDialog;
 import com.yixin.nfyh.cloud.ui.TimerToast;
 import com.yixin.nfyh.cloud.utils.LogUtil;
 
@@ -34,15 +31,15 @@ import com.yixin.nfyh.cloud.utils.LogUtil;
  */
 public class LoginActivity extends Activity implements IInputValidate, ILoginCallback, OnClickListener, OnEditorActionListener {
 	
-	private EditText			etUserName, etPwd;
+	private EditText		etUserName, etPwd;
 	
-	private Button				btnLogin;
+	private Button			btnLogin;
 	
-	private TimerProgressDialog	dialog;
+	//	private TimerProgressDialog	dialog;
 	
-	private Account				account;
+	private Account			account;
 	
-	private GlobalSetting		setting;
+	private GlobalSetting	setting;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +54,6 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 			
 			// 退出登录，返回到登录界面
 			if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().containsKey(Intent.EXTRA_TEXT)) { return; }
-			
-			// 已经登录
-			if (getNfyhApplication().isLogin()) {
-				gotoMainActivity();
-			}
 		}
 		catch (Exception e) {
 			LogUtil.getLog().setExcetion("LoginActivity", e);
@@ -76,8 +68,8 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 		etPwd.setOnEditorActionListener(this);
 		
 		btnLogin = (Button) findViewById(R.id.btn_login);
-		dialog = new TimerProgressDialog(this);
-		dialog.setMessage("正在登录，请稍候...");
+		//		dialog = new TimerProgressDialog(this);
+		//		dialog.setMessage("正在登录，请稍候...");
 	}
 	
 	@Override
@@ -152,7 +144,8 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 		
 		btnLogin.setEnabled(false);
 		btnLogin.setBackgroundResource(R.drawable.btn_disable);
-		dialog.show();
+		btnLogin.setText("登录中...");
+		//		dialog.show();
 		if (!loginInLocal(username, pwd)) {
 			account.login(username, pwd);
 		}
@@ -183,19 +176,21 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 	public void OnSuccees() {
 		btnLogin.setEnabled(true);
 		btnLogin.setBackgroundResource(R.drawable.btn_green);
+		btnLogin.setText("登录成功");
 	}
 	
 	@Override
 	public void OnFaild(EditText et) {
 		btnLogin.setEnabled(true);
 		btnLogin.setBackgroundResource(R.drawable.btn_disable);
+		btnLogin.setText("登录");
 	}
 	
 	@Override
 	public void OnLoginSuccess(String username, String pwd) {
 		btnLogin.setEnabled(true);
 		btnLogin.setBackgroundResource(R.drawable.btn_green);
-		dialog.dismiss();
+		//dialog.dismiss();
 		gotoMainActivity();
 	}
 	
@@ -203,7 +198,8 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 	public void OnLoginFaild(String msg) {
 		btnLogin.setEnabled(true);
 		btnLogin.setBackgroundResource(R.drawable.btn_green);
-		dialog.dismiss();
+		//dialog.dismiss();
+		btnLogin.setText("登录");
 		TimerToast toast = TimerToast.makeText(this, msg, Toast.LENGTH_SHORT);
 		toast.setType(TimerToast.TYPE_FIALID);
 		toast.show();

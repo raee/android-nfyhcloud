@@ -10,14 +10,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import cn.rui.framework.widget.RuiSwitch;
 import cn.rui.framework.widget.RuiSwitch.OnCheckedChangeListener;
 
-import com.baidu.location.v;
 import com.yixin.monitors.sdk.api.ApiMonitor;
 import com.yixin.nfyh.cloud.BaseActivity;
 import com.yixin.nfyh.cloud.NfyhApplication;
@@ -25,8 +25,6 @@ import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.bll.ConfigServer;
 import com.yixin.nfyh.cloud.data.ISignDevice;
 import com.yixin.nfyh.cloud.data.NfyhCloudDataFactory;
-import com.yixin.nfyh.cloud.device.DefaultDevice;
-import com.yixin.nfyh.cloud.device.DeviceException;
 import com.yixin.nfyh.cloud.model.Devices;
 import com.yixin.nfyh.cloud.utils.ReflectUtil;
 
@@ -45,6 +43,9 @@ public class SettingDeviceActivity extends BaseActivity implements OnCheckedChan
 	private TextView				tvDeviceInfo;
 	private ConfigServer			config;
 	private RuiSwitch				swAutoRun;
+	private EditText				etDevicePin;
+	private EditText				etDeviceName;
+	private List<Devices>			devices;
 	
 	void show(Object msg) {
 		Log.i("bbbb", msg.toString());
@@ -60,9 +61,14 @@ public class SettingDeviceActivity extends BaseActivity implements OnCheckedChan
 			app = (NfyhApplication) getApplication();
 			config = new ConfigServer(this);
 			tvDeviceInfo = (TextView) findViewById(R.id.tv_setting_device_info);
-			this.gvDevices = (GridView) findViewById(R.id.gv_setting_devices);
+			gvDevices = (GridView) findViewById(R.id.gv_setting_devices);
+			etDeviceName = (EditText) findViewById(R.id.et_setting_device_devicename);
+			etDevicePin = (EditText) findViewById(R.id.et_setting_device_pin);
+			findViewById(R.id.btn_setting_device_update).setOnClickListener(this);
+			
 			apiDevices = NfyhCloudDataFactory.getFactory(this).getSignDevice();
-			this.gvAdapter = new GridViewDevicesAdapter(apiDevices.getDevices());
+			devices = apiDevices.getDevices();
+			this.gvAdapter = new GridViewDevicesAdapter(devices);
 			this.gvDevices.setOnItemClickListener(gvAdapter);
 			this.gvDevices.setAdapter(gvAdapter);
 			
@@ -78,7 +84,39 @@ public class SettingDeviceActivity extends BaseActivity implements OnCheckedChan
 	}
 	
 	@Override
-	public void onClick(View arg0) {
+	public void onClick(View view) {
+		switch (view.getId()) {
+			case R.id.btn_setting_device_update:
+				updateDevice();
+				break;
+			
+			default:
+				break;
+		}
+	}
+	
+	private void updateDevice() {
+		String name = etDeviceName.getText().toString();
+		String pin = etDevicePin.getText().toString();
+		ApiMonitor api = app.getApiMonitor();
+		try {
+			Devices device = apiDevices.getCurrentDevices();
+			device.setDeviceName(name);
+			device.setDevicePin(pin);
+			apiDevices.updateDevices(device);
+			Toast.makeText(this, "成功更新设备为：" + name, Toast.LENGTH_SHORT).show();
+			devices.clear();
+			devices = apiDevices.getDevices();
+			gvAdapter.notifyDataSetChanged();
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			Toast.makeText(this, "更新设备错误，数据库发生错误！", Toast.LENGTH_SHORT).show();
+		}
+		
+		if (api != null) {
+			api.configDevice(name, pin);
+		}
 	}
 	
 	@Override
@@ -86,20 +124,10 @@ public class SettingDeviceActivity extends BaseActivity implements OnCheckedChan
 		return getString(R.string.activity_setting_device);
 	}
 	
-	//	@Override
-	//	public void onWindowFocusChanged(boolean hasFocus) {
-	//		if (hasFocus) {
-	//			gvAdapter.setSelectItem(currentSelectPosion);
-	//		}
-	//		super.onWindowFocusChanged(hasFocus);
-	//	}
-	
 	private class GridViewDevicesAdapter extends BaseAdapter implements OnItemClickListener {
-		private List<Devices>	devices;
 		
 		public GridViewDevicesAdapter(List<Devices> devices) {
 			super();
-			this.devices = devices;
 		}
 		
 		@Override
@@ -126,9 +154,9 @@ public class SettingDeviceActivity extends BaseActivity implements OnCheckedChan
 				// 默认设备
 				if (m.getIsUsed() == 1) {
 					tvDeviceInfo.setText(m.getComment());
+					etDeviceName.setText(m.getDeviceName());
+					etDevicePin.setText(m.getDevicePin());
 					view.setBackgroundResource(R.drawable.btn_big_normal_selected);
-					// gvDevices.requestFocusFromTouch();
-					// gvDevices.setSelection(position);
 				}
 			}
 			
@@ -162,22 +190,12 @@ public class SettingDeviceActivity extends BaseActivity implements OnCheckedChan
 			}
 			
 			Devices model = devices.get(position);
-			//v.setSelected(true);
-			//setSelectItem(position);
-			config.setDefaultDevice(model.getDevId());
 			tvDeviceInfo.setText(model.getComment());
+			config.setDefaultDevice(model.getDevId());
+			etDeviceName.setText(model.getDeviceName());
+			etDevicePin.setText(model.getDevicePin());
 			app.connect();
 		}
-		
-		/**
-		 * 设置选择的Item
-		 * 
-		 * @param position
-		 */
-		//		public void setSelectItem(int position) {
-		//			gvDevices.requestFocusFromTouch(); // 获取焦点
-		//			gvDevices.setSelection(position); // 设置选择状态
-		//		}
 		
 	}
 	

@@ -3,7 +3,6 @@ package com.yixin.nfyh.cloud.ui;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.yixin.nfyh.cloud.R;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
@@ -16,6 +15,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.yixin.nfyh.cloud.R;
 
 /**
  * 顶部提示信息

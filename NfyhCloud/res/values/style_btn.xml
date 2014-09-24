@@ -20,6 +20,10 @@
         <item name="android:background">@drawable/btn_green</item>
     </style>
 
+    <style name="btn_green_none_raduis" parent="btnbase">
+        <item name="android:background">@drawable/btn_green_none_raduis</item>
+    </style>
+
     <style name="btn_orange" parent="btnbase">
         <item name="android:background">@drawable/btn_orange</item>
     </style>
@@ -48,5 +52,5 @@
     <style name="Theme.IOS.Light.Button.Orange" parent="@style/Theme.IOS.Light.Button">
         <item name="android:background">@drawable/btn_orange</item>
     </style>
-    
+
 </resources>

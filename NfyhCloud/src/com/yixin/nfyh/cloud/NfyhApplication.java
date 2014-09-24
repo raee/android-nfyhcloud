@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.yixin.monitors.sdk.api.ApiMonitor;
-import com.yixin.nfyh.cloud.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
@@ -26,6 +24,7 @@ import com.rae.core.image.loader.DisplayImageOptions;
 import com.rae.core.image.loader.ImageLoader;
 import com.rae.core.image.loader.ImageLoaderConfiguration;
 import com.rae.core.image.loader.assist.QueueProcessingType;
+import com.yixin.monitors.sdk.api.ApiMonitor;
 import com.yixin.nfyh.cloud.bll.ConfigServer;
 import com.yixin.nfyh.cloud.bll.DesktopSOS;
 import com.yixin.nfyh.cloud.bll.GlobalSetting;
@@ -115,6 +114,16 @@ public class NfyhApplication extends Application {
 		ApiMonitor api = binder.getDevice();
 		if (api == null) return false;
 		return api.isConnected();
+	}
+	
+	/**
+	 * 获取当前监测设备
+	 * 
+	 * @return
+	 */
+	public ApiMonitor getApiMonitor() {
+		if (binder == null) { return null; }
+		return binder.getDevice();
 	}
 	
 	/**

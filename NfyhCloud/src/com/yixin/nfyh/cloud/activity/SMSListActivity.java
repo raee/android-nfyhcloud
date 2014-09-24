@@ -2,7 +2,6 @@ package com.yixin.nfyh.cloud.activity;
 
 import java.util.List;
 
-import com.yixin.nfyh.cloud.R;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +17,7 @@ import cn.rui.framework.ui.WebViewerActivity;
 
 import com.yixin.nfyh.cloud.BaseActivity;
 import com.yixin.nfyh.cloud.NfyhApplication;
+import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.model.Users;
 import com.yixin.nfyh.cloud.model.view.MydcViewModel;
 import com.yixin.nfyh.cloud.ui.ListItemView;

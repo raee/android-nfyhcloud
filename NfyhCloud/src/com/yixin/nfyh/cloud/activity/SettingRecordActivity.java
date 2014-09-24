@@ -1,9 +1,9 @@
 package com.yixin.nfyh.cloud.activity;
 
-import com.yixin.nfyh.cloud.R;
 import android.os.Bundle;
 
 import com.yixin.nfyh.cloud.BaseActivity;
+import com.yixin.nfyh.cloud.R;
 
 /**
  * 设置 - 语音呼救

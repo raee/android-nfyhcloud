@@ -7,11 +7,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.yixin.nfyh.cloud.R;
 import android.content.Context;
 import android.text.TextUtils;
 import cn.rui.framework.utils.CommonUtil;
 
+import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.i.IPhotoCategory;
 import com.yixin.nfyh.cloud.model.Photocategory;
 import com.yixin.nfyh.cloud.model.Photos;

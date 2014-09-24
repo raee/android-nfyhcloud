@@ -1,7 +1,5 @@
 package cn.rui.framework.ui;
 
-import com.yixin.nfyh.cloud.R;
-
 import android.app.ActivityGroup;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +10,8 @@ import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 import android.widget.TabWidget;
 import cn.rui.framework.widget.TabView;
+
+import com.yixin.nfyh.cloud.R;
 
 /**
  * 

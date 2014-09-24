@@ -2,7 +2,6 @@ package com.yixin.nfyh.cloud;
 
 import java.io.IOException;
 import java.util.Calendar;
-import com.yixin.nfyh.cloud.R;
 
 import android.app.Activity;
 import android.app.KeyguardManager;
@@ -25,8 +24,8 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;

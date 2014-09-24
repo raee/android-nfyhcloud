@@ -2,7 +2,6 @@ package com.yixin.nfyh.cloud.broadcastreceiver;
 
 import java.io.IOException;
 
-import com.yixin.nfyh.cloud.R;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +11,7 @@ import android.view.ViewGroup;
 import cn.rui.framework.utils.CommonUtil;
 import cn.rui.framework.utils.MediaUtil;
 
+import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.service.CoreServerBinder;
 import com.yixin.nfyh.cloud.ui.TopMsgView;
 
@@ -104,6 +104,9 @@ public class DeviceReceviceBroadcasetreceiver extends BroadcastReceiver {
 		
 		if (CoreServerBinder.ACTION_BLUETOOTH_DEVICE_RECEVICED.equals(action)) // 接收到数据
 		{
+			unShowMsg();
+		}
+		if (CoreServerBinder.ACTION_BLUETOOTH_DEVICE_MODEL.equals(action)) {
 			unShowMsg();
 		}
 		if (CoreServerBinder.ACTION_BLUETOOTH_DEVICE_RECEVICEING.equals(action))// 接收数据中

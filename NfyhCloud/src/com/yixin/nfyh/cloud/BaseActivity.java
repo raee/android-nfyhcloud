@@ -1,7 +1,6 @@
 package com.yixin.nfyh.cloud;
 
 import java.util.List;
-import com.yixin.nfyh.cloud.R;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -10,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -88,20 +86,17 @@ public abstract class BaseActivity extends Activity implements OnClickListener {
 		
 	}
 	
-	//	@Override
-	//	protected void onPause()
-	//	{
-	////		ImageLoader.getInstance().clearMemoryCache();
-	//		ImageLoader.getInstance().pause();
-	//		super.onPause();
-	//	}
-	//	
-	//	@Override
-	//	protected void onResume()
-	//	{
-	//		ImageLoader.getInstance().resume();
-	//		super.onResume();
-	//	}
+	@Override
+	protected void onPause() {
+		ImageLoader.getInstance().pause();
+		super.onPause();
+	}
+	
+	@Override
+	protected void onResume() {
+		ImageLoader.getInstance().resume();
+		super.onResume();
+	}
 	
 	/**
 	 * 注册
@@ -110,7 +105,6 @@ public abstract class BaseActivity extends Activity implements OnClickListener {
 	 * @param contentView
 	 */
 	public void registerReceiver(Context context, View contentView, View actionView) {
-		Log.i("tt", "--> 注册广播！");
 		receiver = new DeviceReceviceBroadcasetreceiver(context, contentView, actionView);
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(CoreServerBinder.ACTION_BLUETOOTH_DEVICE_CONNECTED);
@@ -119,6 +113,7 @@ public abstract class BaseActivity extends Activity implements OnClickListener {
 		filter.addAction(CoreServerBinder.ACTION_BLUETOOTH_DEVICE_FAILD);
 		filter.addAction(CoreServerBinder.ACTION_BLUETOOTH_DEVICE_RECEVICED);
 		filter.addAction(CoreServerBinder.ACTION_BLUETOOTH_DEVICE_RECEVICEING);
+		filter.addAction(CoreServerBinder.ACTION_BLUETOOTH_DEVICE_MODEL);
 		context.registerReceiver(receiver, filter);
 	}
 	

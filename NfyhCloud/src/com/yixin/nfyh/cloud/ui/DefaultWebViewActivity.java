@@ -1,12 +1,13 @@
 package com.yixin.nfyh.cloud.ui;
 
-import com.yixin.nfyh.cloud.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebView;
+
+import com.yixin.nfyh.cloud.R;
 
 /**
  * 默认的浏览器

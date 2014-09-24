@@ -1,6 +1,5 @@
 package com.yixin.nfyh.cloud.ui;
 
-import com.yixin.nfyh.cloud.R;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -9,6 +8,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.yixin.nfyh.cloud.R;
 
 /**
  * 列表项视图

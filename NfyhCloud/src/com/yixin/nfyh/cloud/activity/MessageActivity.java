@@ -2,7 +2,6 @@ package com.yixin.nfyh.cloud.activity;
 
 import java.util.List;
 
-import com.yixin.nfyh.cloud.R;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.yixin.nfyh.cloud.BaseActivity;
+import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.adapter.ListViewAdapter;
 import com.yixin.nfyh.cloud.data.NfyhCloudDataFactory;
 import com.yixin.nfyh.cloud.i.IPushMessage;

@@ -1,6 +1,5 @@
 package com.yixin.nfyh.cloud.ui;
 
-import com.yixin.nfyh.cloud.R;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -12,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.yixin.nfyh.cloud.R;
 
 /**
  * 设备连接处理类

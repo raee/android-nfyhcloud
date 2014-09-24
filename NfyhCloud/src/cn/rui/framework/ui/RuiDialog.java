@@ -1,7 +1,5 @@
 package cn.rui.framework.ui;
 
-import com.yixin.nfyh.cloud.R;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import com.yixin.nfyh.cloud.R;
 
 /**
  * 对话框控件

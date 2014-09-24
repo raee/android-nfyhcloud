@@ -1,6 +1,5 @@
 package com.yixin.nfyh.cloud.ui;
 
-import com.yixin.nfyh.cloud.R;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -8,6 +7,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
+
+import com.yixin.nfyh.cloud.R;
 
 /**
  * 体征类型Tab视图

@@ -3,12 +3,13 @@ package com.yixin.nfyh.cloud.w;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.yixin.nfyh.cloud.R;
 import android.content.Context;
 import android.text.TextUtils;
 import cn.rui.framework.utils.CommonUtil;
 import cn.rui.framework.utils.SoapCallback;
 import cn.rui.framework.utils.SoapConnection;
+
+import com.yixin.nfyh.cloud.R;
 
 public class NfyhSoapConnection<T> extends SoapConnection implements SoapCallback
 {

@@ -2,7 +2,6 @@ package com.yixin.nfyh.cloud.adapter;
 
 import java.util.List;
 
-import com.yixin.nfyh.cloud.R;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -11,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 
+import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.ui.EmpteyView;
 
 public abstract class ListViewAdapter<T> extends BaseAdapter

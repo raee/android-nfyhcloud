@@ -1,6 +1,5 @@
 package com.yixin.nfyh.cloud.ui;
 
-import com.yixin.nfyh.cloud.R;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
@@ -9,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.yixin.nfyh.cloud.R;
 
 public class TimerProgressDialog extends ProgressDialog
 {

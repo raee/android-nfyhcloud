@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.yixin.nfyh.cloud.R;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -22,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import cn.rui.framework.utils.MediaUtil;
 
+import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.bll.ConfigServer;
 
 /**

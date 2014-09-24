@@ -3,7 +3,6 @@ package cn.rui.framework.ui;
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
-import com.yixin.nfyh.cloud.R;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
@@ -27,6 +26,8 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ZoomButtonsController;
 import android.widget.ZoomControls;
+
+import com.yixin.nfyh.cloud.R;
 
 /**
  * 用于查看网页的窗体

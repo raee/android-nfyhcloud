@@ -1,6 +1,5 @@
 package com.yixin.nfyh.cloud.bll;
 
-import com.yixin.nfyh.cloud.R;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -11,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.yixin.nfyh.cloud.OneKeySoSActivity;
+import com.yixin.nfyh.cloud.R;
 
 /**
  * 桌面紧急呼救

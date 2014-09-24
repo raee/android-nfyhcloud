@@ -2,7 +2,6 @@ package com.yixin.nfyh.cloud.activity;
 
 import java.util.ArrayList;
 
-import com.yixin.nfyh.cloud.R;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,6 +12,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.rae.core.image.photoview.PhotoGridView.ViewHolder;
 import com.yixin.nfyh.cloud.BaseActivity;
+import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.bll.PhotoCategoryControl;
 import com.yixin.nfyh.cloud.ui.PhotoSelectGridView;
 

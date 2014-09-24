@@ -1,6 +1,5 @@
 package com.yixin.nfyh.cloud.widget;
 
-import com.yixin.nfyh.cloud.R;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -10,6 +9,7 @@ import android.content.Intent;
 import android.widget.RemoteViews;
 
 import com.yixin.nfyh.cloud.OneKeySoSActivity;
+import com.yixin.nfyh.cloud.R;
 
 public class DesktopSOSWidgetProvider extends AppWidgetProvider
 {

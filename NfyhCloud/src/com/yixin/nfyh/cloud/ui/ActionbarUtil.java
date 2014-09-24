@@ -1,9 +1,10 @@
 package com.yixin.nfyh.cloud.ui;
 
-import com.yixin.nfyh.cloud.R;
 import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+
+import com.yixin.nfyh.cloud.R;
 
 /**
  * 标题栏帮助类

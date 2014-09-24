@@ -34,6 +34,30 @@ public class Devices {
 	@DatabaseField(columnName = "logo")
 	private String	Logo;
 	
+	// 设备名称
+	@DatabaseField(columnName = "deviceName")
+	private String	deviceName;
+	
+	// 设备配对码
+	@DatabaseField(columnName = "devicePin")
+	private String	devicePin;
+	
+	public String getDeviceName() {
+		return deviceName;
+	}
+	
+	public void setDeviceName(String deviceName) {
+		this.deviceName = deviceName;
+	}
+	
+	public String getDevicePin() {
+		return devicePin;
+	}
+	
+	public void setDevicePin(String devicePin) {
+		this.devicePin = devicePin;
+	}
+	
 	/*
 	 * 构造函数
 	 */

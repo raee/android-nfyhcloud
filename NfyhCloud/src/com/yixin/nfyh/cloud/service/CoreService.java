@@ -72,6 +72,9 @@ public class CoreService extends Service {
 	@Override
 	public void onDestroy() {
 		unregisterReceiver(receiver); //注销广播
+		if (binder != null) {
+			binder.disconnect(); //　关闭设备连接
+		}
 		super.onDestroy();
 	}
 	

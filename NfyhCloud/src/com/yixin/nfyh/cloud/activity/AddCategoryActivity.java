@@ -1,6 +1,5 @@
 package com.yixin.nfyh.cloud.activity;
 
-import com.yixin.nfyh.cloud.R;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -8,6 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.yixin.nfyh.cloud.BaseActivity;
+import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.bll.PhotoCategoryControl;
 import com.yixin.nfyh.cloud.w.SoapConnectionCallback;
 import com.yixin.nfyh.cloud.w.WebServerException;

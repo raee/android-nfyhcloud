@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.yixin.nfyh.cloud.R;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -27,6 +26,7 @@ import cn.rui.framework.utils.SoapCallback;
 
 import com.baidu.location.BDLocation;
 import com.yixin.nfyh.cloud.NfyhApplication;
+import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.bll.ConfigServer;
 import com.yixin.nfyh.cloud.bll.GlobalSetting;
 import com.yixin.nfyh.cloud.model.Users;

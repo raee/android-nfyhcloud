@@ -4,16 +4,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.KeyguardManager;
+import android.app.KeyguardManager.KeyguardLock;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.text.Html;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -50,18 +57,65 @@ public class SignDetailActivity extends BaseActivity implements OnItemClickListe
 	private ISignCompareable			compare				= null;
 	private SignTypes					currentSignTypes	= null;
 	private boolean						isSync				= false;	//是否正在同步数据
+	private boolean						keyDownResult		= false;
 	private ListView					lvSigns				= null;
 	//	private ResultDialog				mResultDialog		= null;
 	private boolean						mIsCreated;
+	private boolean						mIsNoUpload			= false;	//是否没上传
 	private ViewGroup					rootView			= null;
 	private int							showType			= 0;		//0为正常，-1为蓝牙数据
 	private SignCoreInterface			signInterface		= null;
 	private SignTypeItemGridViewAdapter	signTypeAdapter		= null;
 	private List<SignTypes>				signTypes			= null;	// 二级的分类
 	private Users						user				= null;
+	
 	private TopMsgView					viewMsg				= null;
-	private boolean						mIsNoUpload			= false;	//是否没上传
-																		
+	private KeyguardLock				mKeyguardLock;
+	private WakeLock					mWakeLock;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		// 至于锁屏之上
+		Window window = getWindow();
+		window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+		window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+		
+		this.rootView = (ViewGroup) getLayoutInflater().inflate(R.layout.activity_sign_detail, null);
+		setContentView(rootView);
+		
+		// 键盘管理器
+		KeyguardManager mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+		// 电源管理
+		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+		
+		//键盘锁
+		mKeyguardLock = mKeyguardManager.newKeyguardLock("unlock");
+		
+		//唤醒锁
+		mWakeLock = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK, "PowerManager");
+		
+		//键盘解锁
+		mKeyguardLock.disableKeyguard();
+		mWakeLock.setReferenceCounted(false); //设置超时锁
+		// 点亮屏幕
+		mWakeLock.acquire();
+		
+		user = ((NfyhApplication) getApplication()).getCurrentUser(); //获取用户
+		// 初始化比较接口
+		this.compare = new RangeCompareable(this);
+		
+		signTypeAdapter = new SignTypeItemGridViewAdapter(this);// 适配器
+		findView();
+		initSign();
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu_sign_detail, menu); //操作栏菜单
+		return super.onCreateOptionsMenu(menu);
+	}
+	
 	/**
 	 * 自动比较数据
 	 */
@@ -125,12 +179,36 @@ public class SignDetailActivity extends BaseActivity implements OnItemClickListe
 			this.apiSign = NfyhCloudDataFactory.getFactory(this).getSignDevice();//体征接口
 			signInterface = new SignCore(this, user);//业务体征接口
 			signInterface.setSignCoreListener(this);//设置体征回调监听
-			
 			lvSigns = (ListView) this.findViewById(R.id.lv_sign_detail_types);
 			lvSigns.setOnItemClickListener(this); // 体征项点击
-			
-			initSign();
-			
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	// 初始化体征
+	private void initSign() {
+		try {
+			String type = getIntent().getStringExtra(Intent.EXTRA_TEXT);// 获取体征类型
+			if (type.equals("-1")) {
+				PackageModel models = getIntent().getParcelableExtra("data");// 蓝牙接收的数据
+				signTypes = parserModel(models.getSignDatas());
+				signTypeAdapter.setDataList(signTypes);
+				getActionBar().setTitle(user.getName());
+				showType = -1;
+				mIsNoUpload = true;
+			}
+			else {
+				type = type == null ? "1000" : type;
+				currentSignTypes = apiSign.getSignType(type); //获取当前的体征类型
+				// 获取体征参数
+				signTypes = apiSign.getGroupSignTypes(currentSignTypes);
+				signTypeAdapter.setDataList(signTypes);
+				ActionbarUtil.setTitleAsUpHome(this, getActionBar(), currentSignTypes.getName()); //返回栏
+				signTypeAdapter.loadLastValues(); // 加载最近的一次体征
+			}
+			lvSigns.setAdapter(signTypeAdapter);
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
@@ -157,62 +235,12 @@ public class SignDetailActivity extends BaseActivity implements OnItemClickListe
 		else return 3;
 	}
 	
-	// 初始化体征
-	private void initSign() throws SQLException {
-		// 获取体征类型
-		String type = getIntent().getStringExtra(Intent.EXTRA_TEXT);
-		
-		if (type.equals("-1")) {
-			// 蓝牙接收的数据
-			PackageModel models = getIntent().getParcelableExtra("data");
-			signTypes = parserModel(models.getSignDatas());
-			getActionBar().setTitle(user.getName() + "的测量数据");
-			showType = -1;
-			mIsNoUpload = true;
-		}
-		else {
-			
-			type = type == null ? "1000" : type;
-			currentSignTypes = apiSign.getSignType(type); //获取当前的体征类型
-			
-			// 获取体征参数
-			signTypes = apiSign.getGroupSignTypes(currentSignTypes);
-			
-			ActionbarUtil.setTitleAsUpHome(this, getActionBar(), currentSignTypes.getName()); //返回栏
-		}
-		
-		// 适配器
-		signTypeAdapter = new SignTypeItemGridViewAdapter(this, signTypes);
-		lvSigns.setAdapter(signTypeAdapter);
-		
-	}
-	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		this.rootView = (ViewGroup) getLayoutInflater().inflate(R.layout.activity_sign_detail, null);
-		setContentView(rootView);
-		
-		//		mResultDialog = new ResultDialog(this);
-		
-		user = ((NfyhApplication) getApplication()).getCurrentUser(); //获取用户
-		
-		try {
-			// 初始化比较接口
-			this.compare = new RangeCompareable(this);
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		findView();
-		
-	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.menu_sign_detail, menu); //操作栏菜单
-		return super.onCreateOptionsMenu(menu);
+	protected void onPause() {
+		super.onPause();
+		// 重新锁上屏幕
+		mKeyguardLock.disableKeyguard();
+		mWakeLock.release();
 	}
 	
 	@Override
@@ -274,6 +302,19 @@ public class SignDetailActivity extends BaseActivity implements OnItemClickListe
 			e.printStackTrace();
 		}
 		
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		
+		if (keyCode == KeyEvent.KEYCODE_BACK && mIsNoUpload) {
+			showUploadTips();
+		}
+		else {
+			keyDownResult = super.onKeyDown(keyCode, event);
+		}
+		
+		return keyDownResult;
 	}
 	
 	@Override
@@ -383,6 +424,30 @@ public class SignDetailActivity extends BaseActivity implements OnItemClickListe
 	}
 	
 	/**
+	 * 显示体征上传提示
+	 */
+	public boolean showUploadTips() {
+		new RuiDialog.Builder(this).buildTitle("数据上传").buildMessage("您的数据还没上传，是否需要上传到云服务？").buildLeftButton("放弃", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				mIsNoUpload = false;
+				dialog.dismiss();
+				finish();
+			}
+		}).buildRight("上传", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				keyDownResult = true;
+				showDataDialog();
+				dialog.dismiss();
+			}
+		}).show();
+		
+		return keyDownResult;
+	}
+	
+	/**
 	 * 同步数据
 	 */
 	private void sync() {
@@ -409,50 +474,5 @@ public class SignDetailActivity extends BaseActivity implements OnItemClickListe
 		signInterface.upload();
 		
 		mIsNoUpload = false;
-	}
-	
-	private boolean	keyDownResult	= false;
-	
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		
-		if (keyCode == KeyEvent.KEYCODE_BACK && mIsNoUpload) {
-			showUploadTips();
-		}
-		else {
-			keyDownResult = super.onKeyDown(keyCode, event);
-		}
-		
-		return keyDownResult;
-	}
-	
-	/**
-	 * 显示体征上传提示
-	 */
-	public boolean showUploadTips() {
-		new RuiDialog.Builder(this).buildTitle("数据上传").buildMessage("您的数据还没上传，是否需要上传到云服务？").buildLeftButton("放弃", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				mIsNoUpload = false;
-				dialog.dismiss();
-				finish();
-			}
-		}).buildRight("上传", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				keyDownResult = true;
-				showDataDialog();
-				dialog.dismiss();
-			}
-		}).show();
-		
-		return keyDownResult;
-	}
-	
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		
 	}
 }

@@ -4,7 +4,6 @@
 package com.yixin.nfyh.cloud.device;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 
 import android.content.Context;
 import android.util.Log;

@@ -3,7 +3,6 @@ package com.yixin.nfyh.cloud.activity;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.yixin.nfyh.cloud.R;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +15,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.yixin.nfyh.cloud.BaseActivity;
+import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.data.ISignDevice;
 import com.yixin.nfyh.cloud.data.NfyhCloudDataFactory;
 import com.yixin.nfyh.cloud.model.SignTypes;

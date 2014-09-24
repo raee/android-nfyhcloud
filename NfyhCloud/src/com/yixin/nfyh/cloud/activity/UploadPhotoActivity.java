@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.apache.http.Header;
 
-import com.yixin.nfyh.cloud.R;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +20,7 @@ import cn.rui.framework.ui.RuiDialog;
 import com.rae.core.http.async.AsyncHttpResponseHandler;
 import com.rae.core.image.photoview.PhotoGridView;
 import com.yixin.nfyh.cloud.BaseActivity;
+import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.bll.PhotoCategoryControl;
 import com.yixin.nfyh.cloud.model.Photocategory;
 import com.yixin.nfyh.cloud.w.WebServerException;

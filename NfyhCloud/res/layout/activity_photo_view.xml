@@ -14,7 +14,7 @@
 
         <LinearLayout
             android:id="@+id/btn_photo_graph"
-            style="@style/btn_green"
+            style="@style/btn_green_none_raduis"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -43,7 +43,7 @@
 
         <LinearLayout
             android:id="@+id/btn_photo_from_phone"
-            style="@style/btn_green"
+            style="@style/btn_green_none_raduis"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -88,7 +88,6 @@
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone" >
-
     </LinearLayout>
 
 </RelativeLayout>

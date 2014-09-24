@@ -3,7 +3,6 @@ package com.yixin.nfyh.cloud.activity;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.yixin.nfyh.cloud.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +16,7 @@ import cn.rui.framework.widget.RuiSwitch.OnCheckedChangeListener;
 import com.yixin.nfyh.cloud.BaseActivity;
 import com.yixin.nfyh.cloud.LoginActivity;
 import com.yixin.nfyh.cloud.NfyhApplication;
+import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.bll.ConfigServer;
 import com.yixin.nfyh.cloud.data.ISignDevice;
 import com.yixin.nfyh.cloud.data.NfyhCloudDataFactory;
