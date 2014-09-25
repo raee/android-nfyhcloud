@@ -1,8 +1,10 @@
 ﻿
 -- 初始化 设备
 delete from devices;
-	insert into devices(devid,name, isused,logo,devicename,devicepin,comment)values('Mindray-H900','迈瑞设备',1,'logo_mindray','mindray-ubicare','4321','迈瑞设备连接注意事项！<br>点击设备上的开始按钮进行血压测量。');
-insert into devices(devid,name, isused,logo,devicename,devicepin,comment)values('HEM-7081-IT','欧姆龙设备',0,'logo_omron','HEM-7081-IT','','欧姆龙血压仪，按住[上传]进行蓝牙配对。<br>多次连接不上请取消配对，并关闭蓝牙，并开始重新连接，重新连接时需要重新配对。');
+insert into devices(devid,sdk,name, isused,logo,devicename,devicepin,comment)values('Mindray-H900',0,'迈瑞设备',1,'logo_mindray','mindray-ubicare','4321','迈瑞设备连接注意事项！<br>点击设备上的开始按钮进行血压测量。');
+insert into devices(devid,sdk,name, isused,logo,devicename,devicepin,comment)values('HEM-7081-IT',1,'欧姆龙设备',0,'logo_omron','HEM-7081-IT','','欧姆龙血压仪，按住[上传]进行蓝牙配对。<br>多次连接不上请取消配对，并关闭蓝牙，并开始重新连接，重新连接时需要重新配对。');
+insert into devices(devid,sdk,name, isused,logo,devicename,devicepin,comment)values('TZ100',2,'马纳特血糖仪',0,'logo_manette','TZ100','1234','请开始测量血糖，测量完毕点击连接并按一下血糖仪上的M键。');
+
 
 -- 初始化 字典表
 delete from dicts;

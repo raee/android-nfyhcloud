@@ -176,7 +176,7 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 	public void OnSuccees() {
 		btnLogin.setEnabled(true);
 		btnLogin.setBackgroundResource(R.drawable.btn_green);
-		btnLogin.setText("登录成功");
+		btnLogin.setText("登录");
 	}
 	
 	@Override

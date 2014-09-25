@@ -35,15 +35,16 @@ public class DefaultDevice {
 		try {
 			ISignDevice dbDevice = NfyhCloudDataFactory.getFactory(context).getSignDevice();
 			String name = dbDevice.getCurrentDevices().getDevId();
-			if ("HEM-7081-IT".equals(name)) {
-				api = MonitorSdkFactory.getApiMonitor(context, MonitorSdkFactory.OMRON);
-				api.setBluetoothListener(l);
-				Log.i("DefaultDevice", "获取到设备接口为：" + name);
-			}
-			else {
-				api = MonitorSdkFactory.getApiMonitor(context, MonitorSdkFactory.MINDRAY);
-				api.setBluetoothListener(l);
-			}
+			int sdk = dbDevice.getCurrentDevices().getSdk();
+			Log.i("DefaultDevice", "获取到设备接口为：" + name);
+			//			if ("HEM-7081-IT".equals(name)) {
+			//				api = MonitorSdkFactory.getApiMonitor(context, MonitorSdkFactory.OMRON);
+			//				api.setBluetoothListener(l);
+			//			}
+			//			else {
+			api = MonitorSdkFactory.getApiMonitor(context, sdk);
+			api.setBluetoothListener(l);
+			//			}
 		}
 		catch (SQLException e) {
 			e.printStackTrace();

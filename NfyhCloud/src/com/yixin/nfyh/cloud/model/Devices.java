@@ -42,6 +42,22 @@ public class Devices {
 	@DatabaseField(columnName = "devicePin")
 	private String	devicePin;
 	
+	@DatabaseField(columnName = "sdk")
+	private int		sdk;
+	
+	/**
+	 * 获取sdk号
+	 * 
+	 * @return
+	 */
+	public int getSdk() {
+		return sdk;
+	}
+	
+	public void setSdk(int sdk) {
+		this.sdk = sdk;
+	}
+	
 	public String getDeviceName() {
 		return deviceName;
 	}
