@@ -113,7 +113,8 @@
         </activity>
         <activity android:name="com.yixin.nfyh.cloud.ReceiveDataActivity" >
         </activity>
-
+        <activity android:name="com.yixin.nfyh.cloud.TermsServiceActivity" >
+        </activity>
         <!-- 体征详细 -->
         <activity
             android:name="com.yixin.nfyh.cloud.activity.SignDetailActivity"

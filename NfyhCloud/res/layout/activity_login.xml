@@ -83,16 +83,34 @@
             android:singleLine="true" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_login"
-        style="@style/btn_disable"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="20dp"
-        android:enabled="false"
-        android:padding="12dp"
-        android:text="@string/android_login_name" />
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/btn_login"
+            style="@style/btn_disable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            android:enabled="false"
+            android:padding="12dp"
+            android:text="@string/android_login_name" />
+
+        <Button
+            android:id="@+id/btn_login_offline"
+            style="@style/btn_blue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="12dp"
+            android:text="@string/android_offlinelogin_name" />
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -2,6 +2,8 @@ package com.yixin.nfyh.cloud;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
+import cn.rui.framework.utils.AppInfo;
 
 /**
  * 欢迎页
@@ -15,6 +17,9 @@ public class WelcomeActivity extends BaseActivity implements Runnable {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_welcome);
+		TextView tvVersion = (TextView) findViewById(R.id.tv_welcome_version);
+		String version = new AppInfo(this).getVersion();
+		tvVersion.setText("V" + version);
 		/**
 		 * 功能描述：欢迎界面
 		 */
@@ -36,8 +41,7 @@ public class WelcomeActivity extends BaseActivity implements Runnable {
 			 */
 			if (!getSetting().isApplicationInstalled()) {
 				
-				startActivity(new Intent(getApplicationContext(), GuideActivity.class));
-				getSetting().setApplicationInstalled();
+				startActivity(new Intent(getApplicationContext(), TermsServiceActivity.class));
 			}
 			else {
 				

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <WebView
+        android:id="@+id/web_terms"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ll_term" />
+
+    <LinearLayout
+        android:id="@+id/ll_term"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/market_btn_rect_gray_normal"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp" >
+
+        <Button
+            android:id="@+id/btn_terms_disagree"
+            style="@style/btn_disable"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:text="@string/disagree" />
+
+        <Button
+            android:id="@+id/btn_terms_agree"
+            style="@style/btn_green"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/agree" />
+    </LinearLayout>
+
+</RelativeLayout>

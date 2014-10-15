@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import cn.rui.framework.ui.WebViewerActivity;
 
-import com.yixin.nfyh.cloud.activity.AlarmListActivity;
 import com.yixin.nfyh.cloud.activity.SMSListActivity;
 import com.yixin.nfyh.cloud.activity.UserSettingActivity;
 
@@ -35,7 +34,7 @@ public class HospitalManagerActivity extends BaseActivity
 		switch (v.getId())
 		{
 			case R.id.ll_menu_cyxj: //出院小结
-				startActivity(new Intent(this, AlarmListActivity.class));
+//				startActivity(new Intent(this, AlarmListActivity.class));
 				break;
 			case R.id.ll_menu_myddc: //满意度
 				Intent webIntent = new Intent(this, SMSListActivity.class);
@@ -48,7 +47,7 @@ public class HospitalManagerActivity extends BaseActivity
 			case R.id.ll_menu_yjfk: //意见反馈
 				Intent feedbackIntent = new Intent(this,
 						WebViewerActivity.class);
-				Uri feedbackuri = Uri.parse(getString(R.string.feedback_url));
+				Uri feedbackuri = Uri.parse(getString(R.string.yjfk));
 				feedbackIntent.setData(feedbackuri);
 				feedbackIntent.putExtra(WebViewerActivity.EXTRA_COOKIE, app
 						.getGlobalsetting().getUser().getCookie()); //TODO:获取Cookie

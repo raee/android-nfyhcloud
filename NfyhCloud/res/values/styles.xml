@@ -32,31 +32,12 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="menu_list">
-        <item name="android:paddingTop">20dp</item>
-        <item name="android:paddingBottom">20dp</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:gravity">center</item>
-        <item name="android:orientation">vertical</item>
-        <item name="android:background">@drawable/menu_list_bg</item>
-    </style>
-
-    <style name="menu_list_text">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:drawableLeft">@drawable/icon_computer</item>
-        <item name="android:drawablePadding">25dp</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
 
     <style name="Theme.IOS.Light" parent="@android:style/Theme.Holo.Light">
         <item name="android:actionMenuTextColor">@color/white</item>
         <item name="android:actionBarStyle">@style/Widget.IOS.Actionbar</item>
         <item name="android:homeAsUpIndicator">@drawable/abc_ic_ab_back_holo_dark</item>
-        <item name="android:selectableItemBackground">@drawable/actionbar_bg_pressed</item>
+        <item name="android:selectableItemBackground">@drawable/actionbar_selectable_bg</item>
         <item name="android:windowAnimationStyle">@style/Theme.IOS.Light.Animation</item>
         <!-- 删除Actionbar和activity之间的分割线 -->
         <item name="android:windowContentOverlay">@null</item>
@@ -134,22 +115,12 @@
     <!-- IOS主题 -->
     <style name="Widget.Light.IOS" />
 
-    <style name="Widget.Light.IOS.ListItem.Title" parent="@style/match_warp">
-        <item name="android:layout_marginBottom">10dp</item>
-        <item name="android:layout_marginTop">10dp</item>
-        <item name="android:orientation">vertical</item>
-        <item name="border_width">5dp</item>
-        <item name="icon">@drawable/ic_tile_list</item>
-        <item name="selected">true</item>
-        <item name="enable_right">false</item>
-    </style>
 
     <style name="Widget.Light.IOS.ListItem" parent="@style/match_warp">
         <item name="android:layout_marginBottom">10dp</item>
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:orientation">vertical</item>
         <item name="border_width">1dp</item>
-        <item name="icon">@drawable/ic_item_defaut</item>
         <item name="selected">false</item>
         <item name="enable_right">true</item>
     </style>

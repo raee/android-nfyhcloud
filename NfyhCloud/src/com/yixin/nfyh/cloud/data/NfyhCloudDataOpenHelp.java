@@ -12,7 +12,6 @@ import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import com.yixin.nfyh.cloud.model.Clocks;
 import com.yixin.nfyh.cloud.model.Devices;
 import com.yixin.nfyh.cloud.model.Dicts;
 import com.yixin.nfyh.cloud.model.MarksDetail;
@@ -42,7 +41,6 @@ public class NfyhCloudDataOpenHelp extends OrmLiteSqliteOpenHelper
 
 	private Dao<Users, String>			UsersDao;
 
-	private Dao<Clocks, Long>			ClocksDao;
 
 	private Dao<Devices, String>		DevicesDao;
 
@@ -81,7 +79,6 @@ public class NfyhCloudDataOpenHelp extends OrmLiteSqliteOpenHelper
 		{
 			// 创建表
 			TableUtils.createTable(conn, Users.class);
-			TableUtils.createTable(conn, Clocks.class);
 			TableUtils.createTable(conn, Devices.class);
 			TableUtils.createTable(conn, Dicts.class);
 			TableUtils.createTable(conn, MarksRole.class);
@@ -150,7 +147,6 @@ public class NfyhCloudDataOpenHelp extends OrmLiteSqliteOpenHelper
 		try
 		{
 			TableUtils.dropTable(conn, Users.class, false);
-			TableUtils.dropTable(conn, Clocks.class, false);
 			TableUtils.dropTable(conn, Devices.class, false);
 			TableUtils.dropTable(conn, Dicts.class, false);
 			TableUtils.dropTable(conn, MarksRole.class, false);
@@ -184,21 +180,6 @@ public class NfyhCloudDataOpenHelp extends OrmLiteSqliteOpenHelper
 			UsersDao = getDao(Users.class);
 		}
 		return UsersDao;
-	}
-
-	/**
-	 * 获取clocks
-	 * 
-	 * @return
-	 * @throws SQLException
-	 */
-	public Dao<Clocks, Long> getClocks() throws SQLException
-	{
-		if (this.ClocksDao == null)
-		{
-			ClocksDao = getDao(Clocks.class);
-		}
-		return ClocksDao;
 	}
 
 	/**

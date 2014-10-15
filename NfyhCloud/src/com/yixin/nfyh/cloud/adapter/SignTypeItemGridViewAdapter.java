@@ -77,15 +77,10 @@ public class SignTypeItemGridViewAdapter extends SignTypeItemBaseAdapterView {
 		
 		tvValue.setTextColor(Color.parseColor(color));
 	}
-	
+
 	@Override
 	public void loadDefault() {
-		for (View view : this.viewList) {
-			view.setTag(null);
-			TextView tv = (TextView) view.findViewById(R.id.tv_ui_sign_edit_item_value);
-			
-			if (tv != null) tv.setText("0");
-			
-		}
+		// TODO Auto-generated method stub
+		
 	}
 }

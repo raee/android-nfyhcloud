@@ -20,47 +20,42 @@ import com.yixin.nfyh.cloud.utils.LogUtil;
  * @author MrChenrui
  * 
  */
-public class DataQuery implements IUser, IDict
-{
-
+public class DataQuery implements IUser, IDict {
+	
 	private static final String	TAG	= "DataQuery";
 	private Dao<Users, String>	user;
 	private Dao<Dicts, Long>	dicts;
-
+	
 	private ILog				log	= LogUtil.getLog();
-
-	public DataQuery(Context context) throws SQLException
-	{
+	
+	public DataQuery(Context context) throws SQLException {
 		NfyhCloudDataOpenHelp db = NfyhCloudDataBase.getDataOpenHelp(context);
-
+		
 		this.user = db.getUsers();
 		this.dicts = db.getDicts();
 	}
-
+	
 	// 用户接口
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see com.yixin.nfyh.cloud.data.IUser#getUser(java.lang.String)
 	 */
 	@Override
-	public Users getUser(String uid) throws SQLException
-	{
+	public Users getUser(String uid) throws SQLException {
 		return user.queryForId(uid);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see com.yixin.nfyh.cloud.data.IUser#getUserFriends(java.lang.String)
 	 */
 	@Override
-	public List<Users> getUserFriends(String uid) throws SQLException
-	{
+	public List<Users> getUserFriends(String uid) throws SQLException {
 		// 获取好友字段的用户为Uid的所有
-		return user.queryBuilder().orderBy("marks", true).where()
-				.eq("friendid", uid).query();
+		return user.queryBuilder().orderBy("marks", true).where().eq("friendid", uid).query();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see
@@ -68,12 +63,9 @@ public class DataQuery implements IUser, IDict
 	 * .Users)
 	 */
 	@Override
-	public int createUser(Users user) throws SQLException
-	{
-		if (exitUser(user.getUsername()))
-		{
-			// 已经存在
-			return 0;
+	public int createUser(Users user) throws SQLException {
+		if (exitUser(user.getUsername())) {			// 已经存在，则更新
+			return updateUser(user);
 		}
 		user.setLoginDate(new Date());
 		user.setHeadImage("");
@@ -83,105 +75,94 @@ public class DataQuery implements IUser, IDict
 		user.setRecTime(0);
 		return this.user.create(user);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see com.yixin.nfyh.cloud.data.IUser#delUser(java.lang.String)
 	 */
 	@Override
-	public int delUser(String uid) throws SQLException
-	{
+	public int delUser(String uid) throws SQLException {
 		return this.user.deleteById(uid);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see com.yixin.nfyh.cloud.data.IUser#exitUser(java.lang.String)
 	 */
 	@Override
-	public boolean exitUser(String username) throws SQLException
-	{
-		return this.user.queryBuilder().where().eq("username", username)
-				.countOf() > 0;
+	public boolean exitUser(String username) throws SQLException {
+		return this.user.queryBuilder().where().eq("username", username).countOf() > 0;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see com.yixin.nfyh.cloud.data.IUser#addUserLoginTime()
 	 */
 	@Override
-	public void addUserLoginTime(String uid) throws SQLException
-	{
+	public void addUserLoginTime(String uid) throws SQLException {
 		Users m = getUser(uid);
 		int count = m.getLoginTime() + 1;
 		m.setLoginTime(count);
 		this.updateUser(m);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see com.yixin.nfyh.cloud.data.IUser#addUserRecordTime()
 	 */
 	@Override
-	public void addUserRecordTime(String uid) throws SQLException
-	{
-
+	public void addUserRecordTime(String uid) throws SQLException {
+		
 		Users m = getUser(uid);
 		int count = m.getRecTime() + 1;
 		m.setRecTime(count);
 		this.updateUser(m);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see com.yixin.nfyh.cloud.data.IUser#updateLoginDate(java.util.Date)
 	 */
 	@Override
-	public void updateLoginDate(String uid, Date date)
-	{
-
+	public void updateLoginDate(String uid, Date date) {
+		
 		Users m;
-		try
-		{
+		try {
 			m = getUser(uid);
 			m.setLoginDate(date);
 			this.updateUser(m);
 		}
-		catch (SQLException e)
-		{
+		catch (SQLException e) {
 			e.printStackTrace();
 			log.warn(TAG, "更新登录时间失败！" + e.getMessage());
 		}
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see com.yixin.nfyh.cloud.data.IUser#getUserRanking(java.lang.String)
 	 */
 	@Override
-	public List<Users> getUserRanking(String uid) throws SQLException
-	{
+	public List<Users> getUserRanking(String uid) throws SQLException {
 		// 获取已排序的好友列表
 		List<Users> friends = this.getUserFriends(uid);
-
+		
 		// 把自己加到好友列表中
 		Users curUser = this.getUser(uid);
-
+		
 		// 根据字段Marks进行冒泡排序
-		for (int i = 0; i < friends.size(); i++)
-		{
+		for (int i = 0; i < friends.size(); i++) {
 			Users friend = friends.get(i);
-			if (friend != null && curUser.getMarks() > friend.getMarks())
-			{
+			if (friend != null && curUser.getMarks() > friend.getMarks()) {
 				// 插入到当前位置
 				friends.add(i, curUser);
 				break;
 			}
 		}
-
+		
 		return friends;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see
@@ -189,13 +170,12 @@ public class DataQuery implements IUser, IDict
 	 * .Users)
 	 */
 	@Override
-	public int updateUser(Users m) throws SQLException
-	{
+	public int updateUser(Users m) throws SQLException {
 		return user.update(m);
 	}
-
+	
 	// 字典接口
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see
@@ -203,11 +183,10 @@ public class DataQuery implements IUser, IDict
 	 * )
 	 */
 	@Override
-	public int addDicts(Dicts m) throws SQLException
-	{
+	public int addDicts(Dicts m) throws SQLException {
 		return this.dicts.create(m);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see
@@ -215,11 +194,10 @@ public class DataQuery implements IUser, IDict
 	 * .Dicts)
 	 */
 	@Override
-	public int updateDicts(Dicts m) throws SQLException
-	{
+	public int updateDicts(Dicts m) throws SQLException {
 		return this.dicts.update(m);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see
@@ -227,53 +205,46 @@ public class DataQuery implements IUser, IDict
 	 * )
 	 */
 	@Override
-	public int delDicts(Dicts m) throws SQLException
-	{
+	public int delDicts(Dicts m) throws SQLException {
 		return this.dicts.delete(m);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see com.yixin.nfyh.cloud.data.IDict#getDictsByCode(java.lang.String)
 	 */
 	@Override
-	public List<Dicts> getDictsByCode(String code) throws SQLException
-	{
+	public List<Dicts> getDictsByCode(String code) throws SQLException {
 		return this.dicts.queryForEq("code_name", code);
 	}
-
+	
 	@Override
-	public Dicts getDictsByCode(String code, String key, String value)
-			throws SQLException
-	{
-		Where<Dicts, Long> query = this.dicts.queryBuilder().where()
-				.eq("code_name", code);
-		if (key != null)
-		{
+	public Dicts getDictsByCode(String code, String key, String value) throws SQLException {
+		Where<Dicts, Long> query = this.dicts.queryBuilder().where().eq("code_name", code);
+		if (key != null) {
 			query = query.and().eq("name", key);
 		}
-		if (value != null)
-		{
+		if (value != null) {
 			query = query.and().eq("dic_value", value);
 		}
-
+		
 		return query.queryForFirst();
 	}
-
+	
 	@Override
-	public boolean login(String username, String pwd)
-	{
-		try
-		{
-			List<Users> results = this.user.queryBuilder().where()
-					.eq("username", username).and().eq("pwd", pwd).query();
-			return results.size() > 0;
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
-		return false;
+	public boolean login(String username, String pwd) {
+		return true; //离线登录返回真
+		//		try
+		//		{
+		//			List<Users> results = this.user.queryBuilder().where()
+		//					.eq("username", username).and().eq("pwd", pwd).query();
+		//			return results.size() > 0;
+		//		}
+		//		catch (SQLException e)
+		//		{
+		//			e.printStackTrace();
+		//		}
+		//		return false;
 	}
-
+	
 }

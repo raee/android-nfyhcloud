@@ -41,6 +41,8 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 	
 	private GlobalSetting	setting;
 	
+	private Button			btnLoginOffline;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		try {
@@ -68,8 +70,7 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 		etPwd.setOnEditorActionListener(this);
 		
 		btnLogin = (Button) findViewById(R.id.btn_login);
-		//		dialog = new TimerProgressDialog(this);
-		//		dialog.setMessage("正在登录，请稍候...");
+		btnLoginOffline = (Button) findViewById(R.id.btn_login_offline);
 	}
 	
 	@Override
@@ -110,6 +111,7 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 	
 	protected void setLinsener() {
 		btnLogin.setOnClickListener(this);
+		btnLoginOffline.setOnClickListener(this);
 		InputUtils inputUtil = new InputUtils();
 		inputUtil.setButtonEnableOnEditTextChange(btnLogin, etPwd, etUserName);
 		inputUtil.setInputValidateLinsener(this);
@@ -120,6 +122,9 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 		switch (v.getId()) {
 			case R.id.btn_login:
 				login();
+				break;
+			case R.id.btn_login_offline:
+				loginInLocal();
 				break;
 			default:
 				break;
@@ -145,25 +150,26 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 		btnLogin.setEnabled(false);
 		btnLogin.setBackgroundResource(R.drawable.btn_disable);
 		btnLogin.setText("登录中...");
-		//		dialog.show();
-		if (!loginInLocal(username, pwd)) {
-			account.login(username, pwd);
-		}
+		account.login(username, pwd);
 	}
 	
-	private boolean loginInLocal(String username, String pwd) {
-		if (!getNfyhApplication().isLogin() && this.account.loginInLocal(username, pwd)) {
-			TimerToast toast = TimerToast.makeText(this, "离线登录成功", Toast.LENGTH_SHORT);
-			toast.setType(TimerToast.TYPE_SUCCESS);
-			toast.show();
-			gotoMainActivity();
-			return true;
-		}
-		return false;
+	/**
+	 * 离线登录
+	 * 
+	 * @param username
+	 * @param pwd
+	 * @return
+	 */
+	private boolean loginInLocal() {
+		account.loginInLocal("guest", "guest");
+		TimerToast toast = TimerToast.makeText(this, "离线登录成功！", Toast.LENGTH_SHORT);
+		toast.setType(TimerToast.TYPE_SUCCESS);
+		toast.show();
+		gotoMainActivity();
+		return true;
 	}
 	
 	private void gotoMainActivity() {
-		getNfyhApplication().setIsLogin(true);
 		startActivity(new Intent(this, MainActivity.class));
 		this.finish();
 	}
@@ -203,7 +209,7 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 		TimerToast toast = TimerToast.makeText(this, msg, Toast.LENGTH_SHORT);
 		toast.setType(TimerToast.TYPE_FIALID);
 		toast.show();
-		loginInLocal(etUserName.getText().toString().trim(), etPwd.getText().toString().trim());
+		
 	}
 	
 	@Override

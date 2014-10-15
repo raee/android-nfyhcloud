@@ -13,6 +13,7 @@ import com.yixin.monitors.sdk.api.ApiMonitor;
 import com.yixin.monitors.sdk.api.BluetoothListener;
 import com.yixin.nfyh.cloud.data.ISignDevice;
 import com.yixin.nfyh.cloud.data.NfyhCloudDataFactory;
+import com.yixin.nfyh.cloud.model.Devices;
 
 /**
  * 默认监测设备获取
@@ -27,22 +28,17 @@ public class DefaultDevice {
 	 * 
 	 * @param context
 	 * @return
-	 * @throws DeviceException
 	 * @throws SQLException
 	 */
 	public static ApiMonitor getInstance(Context context, BluetoothListener l) {
 		ApiMonitor api = null;
 		try {
 			ISignDevice dbDevice = NfyhCloudDataFactory.getFactory(context).getSignDevice();
-			String name = dbDevice.getCurrentDevices().getDevId();
+			Devices device = dbDevice.getCurrentDevices();
 			int sdk = dbDevice.getCurrentDevices().getSdk();
-			Log.i("DefaultDevice", "获取到设备接口为：" + name);
-			//			if ("HEM-7081-IT".equals(name)) {
-			//				api = MonitorSdkFactory.getApiMonitor(context, MonitorSdkFactory.OMRON);
-			//				api.setBluetoothListener(l);
-			//			}
-			//			else {
+			Log.i("DefaultDevice", "获取到设备接口为：" + device.getDeviceName());
 			api = MonitorSdkFactory.getApiMonitor(context, sdk);
+			api.configDevice(device.getDeviceName(), device.getDevicePin());
 			api.setBluetoothListener(l);
 			//			}
 		}

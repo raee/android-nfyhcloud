@@ -67,6 +67,8 @@ public class NfyhApplication extends Application {
 	private CoreServicerConnection	conn;
 	
 	private CoreServerBinder		binder;
+
+	private String	mCurrentUserId;
 	
 	public void addActivity(Activity at) {
 		this.activitys.add(at);
@@ -240,6 +242,7 @@ public class NfyhApplication extends Application {
 	// }
 	public void setUserInfo(Users user) {
 		try {
+			this.mCurrentUserId = user.getUid();
 			apiUser.createUser(user);
 		}
 		catch (SQLException e) {
@@ -318,7 +321,7 @@ public class NfyhApplication extends Application {
 	}
 	
 	public Users getCurrentUser() {
-		String uid = this.globalsetting.getUser().getUid();
+		String uid = this.mCurrentUserId;
 		Users user = null;
 		try {
 			user = apiUser.getUser(uid);

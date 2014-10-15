@@ -29,9 +29,15 @@ public class Account implements SoapConnectionCallback<Users> {
 		this.mListener = l;
 	}
 	
-	public boolean loginInLocal(String username, String pwd) {
-		if (mDbUser == null) return false;
-		return mDbUser.login(username, pwd);
+	public void loginInLocal(String username, String pwd) {
+		// 构造游客帐号
+		Users guest = new Users();
+		guest.setUsername("guest");
+		guest.setPwd("guest");
+		guest.setUid("0");
+		guest.setName("离线用户");
+		guest.setSex("男");
+		onSoapConnectSuccess(guest);
 	}
 	
 	/**
@@ -51,7 +57,9 @@ public class Account implements SoapConnectionCallback<Users> {
 	public void onSoapConnectSuccess(Users data) {
 		this.mApplication.setUserInfo(data);
 		this.mApplication.setIsLogin(true);
-		this.mSetting.setUser(data);
+		if (!data.getUid().equals("0")) {
+			this.mSetting.setUser(data);
+		}
 		mListener.OnLoginSuccess(data.getUsername(), data.getPwd());
 	}
 	

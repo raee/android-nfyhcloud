@@ -20,7 +20,6 @@ public class NfyhCloudDataFactory extends DataFactory
 	private static NfyhCloudDataFactory	instance	= null;
 	private DataQuery					query;
 	private ISignDevice					signQuery;
-	private IClock						clock;
 	private IPhotoCategory				photocategory;
 	private Context						context;
 
@@ -29,7 +28,7 @@ public class NfyhCloudDataFactory extends DataFactory
 		this.context = context;
 		this.query = new DataQuery(context);
 		signQuery = new SignDataQuery(context);
-		clock = new ClockImpl(context);
+//		clock = new ClockImpl(context);
 	}
 
 	/**
@@ -84,11 +83,6 @@ public class NfyhCloudDataFactory extends DataFactory
 		return signQuery;
 	}
 
-	public IClock getClock()
-	{
-		return clock;
-	}
-
 	public IPhotoCategory getPhotocategory()
 	{
 		if (photocategory == null)
@@ -103,5 +97,6 @@ public class NfyhCloudDataFactory extends DataFactory
 	{
 		return new PushMessage(context);
 	}
+
 
 }
