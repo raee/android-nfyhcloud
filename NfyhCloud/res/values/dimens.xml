@@ -20,6 +20,9 @@
     <dimen name="common_margin_right">10dp</dimen>
     <dimen name="common_margin_lr">10dp</dimen>
     <dimen name="common_margin_tb">5dp</dimen>
+        <dimen name="activity_default_text_size">18sp</dimen>
+    <dimen name="view_item_title_text_size">16sp</dimen>
+    <dimen name="view_item_subtitle_text_size">16sp</dimen>
     <!-- 评估二级标题字体大小 -->
     <dimen name="second_tittle">18sp</dimen>
     <!-- 三级标题 -->

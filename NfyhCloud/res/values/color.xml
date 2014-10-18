@@ -295,8 +295,8 @@
     <color name="black">#000000</color>
     <!-- 黑色 -->
 
+    <color name="subtitle">#737373</color>
     <color name="Widget.Light.IOS.Button.Blue">#4dad31</color>
-    <!-- <color name="Widget.Light.IOS.Button.Blue.Pressed">#4dad31</color> -->
     <color name="time_yellow">#FFFBE1</color>
     <color name="Widget.Light.IOS.Button.Blue.Normal">#4dad31</color>
     <color name="Widget.Light.IOS.Button.Blue.Pressed">#5ac126</color>

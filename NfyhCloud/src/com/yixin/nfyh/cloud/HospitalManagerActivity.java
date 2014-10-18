@@ -47,7 +47,7 @@ public class HospitalManagerActivity extends BaseActivity
 			case R.id.ll_menu_yjfk: //意见反馈
 				Intent feedbackIntent = new Intent(this,
 						WebViewerActivity.class);
-				Uri feedbackuri = Uri.parse(getString(R.string.yjfk));
+				Uri feedbackuri = Uri.parse(getString(R.string.url_yjfk));
 				feedbackIntent.setData(feedbackuri);
 				feedbackIntent.putExtra(WebViewerActivity.EXTRA_COOKIE, app
 						.getGlobalsetting().getUser().getCookie()); //TODO:获取Cookie

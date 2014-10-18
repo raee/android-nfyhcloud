@@ -20,6 +20,7 @@
     <string name="upload_photo_url">http://nfyh.smu.edu.cn/Upload.aspx</string>
     <string name="url_health_assess">http://nfyh.smu.edu.cn/RMBase/SysHealthAM/HealthReport.aspx</string>
     <string name="url_myddc">http://nfyh.smu.edu.cn/RMBase/SysSurvey/SmsSurveyRecord.aspx</string>
+    <string name="url_yjfk">http://nfyh.smu.edu.cn/RMBase/SysFeedback/Feedback.aspx</string>
     <string name="soap_login">Login</string>
     <string name="tab_title_tzcl">体征测量</string>
     <string name="tab_title_yhgl">院后管理</string>

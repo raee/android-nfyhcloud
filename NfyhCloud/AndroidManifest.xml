@@ -73,11 +73,6 @@
         <activity
             android:name="com.yixin.nfyh.cloud.WelcomeActivity"
             android:theme="@android:style/Theme.NoTitleBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- 主界面 -->
@@ -99,9 +94,16 @@
         <!-- 消息列表 -->
         <activity android:name="com.yixin.nfyh.cloud.activity.MessageActivity" >
         </activity>
+
         <!-- 闹钟 -->
-        <activity android:name="com.yixin.nfyh.cloud.activity.AlarmNormalAddActivity" />
-        <activity android:name="com.yixin.nfyh.cloud.activity.AlarmListActivity" />
+        <activity android:name="com.rae.alarm.AlarmAddNormalActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.rae.alarm.AlarmListActivity" />
         <activity android:name="com.yixin.nfyh.cloud.activity.SMSListActivity" />
         <!-- 添加分类 -->
         <activity android:name="com.yixin.nfyh.cloud.activity.AddCategoryActivity" >
@@ -209,11 +211,6 @@
         <service
             android:name="com.yixin.nfyh.cloud.service.PushNotificationService"
             android:label="消息推送服务" >
-        </service>
-        <!-- 闹钟服务 -->
-        <service
-            android:name="com.yixin.nfyh.cloud.alarm.AlarmServer"
-            android:label="云端提醒服务" >
         </service>
         <!-- 欧姆龙核心服务 -->
         <service

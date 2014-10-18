@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:baselineAlignBottom="true"
+        android:src="@drawable/menu_pop" />
+
+    <ListView
+        android:padding="0dp"
+        android:layout_margin="0dp"
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/common_bg"
+        android:divider="@null"
+        android:listSelector="@null" >
+
+    </ListView>
+
+    <Button
+        android:id="@+id/btn_select_window_cancle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/pop_menu_item_bg"
+        android:text="取消" />
+
+</LinearLayout>

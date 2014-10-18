@@ -216,6 +216,16 @@
     <style name="DialogAimation">
         <item name="android:windowEnterAnimation">@anim/slide_in_from_bottom</item>
         <item name="android:windowExitAnimation">@anim/slide_out_to_bottom</item>
+       
     </style>
 
+    <style name="base_textview">
+        <item name="android:textSize">@dimen/activity_default_text_size</item>
+    </style>
+
+    <style name="item_list">
+        <item name="android:background">@drawable/item_bg</item>
+        <item name="android:padding">15dp</item>
+        <item name="android:gravity">center</item>
+    </style>
 </resources>

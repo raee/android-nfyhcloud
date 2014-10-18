@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <attr name="title" format="reference|string" />
+
     <declare-styleable name="nfyh">
-        <attr name="title" format="reference" />
+        <attr name="title" />
         <attr name="icon" format="reference" />
         <attr name="border_width" format="dimension" />
         <attr name="enable_right" format="boolean" />
         <attr name="selected" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="ViewItem">
+        <attr name="title" />
+        <attr name="subtitle" format="string|reference" />
+        <attr name="allow_right" format="boolean" />
     </declare-styleable>
 
 </resources>

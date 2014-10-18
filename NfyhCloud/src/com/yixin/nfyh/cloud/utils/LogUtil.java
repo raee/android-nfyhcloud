@@ -176,6 +176,10 @@ public class LogUtil implements ILog
 		try
 		{
 			final File file = getFile(); // Log日志文件
+			if(file==null || !file.exists()){ //获取日记文件路径错误
+				
+				return;
+			}
 			if (file.length() < 2) return; // 空文件
 			this.write("D", "设备信息", getMoblieInfo(context)); // 写入设备信息
 			SyncHttpClient client = new SyncHttpClient();
