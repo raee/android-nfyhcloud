@@ -1,6 +1,5 @@
 package kankan.wheel.widget.adapters;
 
-import android.R.integer;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.widget.TextView;

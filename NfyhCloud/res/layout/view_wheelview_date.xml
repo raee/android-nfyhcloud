@@ -21,25 +21,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/cardlist_middle_background"
+            android:gravity="center"
+            android:orientation="horizontal"
             android:paddingBottom="20dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:paddingTop="20dp"
-            android:gravity="center"
-            android:background="@drawable/cardlist_middle_background"
-            android:orientation="horizontal" >
-
-            <kankan.wheel.widget.WheelView
-                android:id="@+id/wv_year"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                style="@style/base_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:text="年" />
+            android:paddingTop="20dp" >
 
             <kankan.wheel.widget.WheelView
                 android:id="@+id/wv_month"
@@ -70,6 +58,28 @@
                 style="@style/base_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/cardlist_middle_background"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <kankan.wheel.widget.WheelView
+                android:id="@+id/wv_year"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                style="@style/base_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:text="年" />
         </LinearLayout>
 
         <Button

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:baselineAlignBottom="true"
+        android:src="@drawable/menu_pop" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical" >
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cardlist_middle_background"
+            android:padding="20dp"
+            android:stretchColumns="*" >
+
+            <TableRow
+                android:id="@+id/tableRow1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp" >
+
+                <CheckBox
+                    android:id="@+id/cb_wheelview_week_01"
+                    style="@style/check_style"
+                    android:layout_height="wrap_content"
+                    android:tag="1"
+                    android:text="周一" />
+
+                <CheckBox
+                    android:id="@+id/cb_wheelview_week_02"
+                    style="@style/check_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="2"
+                    android:text="周二" />
+
+                <CheckBox
+                    android:id="@+id/cb_wheelview_week_03"
+                    style="@style/check_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="3"
+                    android:text="周三" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp" >
+
+                <CheckBox
+                    android:id="@+id/cb_wheelview_week_04"
+                    style="@style/check_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="4"
+                    android:text="周四" />
+
+                <CheckBox
+                    android:id="@+id/cb_wheelview_week_05"
+                    style="@style/check_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="5"
+                    android:text="周五" />
+
+                <CheckBox
+                    android:id="@+id/cb_wheelview_week_06"
+                    style="@style/check_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="6"
+                    android:text="周六" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp" >
+
+                <CheckBox
+                    android:id="@+id/cb_wheelview_week_07"
+                    style="@style/check_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="7"
+                    android:text="周日" />
+            </TableRow>
+        </TableLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@android:id/empty"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/pop_menu_item_bg"
+                android:text="返回" />
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="#D3D3D3" />
+
+            <Button
+                android:id="@android:id/closeButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/pop_menu_item_bg"
+                android:text="确定" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

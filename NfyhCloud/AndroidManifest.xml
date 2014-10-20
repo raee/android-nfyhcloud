@@ -97,13 +97,19 @@
 
         <!-- 闹钟 -->
         <activity android:name="com.rae.alarm.AlarmAddNormalActivity" >
+        </activity>
+        <activity android:name="com.rae.alarm.AlarmListActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.rae.alarm.AlarmListActivity" />
+        <activity
+            android:name="com.yixin.nfyh.cloud.AlarmRingActivity"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
         <activity android:name="com.yixin.nfyh.cloud.activity.SMSListActivity" />
         <!-- 添加分类 -->
         <activity android:name="com.yixin.nfyh.cloud.activity.AddCategoryActivity" >
@@ -169,11 +175,6 @@
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity android:name="com.yixin.nfyh.cloud.AddAlarmActivity" >
-        </activity>
-        <activity
-            android:name="com.yixin.nfyh.cloud.AlarmActivity"
-            android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity android:name="com.yixin.nfyh.cloud.EditAlarmActivity" >
         </activity>
@@ -241,11 +242,15 @@
 
         <!-- 闹钟 -->
         <receiver
-            android:name="com.yixin.nfyh.cloud.alarm.AlarmBrocastRecevice"
+            android:name="com.rae.core.alarm.AlarmBroadcastReceiver"
             android:label="@string/undefind" >
             <intent-filter>
-                <action android:name="com.yixin.nfyh.cloud.alarm.action" />
+                <action android:name="com.rae.core.alarm.action.wakeup" />
             </intent-filter>
+
+            <meta-data
+                android:name="intent"
+                android:value="com.yixin.nfyh.cloud.AlarmRingActivity" />
         </receiver>
 
         <uses-library android:name="android.test.runner" />

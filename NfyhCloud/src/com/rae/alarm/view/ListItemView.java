@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.yixin.nfyh.cloud.R;
 
 public class ListItemView extends LinearLayout {

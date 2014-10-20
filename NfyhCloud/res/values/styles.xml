@@ -32,7 +32,6 @@
         <item name="android:gravity">center</item>
     </style>
 
-
     <style name="Theme.IOS.Light" parent="@android:style/Theme.Holo.Light">
         <item name="android:actionMenuTextColor">@color/white</item>
         <item name="android:actionBarStyle">@style/Widget.IOS.Actionbar</item>
@@ -114,7 +113,6 @@
 
     <!-- IOS主题 -->
     <style name="Widget.Light.IOS" />
-
 
     <style name="Widget.Light.IOS.ListItem" parent="@style/match_warp">
         <item name="android:layout_marginBottom">10dp</item>
@@ -216,7 +214,6 @@
     <style name="DialogAimation">
         <item name="android:windowEnterAnimation">@anim/slide_in_from_bottom</item>
         <item name="android:windowExitAnimation">@anim/slide_out_to_bottom</item>
-       
     </style>
 
     <style name="base_textview">
@@ -228,4 +225,13 @@
         <item name="android:padding">15dp</item>
         <item name="android:gravity">center</item>
     </style>
+
+    <style name="check_style">
+        <item name="android:button">@drawable/clock_check_bg</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">5dp</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:padding">5dp</item>
+    </style>
+
 </resources>

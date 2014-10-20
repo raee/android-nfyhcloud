@@ -66,6 +66,7 @@
             android:id="@+id/liv_normal_alarm_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             view:subtitle="2014-01-01"
             view:title="响铃日期" >
         </com.rae.alarm.view.ListItemView>
@@ -76,7 +77,6 @@
             android:layout_height="wrap_content"
             view:subtitle="不测量"
             view:title="响铃测量体征" >
-
         </com.rae.alarm.view.ListItemView>
 
         <EditText
@@ -99,7 +99,6 @@
             android:ems="10"
             android:gravity="left"
             android:hint="响铃备注" >
-
         </EditText>
 
         <com.rae.alarm.view.ListItemView
@@ -107,12 +106,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             view:title="更多设置" >
-
         </com.rae.alarm.view.ListItemView>
 
         <Button
-            style="@style/btn_green"
             android:id="@+id/btn_normal_alarm_save"
+            style="@style/btn_green"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"

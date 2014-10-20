@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:view="http://schemas.android.com/apk/res/com.yixin.nfyh.cloud"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <com.rae.alarm.view.ListItemView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        view:subtitle="一天一次"
+        view:title="响铃周期" >
+    </com.rae.alarm.view.ListItemView>
+
+</LinearLayout>
