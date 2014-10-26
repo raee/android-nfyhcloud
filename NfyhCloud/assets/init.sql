@@ -83,9 +83,9 @@ insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_ty
 
 insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_type,name) values(29,'1003',50,120,0,'正常脉搏范围');
 insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_type,name) values(30,'3001',50,100,0,'正常血氧范围');
-insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_type,name) values(33,'5001',40,120,0,'呼吸峰速正常范围');
 insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_type,name) values(31,'6001',0,120,0,'心跳正常范围');
 insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_type,name) values(32,'4001',0,50,0,'体温正常范围');
+insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_type,name) values(33,'5001',40,120,0,'呼吸峰速正常范围');
 
 -- 体征提示
 delete from sign_tips;
@@ -97,25 +97,21 @@ insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tip
 insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(16,1,-1,'警告！！警告！！！您的收缩压严重异常！！强烈建议您入院检查！！',9);
 
 insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(17,1,-1,'您的舒张压很理想，请继续保持！',5);
-insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(18,1,-1,'您的舒张压正常，请继续保持！',6);
+insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(18,1,-1,'您的舒张压非常好！，请继续保持！',6);
+insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(19,1,-1,'您的舒张压正常，请继续保持！',6);
 insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(19,1,-1,'您的舒张压有点高了，是不是测量的时候激动了，请保持平静再测一次吧，如果还是依旧，请注意日常的生活饮食',6);
-insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(20,1,-1,'您的舒张压真的挺高，如果延续下去，很有可能导致高血压，请务必注意日常的生活饮食，多运动！',7);
-insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(21,1,-1,'您的舒张压已经达到二级高血压的状态，建议您找医生咨询！',8);
-insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(22,1,-1,'警告！！警告！！！您的舒张压严重异常！！强烈建议您入院检查！！',9);
+insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(21,1,-1,'您的舒张压真的挺高，如果延续下去，很有可能导致高血压，请务必注意日常的生活饮食，多运动！',7);
+insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(22,1,-1,'您的舒张压已经达到二级高血压的状态，建议您找医生咨询！',8);
+insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(23,1,-1,'警告！！警告！！！您的舒张压严重异常！！强烈建议您入院检查！！',9);
 
-insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(23,0,0,'警告！！您的血糖比入院血糖还高，强烈建议您入院进行检查！',6);
-insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(23,1,1,'您比入院血糖低了哦，请保持！',6);
-insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(24,0,0,'您比出院时的血糖高了，请注意饮食健康，平淡饮食。',6);
-insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(24,1,1,'您比出院时的血糖还低，真棒！请保持！',7);
-insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(25,0,0,'您比临床血糖高了，请注意，如果发展下去则血压入院检查了~~',8);
+insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(24,0,0,'警告！！您的血糖比入院血糖还高，强烈建议您入院进行检查！',6);
+insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(24,1,1,'您比入院血糖低了哦，请保持！',6);
+insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(25,0,0,'您比出院时的血糖高了，请注意饮食健康，平淡饮食。',6);
+insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(26,1,1,'您比出院时的血糖还低，真棒！请保持！',7);
+insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(27,0,0,'您比临床血糖高了，请注意，如果发展下去则血压入院检查了~~',8);
 
-insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(28,1,-1,'脉搏正常！',5);
-
+insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(29,1,-1,'脉搏正常！',5);
+insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(30,1,-1,'血氧正常！',5);
 insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(31,1,-1,'心跳正常！',5);
-
-insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(29,1,-1,'血氧正常！',5);
-
-insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(30,1,-1,'呼吸峰速正常！',5);
-
 insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(32,1,-1,'体温正常！',5);
-
+insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(33,1,-1,'呼吸峰速正常！',5);

@@ -2,17 +2,50 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/receive_data_bg" >
+    android:background="@drawable/alarm_ring_bg" >
+
+    <TextView
+        android:id="@+id/tv_alarm_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:text="12:00"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/white"
+        android:textSize="48sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_next_alarm_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/img_device_connect_loading_bg"
+        android:layout_centerHorizontal="true"
+        android:text="测量血压"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/img_device_connect_loading_bg"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_alarm_time"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/alarm_ring_split"
+        android:scaleType="centerInside" />
 
     <FrameLayout
         android:id="@+id/fl_alarm_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="70dp"
         android:background="@drawable/alarm_slide_bg"
         android:orientation="vertical"
-        android:paddingBottom="25dp" >
+        android:padding="10dp" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,10 +54,11 @@
             android:orientation="vertical" >
 
             <ImageView
+                android:id="@+id/img_alarm_ring_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:src="@drawable/alarm_arrow_up" />
+                android:src="@drawable/alarm_ring_up" />
 
             <TextView
                 android:id="@+id/tv_input_field_title"
@@ -32,51 +66,35 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
                 android:layout_marginTop="10dp"
-                android:text="向上滑动执行提醒"
+                android:text="向上滑动执行提醒，点击停止音乐"
                 android:textColor="@color/white" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:src="@drawable/alarm_drag_divider" />
-
-            <TextView
-                android:id="@+id/tv_alarm_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/white" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="5dp"
-                android:src="@drawable/alarm_drag_divider" />
 
             <TextView
                 android:id="@+id/tv_alarm_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="20dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/white" />
-
         </LinearLayout>
     </FrameLayout>
 
-     <TextView
-         android:id="@+id/tv_next_alarm_content"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:layout_alignParentLeft="true"
-         android:layout_alignParentTop="true"
-         android:layout_centerHorizontal="true"
-         android:background="@drawable/actionbar_selectable_bg_pressed"
-         android:gravity="center"
-         android:padding="30dp"
-         android:textAppearance="?android:attr/textAppearanceLarge"
-         android:textColor="@color/white" />
+    <TextView
+        android:id="@+id/tv_alarm_ring_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_next_alarm_content"
+        android:layout_centerHorizontal="true"
+        android:text="向右滑动"
+        android:textColor="@color/white"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/img_alarm_ring_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/tv_next_alarm_content"
+        android:layout_below="@+id/tv_alarm_ring_tips"
+        android:src="@drawable/gesture_top"
+        android:visibility="gone" />
 
 </RelativeLayout>

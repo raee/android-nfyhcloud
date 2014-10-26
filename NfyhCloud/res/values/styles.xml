@@ -43,6 +43,15 @@
         <!-- <item name="android:windowContentOverlay">@drawable/actionbar_overlay</item> -->
     </style>
 
+    <style name="NoTitleBarTheme" parent="@style/Theme.IOS.Light">
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="NoTitleBarThemeFullscreen" parent="@style/NoTitleBarTheme">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
     <!-- 透明主题 -->
     <style name="Theme.IOS.Light.Transparent" parent="@style/Theme.IOS.Light">
         <item name="android:actionBarTabBarStyle">@style/Widget.IOS.Actionbar.Transparent</item>

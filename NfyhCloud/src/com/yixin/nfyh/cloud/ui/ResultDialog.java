@@ -30,15 +30,14 @@ import com.yixin.nfyh.cloud.bll.ConfigServer;
  * @author 睿
  * 
  */
-public class ResultDialog extends Dialog implements View.OnClickListener
-{
+public class ResultDialog extends Dialog implements View.OnClickListener {
 	
 	private View				mContentView;
 	private LinearLayout		mStarView;				// 星星
 	private LinearLayout		mTagViewground;
 	private LinearLayout		mTitleViewground;
 	private LinearLayout		mMessageView;
-	private int					mAutoCloseTime	= 0;	//自动关闭窗口，0为不关闭
+	private int					mAutoCloseTime	= 3;	//自动关闭窗口，0为不关闭
 	private TextView			mTitleView;
 	private ImageView			mImgTag;				//标签图像
 	private int[]				mImageRes;				// 等级图片
@@ -52,31 +51,23 @@ public class ResultDialog extends Dialog implements View.OnClickListener
 	private boolean				mHasFocus;
 	private ConfigServer		mConfig			= null;
 	
-	public ResultDialog(Context context)
-	{
+	public ResultDialog(Context context) {
 		super(context, R.style.ResultDialog);
 		mConfig = new ConfigServer(context);
-		this.mHandler = new Handler(new Handler.Callback()
-		{
+		this.mHandler = new Handler(new Handler.Callback() {
 			
 			@Override
-			public boolean handleMessage(Message msg)
-			{
-				switch (msg.what)
-				{
+			public boolean handleMessage(Message msg) {
+				switch (msg.what) {
 					case 0:
 						int count = msg.arg1;
 						mTextTips.setText(count + "秒后自动关闭，或者点击屏幕关闭");
 						break;
 					case 1:
-						if (mHasFocus)
-						{
+						if (mHasFocus) {
 							setAutoCloseTime(mAutoCloseTime); // 重新计时
-							for (int i = 0; i < mBufferMusicRes.size(); i++)
-							{
-								mMediaList.add(MediaUtil.playMusic(
-										getContext(), mBufferMusicRes.get(i),
-										false));
+							for (int i = 0; i < mBufferMusicRes.size(); i++) {
+								mMediaList.add(MediaUtil.playMusic(getContext(), mBufferMusicRes.get(i), false));
 							}
 						}
 						break;
@@ -92,56 +83,40 @@ public class ResultDialog extends Dialog implements View.OnClickListener
 		
 		this.mMediaList = new ArrayList<MediaPlayer>();
 		
-		this.mImageRes = new int[] { R.drawable.sign_tag_01,
-				R.drawable.sign_tag_02 }; // 标签资源
+		this.mImageRes = new int[] { R.drawable.sign_tag_01, R.drawable.sign_tag_02 }; // 标签资源
 		
 		//		this.mMusicLevelRes = new int[] { R.raw.win, R.raw.over }; //声音资源，注意要保持云标签资源的数量一至
 		
-		this.mMusicSays = new int[] { R.raw.nvli, R.raw.zaishiyixia,
-				R.raw.jiayou, R.raw.piaoliang, R.raw.good };
+		this.mMusicSays = new int[] { R.raw.nvli, R.raw.zaishiyixia, R.raw.jiayou, R.raw.piaoliang, R.raw.good };
 		
-		this.mContentView = LayoutInflater.from(context).inflate(
-				R.layout.dialog_result, null);
+		this.mContentView = LayoutInflater.from(context).inflate(R.layout.dialog_result, null);
 		
-		this.mContentView.findViewById(android.R.id.closeButton)
-				.setOnClickListener(new View.OnClickListener()
-				{
-					
-					@Override
-					public void onClick(View v)
-					{
-						dismiss();
-					}
-				});
-		this.mContentView.findViewById(android.R.id.content)
-				.setOnClickListener(this);
+		this.mContentView.findViewById(android.R.id.closeButton).setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				dismiss();
+			}
+		});
+		this.mContentView.findViewById(android.R.id.content).setOnClickListener(this);
 		
-		this.mStarView = (LinearLayout) this.mContentView
-				.findViewById(R.id.ll_dialog_star);
-		this.mTitleView = (TextView) this.mContentView
-				.findViewById(R.id.tv_dialog_result_level);
-		this.mMessageView = (LinearLayout) this.mContentView
-				.findViewById(R.id.ll_dialog_message);
+		this.mStarView = (LinearLayout) this.mContentView.findViewById(R.id.ll_dialog_star);
+		this.mTitleView = (TextView) this.mContentView.findViewById(R.id.tv_dialog_result_level);
+		this.mMessageView = (LinearLayout) this.mContentView.findViewById(R.id.ll_dialog_message);
 		
-		this.mTagViewground = (LinearLayout) this.mContentView
-				.findViewById(R.id.ll_dialog_tagview);
-		this.mTitleViewground = (LinearLayout) this.mContentView
-				.findViewById(R.id.ll_dialog_titleview);
-		this.mImgTag = (ImageView) this.mContentView
-				.findViewById(R.id.img_dialog_tag);
+		this.mTagViewground = (LinearLayout) this.mContentView.findViewById(R.id.ll_dialog_tagview);
+		this.mTitleViewground = (LinearLayout) this.mContentView.findViewById(R.id.ll_dialog_titleview);
+		this.mImgTag = (ImageView) this.mContentView.findViewById(R.id.img_dialog_tag);
 		
-		this.mTextTips = (TextView) this.mContentView
-				.findViewById(R.id.tv_dialog_tips);
+		this.mTextTips = (TextView) this.mContentView.findViewById(R.id.tv_dialog_tips);
 		
 	}
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(mContentView);
-		getWindow().setLayout(LayoutParams.MATCH_PARENT,
-				LayoutParams.MATCH_PARENT);
+		getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		setTagLevel(1);
 	}
 	
@@ -151,28 +126,22 @@ public class ResultDialog extends Dialog implements View.OnClickListener
 	 * @param time
 	 *            关闭时间
 	 */
-	public void setAutoCloseTime(int time)
-	{
+	public void setAutoCloseTime(int time) {
 		this.mAutoCloseTime = time;
 		
 		// 自动关闭处理
-		if (mAutoCloseTime > 0)
-		{
-			if (this.mTimer != null)
-			{
+		if (mAutoCloseTime > 0) {
+			if (this.mTimer != null) {
 				this.mTimer.cancel(); //取消之前的定时器
 				this.mTimer = null;
 			}
 			this.mTimer = new Timer();
-			this.mTimer.schedule(new TimerTask()
-			{
+			this.mTimer.schedule(new TimerTask() {
 				private int	count	= 0;
 				
 				@Override
-				public void run()
-				{
-					if (count >= mAutoCloseTime)
-					{
+				public void run() {
+					if (count >= mAutoCloseTime) {
 						dismiss();
 						this.cancel();
 					}
@@ -185,8 +154,7 @@ public class ResultDialog extends Dialog implements View.OnClickListener
 	}
 	
 	@Override
-	public void dismiss()
-	{
+	public void dismiss() {
 		if (this.mTimer != null) this.mTimer.cancel();
 		
 		stopMusic();
@@ -198,8 +166,7 @@ public class ResultDialog extends Dialog implements View.OnClickListener
 	 * 
 	 * @param resid
 	 */
-	public void playMusic(int resid)
-	{
+	public void playMusic(int resid) {
 		mBufferMusicRes.add(resid);
 		//this.mMediaList.add(MediaUtil.playMusic(getContext(), resid, false));
 	}
@@ -207,10 +174,8 @@ public class ResultDialog extends Dialog implements View.OnClickListener
 	/**
 	 * 停止播放
 	 */
-	public void stopMusic()
-	{
-		for (MediaPlayer player : mMediaList)
-		{
+	public void stopMusic() {
+		for (MediaPlayer player : mMediaList) {
 			MediaUtil.stopPlayMusic(player); //停止播放音乐
 		}
 	}
@@ -220,20 +185,16 @@ public class ResultDialog extends Dialog implements View.OnClickListener
 	 * 
 	 * @param num
 	 */
-	public void setStar(int num)
-	{
-		if (mStarView.getChildCount() > 0)
-		{
+	public void setStar(int num) {
+		if (mStarView.getChildCount() > 0) {
 			mStarView.removeAllViews(); //移除所有的星星
 		}
 		num = (num > 0 && num < 6) ? num : 1; //最小为1个，最大为5个，超出的都作为1
 		
-		if (this.mMusicSays.length > num - 1)
-		{
+		if (this.mMusicSays.length > num - 1) {
 			playMusic(mMusicSays[num - 1]);
 		}
-		for (int i = 0; i < num; i++)
-		{
+		for (int i = 0; i < num; i++) {
 			ImageView img = new ImageView(this.getContext());
 			img.setImageResource(R.drawable.icon_star);
 			mStarView.addView(img);
@@ -241,8 +202,7 @@ public class ResultDialog extends Dialog implements View.OnClickListener
 	}
 	
 	@Override
-	public void setTitle(CharSequence title)
-	{
+	public void setTitle(CharSequence title) {
 		this.mTitleView.setText(title);
 	}
 	
@@ -251,14 +211,12 @@ public class ResultDialog extends Dialog implements View.OnClickListener
 	 * 
 	 * @param msg
 	 */
-	public void setMessage(String msg)
-	{
+	public void setMessage(String msg) {
 		TextView tv = new TextView(this.getContext());
 		tv.setBackgroundResource(R.drawable.dialog_textview_bg);
 		tv.setTextColor(Color.parseColor("#8d4e0b"));
 		tv.setTextSize(24);
-		tv.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-				LayoutParams.WRAP_CONTENT));
+		tv.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 		tv.setText(msg);
 		this.mMessageView.addView(tv);
 	}
@@ -269,13 +227,11 @@ public class ResultDialog extends Dialog implements View.OnClickListener
 	 * @param level
 	 *            取值范围1-3：好、中等、差
 	 */
-	public void setTagLevel(int level)
-	{
+	public void setTagLevel(int level) {
 		int index = level - 1;
 		index = (index > 0 && index < 4) ? index : 0;
 		
-		if (this.mImageRes.length < index)
-		{
+		if (this.mImageRes.length < index) {
 			index = 0;
 		}
 		//		if (this.mMusicLevelRes.length > index)
@@ -293,31 +249,37 @@ public class ResultDialog extends Dialog implements View.OnClickListener
 	 * @param resId
 	 *            颜色
 	 */
-	public void setBackgournd(int resId)
-	{
+	public void setBackgournd(int resId) {
 		this.mTagViewground.setBackgroundColor(resId);
 		this.mTitleViewground.setBackgroundColor(resId);
 	}
 	
 	@Override
-	public void show()
-	{
+	public void show() {
 		if (!mConfig.getBooleanConfig(ConfigServer.KEY_AUTO_TIPS)) { return; // 配置告警不提示
 		}
 		super.show();
+		setAutoCloseTime(mAutoCloseTime);
+	}
+	
+	/**
+	 * 重置
+	 */
+	public void reset() {
+		mBufferMusicRes.clear();
+		this.mAutoCloseTime = 3;
+		this.mMessageView.removeAllViews();
 	}
 	
 	/**
 	 * 清除消息
 	 */
-	public void clear()
-	{
+	public void clear() {
 		this.mMessageView.removeAllViews();
 	}
 	
 	@Override
-	public void onClick(View v)
-	{
+	public void onClick(View v) {
 		if (this.mTimer != null) //停止计时
 		{
 			this.mTimer.cancel();
@@ -329,29 +291,23 @@ public class ResultDialog extends Dialog implements View.OnClickListener
 	}
 	
 	@Override
-	public void onWindowFocusChanged(boolean hasFocus)
-	{
+	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
 		Log.i("ttt", this.mTitleView.getText() + "是否有焦点：" + hasFocus);
 		this.mHasFocus = hasFocus;
 		
-		if (hasFocus)
-		{
-			new Timer().schedule(new TimerTask()
-			{
+		if (hasFocus) {
+			new Timer().schedule(new TimerTask() {
 				
 				@Override
-				public void run()
-				{
+				public void run() {
 					Message.obtain(mHandler, 1).sendToTarget();
 				}
 			}, 500);
 			
 		}
-		else
-		{
-			if (mTimer != null)
-			{
+		else {
+			if (mTimer != null) {
 				mTimer.cancel();
 				mTimer = null;
 			}

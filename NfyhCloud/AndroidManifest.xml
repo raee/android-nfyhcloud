@@ -68,11 +68,17 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.IOS.Light" >
-
+        <activity android:name=".TestActivity" >
+        </activity>
         <!-- 欢迎页 -->
         <activity
             android:name="com.yixin.nfyh.cloud.WelcomeActivity"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:theme="@style/NoTitleBarTheme" >
+        </activity>
+        <activity
+            android:name="com.yixin.nfyh.cloud.DeviceConnectActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/NoTitleBarTheme" >
         </activity>
 
         <!-- 主界面 -->
@@ -85,30 +91,31 @@
         <!-- 登录 -->
         <activity
             android:name="com.yixin.nfyh.cloud.LoginActivity"
-            android:theme="@android:style/Theme.NoTitleBar" >
-        </activity>
-
-        <!-- 测试 -->
-        <activity android:name="com.yixin.nfyh.cloud.TestActivity" >
-        </activity>
-        <!-- 消息列表 -->
-        <activity android:name="com.yixin.nfyh.cloud.activity.MessageActivity" >
-        </activity>
-
-        <!-- 闹钟 -->
-        <activity android:name="com.rae.alarm.AlarmAddNormalActivity" >
-        </activity>
-        <activity android:name="com.rae.alarm.AlarmListActivity" >
+            android:theme="@style/NoTitleBarTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- 消息列表 -->
+        <activity android:name="com.yixin.nfyh.cloud.activity.MessageActivity" >
+        </activity>
+
+        <!-- 闹钟 -->
+        <activity
+            android:name="com.rae.alarm.AlarmAddNormalActivity"
+            android:theme="@style/NoTitleBarTheme" >
+        </activity>
+        <activity
+            android:name="com.rae.alarm.AlarmListActivity"
+            android:theme="@style/NoTitleBarTheme" >
+        </activity>
         <activity
             android:name="com.yixin.nfyh.cloud.AlarmRingActivity"
             android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            android:theme="@style/NoTitleBarThemeFullscreen" >
         </activity>
         <activity android:name="com.yixin.nfyh.cloud.activity.SMSListActivity" />
         <!-- 添加分类 -->
@@ -172,7 +179,7 @@
         </activity>
         <activity
             android:name="com.yixin.nfyh.cloud.GuideActivity"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:theme="@style/NoTitleBarTheme" >
         </activity>
         <activity android:name="com.yixin.nfyh.cloud.AddAlarmActivity" >
         </activity>
@@ -197,21 +204,27 @@
         <!-- 设置结束 -->
 
 
-        <!-- 服务 -->
+        <!-- 百度定位服务 -->
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote" >
         </service>
+
         <!-- 核心服务 -->
         <service
             android:name="com.yixin.nfyh.cloud.service.CoreService"
             android:label="核心服务" >
         </service>
+
         <!-- 推送服务 -->
         <service
             android:name="com.yixin.nfyh.cloud.service.PushNotificationService"
             android:label="消息推送服务" >
+        </service>
+        <service
+            android:name="com.rae.core.alarm.AlarmService"
+            android:label="提醒服务" >
         </service>
         <!-- 欧姆龙核心服务 -->
         <service

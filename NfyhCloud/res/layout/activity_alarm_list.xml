@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_alarm_list"
+    android:background="@drawable/alarm_ring_bg"
     android:orientation="vertical" >
 
     <ListView

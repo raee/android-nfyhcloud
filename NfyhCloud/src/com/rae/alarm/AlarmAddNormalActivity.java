@@ -69,6 +69,7 @@ public class AlarmAddNormalActivity extends Activity implements OnClickListener 
 	private SelectPopupWindow				mSignSelectWindow;		// 选择列表弹出框
 	private DateSelectWindow				mSelectDateWindow;		// 日期选择弹出框
 	private List<String>					mZhouqiArray;			// 默认周期选择列表。
+	private HashMap<String, String>			mSignHashMap;
 	private List<String>					mSignArray;			// 体征列表
 	private NfyhAlarmEntity					mAlarmEntity;			// 闹钟实体
 	private WeekSelectWindow				mWeekSelectWindow;
@@ -87,30 +88,24 @@ public class AlarmAddNormalActivity extends Activity implements OnClickListener 
 		mRootView = getLayoutInflater().inflate(R.layout.activity_add_normal_alarm, null);
 		setContentView(mRootView);
 		
-		mAlarmEntity = getIntent().getParcelableExtra("data");
-		if (mAlarmEntity == null) {
-			// 闹钟实体
-			mAlarmEntity = new NfyhAlarmEntity(AlarmEntity.TYPE_REPEAT_EVERY_DAY, "每天重复闹钟", AlarmUtils.getDateByTimeInMillis(System.currentTimeMillis()));
-		}
-		else {
-			initValue();
-		}
-		
-		initView();
-		setUpDateSelectView();
-		
 		// 获取所有的体征
 		mSignArray = new ArrayList<String>();
 		try {
 			List<SignTypes> signTypes = NfyhCloudDataFactory.getFactory(this).getSignDevice().getSignTypes();
+			mSignHashMap = new HashMap<String, String>();
 			for (SignTypes signTtype : signTypes) {
-				mSignArray.add(signTtype.getName());
+				String type = signTtype.getTypeId();
+				String name = signTtype.getName();
+				mSignArray.add(name);
+				mSignHashMap.put(name, type);
 			}
 			mSignArray.add("不测量");
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+		initView();
 		
 		initZhouqiWindow();
 		
@@ -174,8 +169,9 @@ public class AlarmAddNormalActivity extends Activity implements OnClickListener 
 			@Override
 			public void onSelectChange(SelectPopupWindow window, String value) {
 				String val = mSignSelectWindow.getCurrentItem();
+				String type = mSignHashMap.get(val);
 				mItemSign.setSubTitle(val);
-				mAlarmEntity.setSignName(val);
+				mAlarmEntity.setSignName(type);
 				window.dismiss();
 			}
 		});
@@ -184,6 +180,7 @@ public class AlarmAddNormalActivity extends Activity implements OnClickListener 
 	// 初始化周期列表选择框
 	private void initZhouqiWindow() {
 		this.mZhouqiSelectWindow = new SelectPopupWindow(this);
+		mZhouqiSelectWindow.setAdapter(mZhouqiArray);
 		mZhouqiSelectWindow.setOnSelectListener(new SelectPopupWindow.onSelectListener() {
 			
 			@Override
@@ -231,15 +228,15 @@ public class AlarmAddNormalActivity extends Activity implements OnClickListener 
 	private void initValue() {
 		
 		// 初始化时间
-		Date date = AlarmUtils.parseDate(mAlarmEntity.getTime());
+		long date = AlarmUtils.getTimeInMillis(mAlarmEntity.getTime());
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
+		calendar.setTimeInMillis(date);
 		
 		// 时间赋值
-		mHour = String.valueOf(calendar.get(Calendar.HOUR));
+		mHour = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
 		mMinitue = String.valueOf(calendar.get(Calendar.MINUTE));
-		mDate = AlarmUtils.dateToString("yyyy-MM-dd", date);
-		mDateTime = AlarmUtils.dateToString(date);
+		mDate = AlarmUtils.dateToString("yyyy-MM-dd", calendar.getTime());
+		mDateTime = AlarmUtils.dateToString(calendar.getTime());
 		if (mAlarmEntity.getWeeks() != null && mAlarmEntity.getWeeks().length > 0) {
 			mWeeks = mAlarmEntity.getWeeks();
 		}
@@ -257,8 +254,18 @@ public class AlarmAddNormalActivity extends Activity implements OnClickListener 
 			}
 		}
 		
-		mItemDate.setSubTitle(mDate);		// 日期
-		mItemSign.setSubTitle(mAlarmEntity.getSignName()); // 体征
+		if (date > 0) {
+			mItemDate.setSubTitle(mDate);		// 日期
+		}
+		if (!TextUtils.isEmpty(mAlarmEntity.getSignName()) || !"不测量".equals(mAlarmEntity.getSignName())) {
+			for (Entry<String, String> item : mSignHashMap.entrySet()) {
+				if (item.getValue().equals(mAlarmEntity.getSignName())) {
+					mItemSign.setSubTitle(item.getKey()); // 体征		
+					break;
+				}
+			}
+			
+		}
 		mItemTitle.setText(mAlarmEntity.getTitle()); //标题
 		mItemContent.setText(mAlarmEntity.getContent()); //备注
 		
@@ -305,16 +312,19 @@ public class AlarmAddNormalActivity extends Activity implements OnClickListener 
 		}
 		
 		mItemDate.setSubTitle(mDate);
+		mItemSign.setSubTitle("不测量");
 		
-		// 周期默认设置为第一个。
-		for (Entry<String, String> item : zhouqiHashMap.entrySet()) {
-			if (item.getValue().equals(mAlarmEntity.getCycle())) {
-				mItemZhouqi.setSubTitle(item.getKey());
-				break;
-			}
+		AlarmEntity entity = getIntent().getParcelableExtra("data");
+		if (entity == null) {
+			// 闹钟实体
+			mAlarmEntity = new NfyhAlarmEntity(AlarmEntity.TYPE_REPEAT_EVERY_DAY, "每天重复闹钟", AlarmUtils.getDateByTimeInMillis(System.currentTimeMillis()));
+		}
+		else {
+			mAlarmEntity = new NfyhAlarmEntity(entity);
+			initValue();
 		}
 		
-		mItemSign.setSubTitle("不测量");
+		setUpDateSelectView();
 	}
 	
 	// 初始化时间滑动选择
@@ -396,7 +406,6 @@ public class AlarmAddNormalActivity extends Activity implements OnClickListener 
 			createWeek();
 			return;
 		}
-		mZhouqiSelectWindow.setAdapter(mZhouqiArray);
 		mZhouqiSelectWindow.show();
 	}
 	
@@ -404,6 +413,7 @@ public class AlarmAddNormalActivity extends Activity implements OnClickListener 
 		String title = mItemTitle.getText().toString();
 		title = TextUtils.isEmpty(title) ? "自定义闹钟" : title;
 		mAlarmEntity.setTitle(title);
+		mAlarmEntity.setNextTime(null); // 重新设置
 		mAlarmEntity.setContent(mItemContent.getText().toString());
 		
 		if (AlarmEntity.TYPE_ONCE.equals(mAlarmEntity.getCycle())) {
@@ -415,7 +425,9 @@ public class AlarmAddNormalActivity extends Activity implements OnClickListener 
 		
 		AlarmProviderFactory.create(this, mAlarmEntity); //创建闹钟
 		
-		startActivity(new Intent(this, AlarmListActivity.class));
+		Intent intent = new Intent(this, AlarmListActivity.class);
+		startActivity(intent);
+		finish();
 		
 	}
 }

@@ -30,6 +30,15 @@ public class Account implements SoapConnectionCallback<Users> {
 	}
 	
 	public void loginInLocal(String username, String pwd) {
+		onSoapConnectSuccess(getGuestUser());
+	}
+	
+	/**
+	 * 获取游客帐号
+	 * 
+	 * @return
+	 */
+	public Users getGuestUser() {
 		// 构造游客帐号
 		Users guest = new Users();
 		guest.setUsername("guest");
@@ -37,7 +46,8 @@ public class Account implements SoapConnectionCallback<Users> {
 		guest.setUid("0");
 		guest.setName("离线用户");
 		guest.setSex("男");
-		onSoapConnectSuccess(guest);
+		
+		return guest;
 	}
 	
 	/**

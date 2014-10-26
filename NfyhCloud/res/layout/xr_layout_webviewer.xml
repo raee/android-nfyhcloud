@@ -34,7 +34,7 @@
             android:src="@drawable/webapp_loading_progress" />
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/tv_alarm_ring_tips"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"

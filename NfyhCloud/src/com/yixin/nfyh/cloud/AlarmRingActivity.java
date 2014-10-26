@@ -1,11 +1,13 @@
 package com.yixin.nfyh.cloud;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
-import android.app.Activity;
 import android.app.KeyguardManager;
 import android.app.KeyguardManager.KeyguardLock;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
@@ -14,18 +16,29 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
+import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.rae.alarm.NfyhAlarmEntity;
 import com.rae.core.alarm.AlarmEntity;
 import com.rae.core.alarm.AlarmUtils;
+import com.yixin.nfyh.cloud.activity.SettingDeviceActivity;
+import com.yixin.nfyh.cloud.adapter.BaseViewPageAdapter;
+import com.yixin.nfyh.cloud.bll.SignCore;
+import com.yixin.nfyh.cloud.bll.sign.SignCoreListener;
+import com.yixin.nfyh.cloud.ui.InputSignView;
+import com.yixin.nfyh.cloud.ui.TopMsgView;
 
 /**
  * 提醒功能
@@ -33,7 +46,7 @@ import com.rae.core.alarm.AlarmUtils;
  * @author Chenrui
  * 
  */
-public class AlarmRingActivity extends Activity implements OnClickListener {
+public class AlarmRingActivity extends BaseActivity implements OnClickListener, SignCoreListener {
 	
 	private FrameLayout		flAlarmContent;
 	
@@ -49,21 +62,55 @@ public class AlarmRingActivity extends Activity implements OnClickListener {
 	
 	private Vibrator		mVibrator;
 	
-	private AlarmEntity		mAlarmEntity;
+	private NfyhAlarmEntity	mAlarmEntity;
+	
+	private InputSignView	mInputSignView;
+	private TopMsgView		mTopMsgView;
+	
+	private TextView		mRingTipsTextView;
+	
+	private ImageView		mRingTipsImageView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		requestWindowFeature(Window.FEATURE_NO_TITLE);//没有标题栏的
 		super.onCreate(savedInstanceState);
 		// 至于锁屏之上
 		Window window = getWindow();
 		window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 		window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 		
-		View view = getLayoutInflater().inflate(R.layout.activity_alarm, null);
-		setContentView(view);
+		ViewPager viewPager = (ViewPager) getLayoutInflater().inflate(R.layout.view_viewpage, null);
+		setContentView(viewPager);
 		
-		mAlarmEntity = getIntent().getParcelableExtra("data");
+		AlarmEntity entity = getIntent().getParcelableExtra("data");
+		mAlarmEntity = new NfyhAlarmEntity(entity);
+		
+		ArrayList<View> views = new ArrayList<View>();
+		View alarmView = getLayoutInflater().inflate(R.layout.activity_alarm, null);
+		mRingTipsTextView = (TextView) alarmView.findViewById(R.id.tv_alarm_ring_tips);
+		mRingTipsImageView = (ImageView) alarmView.findViewById(R.id.img_alarm_ring_tips);
+		alarmView.setOnClickListener(this);
+		views.add(alarmView); // 添加View 
+		
+		String signName = mAlarmEntity.getSignName();
+		if (!TextUtils.isEmpty(signName) && !signName.equals("不测量")) {
+			
+			mRingTipsImageView.setVisibility(View.VISIBLE);
+			mRingTipsTextView.setVisibility(View.VISIBLE);
+			
+			mRingTipsImageView.startAnimation(AnimationUtils.loadAnimation(this, R.anim.move_left_repeat));
+			
+			View signView = getLayoutInflater().inflate(R.layout.alarm_tab_sign, null);
+			mTopMsgView = (TopMsgView) signView.findViewById(R.id.msgview);
+			mInputSignView = (InputSignView) signView.findViewById(R.id.sign_alarm_tab);
+			mInputSignView.showUploadButton(false);
+			mInputSignView.setDataList(new SignCore(this).getSignTypes(signName));
+			signView.findViewById(R.id.btn_alarm_tab_connet).setOnClickListener(this);
+			signView.findViewById(R.id.btn_alarm_tag_upload).setOnClickListener(this);
+			views.add(signView);
+		}
+		
+		viewPager.setAdapter(new BaseViewPageAdapter(views));
 		
 		// 键盘管理器
 		KeyguardManager mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
@@ -86,20 +133,27 @@ public class AlarmRingActivity extends Activity implements OnClickListener {
 		mVibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 		vibarte();
 		
-		TextView tvContent = (TextView) findViewById(R.id.tv_alarm_content);
-		TextView tvTtitle = (TextView) findViewById(R.id.tv_next_alarm_content);
-		TextView tvTime = (TextView) findViewById(R.id.tv_alarm_time);
-		tvContent.setText(mAlarmEntity.getContent());
+		TextView tvContent = (TextView) alarmView.findViewById(R.id.tv_alarm_content);
+		TextView tvTtitle = (TextView) alarmView.findViewById(R.id.tv_next_alarm_content);
+		TextView tvTime = (TextView) alarmView.findViewById(R.id.tv_alarm_time);
+		ImageView imgRingUpImageView = (ImageView) alarmView.findViewById(R.id.img_alarm_ring_up);
+		AnimationDrawable drawable = (AnimationDrawable) imgRingUpImageView.getDrawable();
+		drawable.start();
+		
 		tvTtitle.setText(mAlarmEntity.getTitle());
 		tvTime.setText(AlarmUtils.dateToString("HH:mm", mAlarmEntity.getTime()));
-		view.setOnClickListener(this);
+		viewPager.setOnClickListener(this);
 		
-		flAlarmContent = (FrameLayout) findViewById(R.id.fl_alarm_content);
+		tvContent.setText(mAlarmEntity.getContent());
+		
+		flAlarmContent = (FrameLayout) alarmView.findViewById(R.id.fl_alarm_content);
 		flAlarmContent.setClickable(true);
 		flAlarmContent.setOnTouchListener(new flOnTouchListener());
 		DisplayMetrics dm = getResources().getDisplayMetrics();
 		screenHeight = dm.heightPixels;
+		
 		initPlayer();
+		
 	}
 	
 	@Override
@@ -237,7 +291,42 @@ public class AlarmRingActivity extends Activity implements OnClickListener {
 	
 	@Override
 	public void onClick(View v) {
-		StopAlarmRing();
-		unVibarte();
+		
+		switch (v.getId()) {
+			case R.id.btn_alarm_tab_connet:
+				getNfyhApplication().connect();
+				startActivity(new Intent(this, SettingDeviceActivity.class));
+				finish();
+				break;
+			case R.id.btn_alarm_tag_upload:
+				if (mInputSignView != null) {
+					mInputSignView.upload(this);
+				}
+				break;
+			
+			default:
+				StopAlarmRing();
+				unVibarte();
+				break;
+		}
+		
+	}
+	
+	@Override
+	public void onSignCoreSuccess(int code, String msg) {
+		mTopMsgView.setMsg(msg);
+		mTopMsgView.show();
+	}
+	
+	@Override
+	public void onSignCoreError(int code, String msg) {
+		mTopMsgView.setBackgroundColor(getResources().getColor(R.color.mihuang));
+		mTopMsgView.setMsg(msg);
+		mTopMsgView.show();
+	}
+	
+	@Override
+	public void onUploading() {
+		
 	}
 }

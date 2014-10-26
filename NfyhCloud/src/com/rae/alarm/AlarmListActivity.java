@@ -1,11 +1,18 @@
 package com.rae.alarm;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +25,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import cn.rui.framework.ui.RuiDialog;
 
+import com.rae.alarm.AlarmListActivity.AlarmListAdapter.Viewholder;
 import com.rae.core.alarm.AlarmEntity;
 import com.rae.core.alarm.AlarmUtils;
 import com.rae.core.alarm.IDbAlarm;
@@ -26,22 +34,58 @@ import com.yixin.nfyh.cloud.R;
 
 public class AlarmListActivity extends Activity implements OnClickListener {
 	
-	private ListView	mAlarmListView;
+	private ListView			mAlarmListView;
+	private AlarmListAdapter	mAlarmListAdapter;
+	private Timer				mTimer;
+	private Handler				mhHandler	= new Handler(new Handler.Callback() {
+												
+												@Override
+												public boolean handleMessage(Message msg) {
+													refreshListView();
+													return false;
+												}
+											});
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_alarm_list);
 		//		setContentView(R.layout.window_alarm_type_list);
+		init();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		init();
+	}
+
+	private void init() {
 		mAlarmListView = (ListView) findViewById(R.id.lv_alarm_list);
 		findViewById(R.id.tv_alarm_normal).setOnClickListener(this);
 		IDbAlarm db = AlarmProviderFactory.getDbAlarm(this);
-		AlarmListAdapter adapter = new AlarmListAdapter(db.getAlarms());
-		mAlarmListView.setAdapter(adapter);
-		mAlarmListView.setOnItemLongClickListener(adapter);
-		mAlarmListView.setOnItemClickListener(adapter);
+		mAlarmListAdapter = new AlarmListAdapter(db.getAlarms());
+		mAlarmListView.setAdapter(mAlarmListAdapter);
+		mAlarmListView.setOnItemLongClickListener(mAlarmListAdapter);
+		mAlarmListView.setOnItemClickListener(mAlarmListAdapter);
 		
-		AlarmProviderFactory.create(this, new AlarmEntity(AlarmEntity.TYPE_ONCE, "test", AlarmUtils.getDateByTimeInMillis(System.currentTimeMillis() + 3 * 1000)));
+		// 倒计时计算
+		if (mAlarmListAdapter.getCount() > 0) {
+			mTimer = new Timer();
+			mTimer.schedule(new TimerTask() {
+				
+				@Override
+				public void run() {
+					Message.obtain(mhHandler).sendToTarget();
+				}
+			}, 1000, 1000);
+		}
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		mTimer.cancel();
 	}
 	
 	@Override
@@ -61,7 +105,8 @@ public class AlarmListActivity extends Activity implements OnClickListener {
 		private List<AlarmEntity>	mAlarmList;
 		
 		public AlarmListAdapter(List<AlarmEntity> alarms) {
-			this.mAlarmList = alarms;
+			
+			mAlarmList = alarms;
 		}
 		
 		@Override
@@ -79,6 +124,10 @@ public class AlarmListActivity extends Activity implements OnClickListener {
 			return 0;
 		}
 		
+		public List<AlarmEntity> getDataList() {
+			return mAlarmList;
+		}
+		
 		@Override
 		public View getView(int position, View view, ViewGroup arg2) {
 			Viewholder holder = null;
@@ -94,11 +143,30 @@ public class AlarmListActivity extends Activity implements OnClickListener {
 			else {
 				holder = (Viewholder) view.getTag();
 			}
+			if (position == 0) {
+				setTimeLine(holder, m);
+			}
+			else {
+				holder.tvTips.setText(m.getNextTime());
+			}
 			
 			holder.tvTitle.setText(m.getTitle());
-			holder.tvTips.setText(AlarmUtils.getNextTimeSpanString(m.getNextTime()));
 			holder.tvTime.setText(AlarmUtils.dateToString("HH:mm", m.getTime()));
 			return view;
+		}
+		
+		public void setTimeLine(Viewholder holder, AlarmEntity m) {
+			// 高亮数字时间，正在匹配数字。
+			String tips = AlarmUtils.getNextTimeSpanString(m.getNextTime());
+			Pattern pattern = Pattern.compile("\\d+");
+			Matcher matcher = pattern.matcher(tips);
+			while (matcher.find()) {
+				String val = matcher.group();
+				String html = "<big><font color='red'>" + val + "</font></big>";
+				tips = tips.replace(val, html);
+			}
+			
+			holder.tvTips.setText(Html.fromHtml(tips));
 		}
 		
 		class Viewholder {
@@ -109,6 +177,7 @@ public class AlarmListActivity extends Activity implements OnClickListener {
 		public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
 			final AlarmEntity entity = mAlarmList.get(position);
 			
+			// 删除闹钟对话框
 			new RuiDialog.Builder(AlarmListActivity.this).buildTitle("删除闹钟").buildMessage("是否删除：" + entity.getTitle() + "?").buildLeftButton("返回", null).buildRight("删除", new DialogInterface.OnClickListener() {
 				
 				@Override
@@ -127,8 +196,17 @@ public class AlarmListActivity extends Activity implements OnClickListener {
 			Intent intent = new Intent(AlarmListActivity.this, AlarmAddNormalActivity.class);
 			intent.putExtra("data", mAlarmList.get(position));
 			startActivity(intent);
+			finish();
 		}
 		
+	}
+	
+	private void refreshListView() {
+		if (mAlarmListView.getChildCount() > 0) {
+			AlarmEntity m = mAlarmListAdapter.getDataList().get(0);
+			Viewholder holder = (Viewholder) mAlarmListView.getChildAt(0).getTag();
+			mAlarmListAdapter.setTimeLine(holder, m);
+		}
 	}
 	
 }

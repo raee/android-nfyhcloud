@@ -28,7 +28,9 @@ public class TopMsgView extends LinearLayout implements View.OnClickListener {
 	
 	private ImageView	imgIcon;
 	private TextView	tvMsg;
-	private View		contentView;
+	private boolean		mKeepShow	= false;	// 保存显示，不自动消失
+												
+	//	private View		contentView;
 	
 	public TopMsgView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -40,10 +42,20 @@ public class TopMsgView extends LinearLayout implements View.OnClickListener {
 			
 			@Override
 			public void run() {
+				if (mKeepShow) { return; }
 				Message.obtain(handler).sendToTarget();
 			}
-		}, 60 * 1000, 60 * 1000); // 每隔60秒后自动隐藏
+		}, 20 * 1000, 20 * 1000); // 每隔60秒后自动隐藏
 		view.setOnClickListener(this);
+	}
+	
+	/**
+	 * 不自动消失。
+	 * 
+	 * @param val
+	 */
+	public void setKeepShow(boolean val) {
+		mKeepShow = val;
 	}
 	
 	public void setMsg(String msg) {
@@ -59,33 +71,41 @@ public class TopMsgView extends LinearLayout implements View.OnClickListener {
 		imgIcon.startAnimation(animation);
 	}
 	
+	public ImageView getIconImageView() {
+		return imgIcon;
+	}
+	
 	public void stopAnim() {
 		imgIcon.clearAnimation();
 	}
 	
 	public void show(ViewGroup parent) {
-		contentView = parent.findViewById(android.R.id.content);
-		if (contentView == null) {
+		if (getId() == -1) {
 			parent.addView(this, 0);
 			int id = this.getId();
-			id = id == -1 ? android.R.id.content : id;
+			id = id == -1 ? R.id.msgview : id;
 			this.setId(id);
 			this.startAnimation(AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in));
+			setVisibility(View.VISIBLE);
 		}
-		
-		if (this.contentView != null && this.getVisibility() == View.GONE) {
-			this.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.push_in_right));
-			this.setVisibility(View.VISIBLE);
+		else {
+			show();
 		}
+	}
+	
+	public void show() {
+		if (getId() == -1) {
+			setId(R.id.msgview);
+		}
+		this.startAnimation(AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in));
+		this.setVisibility(View.VISIBLE);
 	}
 	
 	private Handler	handler	= new Handler(new Handler.Callback() {
 								
 								@Override
 								public boolean handleMessage(Message msg) {
-									if (contentView != null) {
-										contentView.setVisibility(View.GONE);
-									}
+									dismiss();
 									return false;
 								}
 							});
@@ -94,4 +114,32 @@ public class TopMsgView extends LinearLayout implements View.OnClickListener {
 	public void onClick(View v) {
 		this.setVisibility(View.GONE);
 	}
+	
+	public void dismiss() {
+		stopAnim();
+		Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
+		animation.setAnimationListener(new Animation.AnimationListener() {
+			
+			@Override
+			public void onAnimationStart(Animation animation) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				setVisibility(View.GONE);
+			}
+		});
+		
+		// 开始动画
+		startAnimation(animation);
+	}
+	
 }

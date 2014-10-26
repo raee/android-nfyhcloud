@@ -19,12 +19,6 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_actionbar_top" />
 
-        <!-- <WebView
-            android:id="@+id/webiew_tips"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_actionbar_top" /> -->
-
         <LinearLayout
             android:id="@+id/ll_ui_sign_detail_head"
             android:layout_width="fill_parent"
@@ -43,20 +37,12 @@
                 android:background="@drawable/sign_tag_01" />
         </LinearLayout>
 
-        <LinearLayout
+        <com.yixin.nfyh.cloud.ui.InputSignView
+            android:id="@+id/sign_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_height="wrap_content" >
+        </com.yixin.nfyh.cloud.ui.InputSignView>
 
-            <com.yixin.nfyh.cloud.widget.ListView
-                android:id="@+id/lv_sign_detail_types"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@null"
-                android:listSelector="@drawable/sign_types_item_bg" >
-            </com.yixin.nfyh.cloud.widget.ListView>
-        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>
-

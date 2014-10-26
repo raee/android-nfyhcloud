@@ -27,7 +27,7 @@ public class CoreService extends Service {
 	//	private CheckVersionService		checkVersionService;
 	private CoreBroadcastReceiver	receiver;
 	private NfyhApplication			app;
-	private CoreServerBinder		binder;
+//	private CoreServerBinder		binder;
 	//	private PhotoCategoryControl	mPhotoControl		= null;
 	private ConfigServer			config;
 	
@@ -39,7 +39,7 @@ public class CoreService extends Service {
 		//			String categoryId = intent.getStringExtra("category");
 		//			uploadPhotos(categoryId, uris);
 		//		}
-		return binder;
+		return null;
 	}
 	
 	@Override
@@ -49,12 +49,12 @@ public class CoreService extends Service {
 		receiver = new CoreBroadcastReceiver();
 		config = new ConfigServer(mContext);
 		
-		binder = new CoreServerBinder(this.getApplicationContext());
-		if (config.getBooleanConfig(ConfigServer.KEY_ENABLE_AUTO_RUN)) {
-			Log.i("CoreService", "自动开启监测服务！");
-			binder.conncet();
-		}
-		
+//		binder = new CoreServerBinder(this.getApplicationContext());
+//		if (config.getBooleanConfig(ConfigServer.KEY_ENABLE_AUTO_RUN)) {
+//			Log.i("CoreService", "自动开启监测服务！");
+//			binder.conncet();
+//		}
+//		
 		// 注册短信广播
 		IntentFilter intentFilter = new IntentFilter(BroadcastReceiverFlag.ACTION_REC_SMS);
 		intentFilter.setPriority(Integer.MAX_VALUE);
@@ -72,9 +72,9 @@ public class CoreService extends Service {
 	@Override
 	public void onDestroy() {
 		unregisterReceiver(receiver); //注销广播
-		if (binder != null) {
-			binder.disconnect(); //　关闭设备连接
-		}
+//		if (binder != null) {
+//			binder.disconnect(); //　关闭设备连接
+//		}
 		super.onDestroy();
 	}
 	

@@ -189,4 +189,19 @@
     <string name="switchAndGotoModel">switchAndGotoModel</string>
     <string name="textAndGotoModel">textAndGotoModel</string>
 
+    <!-- 体征警告颜色定义，请按照级别从低到高排列 -->
+    <string-array name="signLevelColor">
+        <item>#cfd0d0</item>
+        <item>#aeaeae</item>
+        <item>#aeaeae</item>
+        <item>#01e9db</item>
+        <item>#0db4eb</item>
+        <item>#13b845</item>
+        <item>#17a200</item>
+        <item>#8ad100</item>
+        <item>#f68b00</item>
+        <item>#d8005c</item>
+        <item>#b200d8</item>
+    </string-array>
+
 </resources>

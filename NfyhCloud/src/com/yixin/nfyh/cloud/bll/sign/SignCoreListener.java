@@ -11,4 +11,6 @@ public interface SignCoreListener
 	void onSignCoreError(int code, String msg);
 
 	void onSignCoreSuccess(int code, String msg);
+	
+	void onUploading();
 }

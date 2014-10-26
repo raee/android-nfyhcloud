@@ -12,23 +12,31 @@ import com.yixin.nfyh.cloud.model.SignTips;
 import com.yixin.nfyh.cloud.model.SignTypes;
 import com.yixin.nfyh.cloud.model.view.SignTipsViewModel;
 
+/**
+ * 体征范围比较接口
+ * 
+ * @author ChenRui
+ * 
+ */
 public class RangeCompareable implements ISignCompareable { // 操作符号定义
-	public static final int		SYMBOL_GT	= 0;
-	public static final int		SYMBOL_LT	= 1;
-	public static final int		SYMBOL_EQ	= 2;
-	public static final int		SYMBOL_GE	= 3;
-	public static final int		SYMBOL_LE	= 4;
-	
+	public static final int		SYMBOL_GT	= 0;	// 大于
+	public static final int		SYMBOL_LT	= 1;	// 小于
+	public static final int		SYMBOL_EQ	= 2;	// 等于
+	public static final int		SYMBOL_GE	= 3;	// 大于等于
+	public static final int		SYMBOL_LE	= 4;	// 小于等于
+													
 	private ISignCompareable	compareable;
 	private ISignDevice			api;
+	private Context				mContext;
 	
 	public RangeCompareable(Context context) {
 		api = NfyhCloudDataFactory.getFactory(context).getSignDevice();
+		this.mContext = context;
 	}
 	
 	@Override
 	public SignTipsViewModel compare(SignTypes m) {
-		SignTipsViewModel result = new SignTipsViewModel();
+		SignTipsViewModel result = new SignTipsViewModel(mContext);
 		result.setSignTypes(m);
 		if (compareable != null) {
 			result = compareable.compare(m);// 装饰比较对象

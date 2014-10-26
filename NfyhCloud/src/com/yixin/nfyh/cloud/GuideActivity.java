@@ -2,10 +2,11 @@ package com.yixin.nfyh.cloud;
 
 import java.util.ArrayList;
 
+import com.yixin.nfyh.cloud.adapter.BaseViewPageAdapter;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
@@ -33,7 +34,7 @@ public class GuideActivity extends Activity {
 		views.add(view2);
 		
 		// 填充ViewPager的数据适配器
-		MyPagerAdapter mPagerAdapter = new MyPagerAdapter(views);
+		BaseViewPageAdapter mPagerAdapter = new BaseViewPageAdapter(views);
 		mViewPager.setAdapter(mPagerAdapter);
 		
 		mViewCount = views.size();
@@ -68,34 +69,4 @@ public class GuideActivity extends Activity {
 		finish();
 	}
 	
-	private class MyPagerAdapter extends PagerAdapter {
-		
-		private ArrayList<View>	views;
-		
-		public MyPagerAdapter(ArrayList<View> views) {
-			this.views = views;
-		}
-		
-		@Override
-		public int getCount() {
-			return this.views.size();
-		}
-		
-		@Override
-		public boolean isViewFromObject(View arg0, Object arg1) {
-			return arg0 == arg1;
-		}
-		
-		@Override
-		public void destroyItem(View container, int position, Object object) {
-			((ViewPager) container).removeView(views.get(position));
-		}
-		
-		@Override
-		public Object instantiateItem(View container, int position) {
-			((ViewPager) container).addView(views.get(position));
-			return views.get(position);
-			
-		}
-	}
 }

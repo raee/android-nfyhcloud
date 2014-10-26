@@ -8,7 +8,7 @@
     android:orientation="horizontal" >
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/img_alarm_ring_tips"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"

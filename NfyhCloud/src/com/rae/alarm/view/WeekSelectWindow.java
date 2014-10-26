@@ -39,7 +39,6 @@ public class WeekSelectWindow extends SelectPopupWindow implements OnClickListen
 		mCheckBoxs = new ArrayList<CheckBox>();
 		
 		mSelectItems = new ArrayList<Integer>();
-		mSelectItems.add(1); //默认保留星期一
 		
 		findCheckBoxView(contentView);
 		mReturnButton = contentView.findViewById(android.R.id.empty);
@@ -90,10 +89,12 @@ public class WeekSelectWindow extends SelectPopupWindow implements OnClickListen
 		// 保证最后一条
 		
 		int location = Integer.valueOf(week) - 1;
+		if (location < 0 || location > mCheckBoxs.size() - 1) {
+			location = 0;
+		}
 		CheckBox checkBox = mCheckBoxs.get(location);
 		
 		boolean exist = isChecked(week); //是否已经存在在已经选择列表中。
-		
 		if (!checked) { // 移除选择
 			if (mSelectItems.size() <= 1) {  // 保证至少选择一项
 				checkBox.setChecked(true);
@@ -111,6 +112,9 @@ public class WeekSelectWindow extends SelectPopupWindow implements OnClickListen
 	}
 	
 	public void setSelectItems(int[] items) {
+		if (items.length <= 0 && mSelectItems.size() <= 0) { // 没有任何东西。
+			mSelectItems.add(1); //默认保留星期一
+		}
 		for (int item : items) {
 			setChecked(item, true);
 		}

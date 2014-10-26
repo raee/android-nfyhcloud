@@ -4,10 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
-import android.view.View;
 import android.widget.BaseAdapter;
 
 import com.yixin.nfyh.cloud.NfyhApplication;
@@ -21,16 +18,17 @@ public abstract class SignTypeItemBaseAdapterView extends BaseAdapter {
 	
 	protected List<SignTypes>	datas;
 	protected Context			context;
-	protected List<UserSigns>	defaultValueDatas;
-	protected List<View>		viewList	= new ArrayList<View>();
+//	protected List<UserSigns>	defaultValueDatas;
+//	protected List<View>		viewList	= new ArrayList<View>();
 	private Users				user		= null;
 	private NfyhApplication		app;
 	private ISignDevice			apiSign;
 	
-	public SignTypeItemBaseAdapterView(Activity context) {
+	public SignTypeItemBaseAdapterView(Context context) {
 		this.context = context;
-		this.defaultValueDatas = new ArrayList<UserSigns>();
-		app = (NfyhApplication) context.getApplication();
+//		this.defaultValueDatas = new ArrayList<UserSigns>();
+		datas = new ArrayList<SignTypes>();
+		app = (NfyhApplication) context.getApplicationContext();
 		user = app.getCurrentUser();
 		this.apiSign = NfyhCloudDataFactory.getFactory(context).getSignDevice();
 	}
@@ -49,9 +47,9 @@ public abstract class SignTypeItemBaseAdapterView extends BaseAdapter {
 				UserSigns usersign = apiSign.getLastUserSignsByType(user.getUid(), itemSignTypes); //获取最近一次的数据
 				if (usersign != null) {
 					itemSignTypes.setDefaultValue(usersign.getSignValue());
-					Log.i("SignTypeItemBaseAdapterView", "赋上次体征值：" + itemSignTypes.getName() + "|" + usersign.getSignValue());
+					//Log.i("SignTypeItemBaseAdapterView", "赋上次体征值：" + itemSignTypes.getName() + "|" + usersign.getSignValue());
 				}
-				this.defaultValueDatas.add(usersign);
+//				this.defaultValueDatas.add(usersign);
 			}
 		}
 		catch (SQLException e) {
@@ -59,9 +57,10 @@ public abstract class SignTypeItemBaseAdapterView extends BaseAdapter {
 		}
 	}
 	
-	public abstract void setValue(int postion, String value);
-	
-	public abstract void loadDefault();
+	//	
+	//	public abstract void setValue(int postion, String value);
+	//	
+	//	public abstract void loadDefault();
 	
 	@Override
 	public int getCount() {

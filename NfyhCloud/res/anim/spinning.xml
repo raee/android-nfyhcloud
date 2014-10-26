@@ -7,7 +7,7 @@
         android:pivotX="50%"
         android:pivotY="50%"
         android:repeatCount="-1"
-        android:toDegrees="359" />
+        android:toDegrees="360" />
 
     <!--
 android:fromDegrees 起始的角度度数
