@@ -74,6 +74,11 @@
         <activity
             android:name="com.yixin.nfyh.cloud.WelcomeActivity"
             android:theme="@style/NoTitleBarTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.yixin.nfyh.cloud.DeviceConnectActivity"
@@ -92,11 +97,6 @@
         <activity
             android:name="com.yixin.nfyh.cloud.LoginActivity"
             android:theme="@style/NoTitleBarTheme" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- 消息列表 -->

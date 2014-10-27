@@ -22,23 +22,13 @@ import com.yixin.nfyh.cloud.bll.ConfigServer;
  * 
  */
 public class CoreService extends Service {
-	public static final String		TYPE_UPLOAD_PHOTO	= "TYPE_UPLOAD_PHOTO";
+	//	public static final String		TYPE_UPLOAD_PHOTO	= "TYPE_UPLOAD_PHOTO";
 	private Context					mContext;
-	//	private CheckVersionService		checkVersionService;
 	private CoreBroadcastReceiver	receiver;
 	private NfyhApplication			app;
-//	private CoreServerBinder		binder;
-	//	private PhotoCategoryControl	mPhotoControl		= null;
-	private ConfigServer			config;
 	
 	@Override
 	public IBinder onBind(Intent intent) {
-		//		if (intent != null && TYPE_UPLOAD_PHOTO.equals(intent.getType()))
-		//		{
-		//			ArrayList<String> uris = intent.getStringArrayListExtra("data");
-		//			String categoryId = intent.getStringExtra("category");
-		//			uploadPhotos(categoryId, uris);
-		//		}
 		return null;
 	}
 	
@@ -47,14 +37,6 @@ public class CoreService extends Service {
 		super.onCreate();
 		mContext = getApplicationContext();
 		receiver = new CoreBroadcastReceiver();
-		config = new ConfigServer(mContext);
-		
-//		binder = new CoreServerBinder(this.getApplicationContext());
-//		if (config.getBooleanConfig(ConfigServer.KEY_ENABLE_AUTO_RUN)) {
-//			Log.i("CoreService", "自动开启监测服务！");
-//			binder.conncet();
-//		}
-//		
 		// 注册短信广播
 		IntentFilter intentFilter = new IntentFilter(BroadcastReceiverFlag.ACTION_REC_SMS);
 		intentFilter.setPriority(Integer.MAX_VALUE);
@@ -62,41 +44,19 @@ public class CoreService extends Service {
 		
 		app = (NfyhApplication) getApplication();
 		app.showSOSinDesktop();
-		
-		// 检查新版本
-		//		checkVersionService = new CheckVersionService(app);
-		//		checkVersionService.check();
+		ConfigServer config = new ConfigServer(mContext);
+		if (config.getBooleanConfig(ConfigServer.KEY_ENABLE_AUTO_RUN)) {
+			Log.i("NfyhApplication", "自动启动监测服务。");
+			app.connect();
+		}
 		
 	}
 	
 	@Override
 	public void onDestroy() {
-		unregisterReceiver(receiver); //注销广播
-//		if (binder != null) {
-//			binder.disconnect(); //　关闭设备连接
-//		}
 		super.onDestroy();
+		unregisterReceiver(receiver); //注销广播
 	}
-	
-	//	/**
-	//	 * 上传图片
-	//	 * 
-	//	 * @param uris
-	//	 *            需要上传的图片路径集合
-	//	 */
-	//	private void uploadPhotos(String categoryId, ArrayList<String> uris)
-	//	{
-	//		if (mPhotoControl == null)
-	//		{
-	//			mPhotoControl = new PhotoCategoryControl(mContext);
-	//		}
-	//		
-	//		for (String uri : uris)
-	//		{
-	//			mPhotoControl.uploadPhoto(uri, categoryId);
-	//		}
-	//		
-	//	}
 	
 	/**
 	 * 跌倒信息接受者

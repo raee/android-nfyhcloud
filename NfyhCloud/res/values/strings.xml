@@ -172,6 +172,7 @@
     <string name="soap_method_category">GetCategories</string>
     <string name="soap_method_upload_sign">UploadData</string>
     <string name="soap_method_photo_list">GetPhotos</string>
+    <string name="soap_method_version_update">VersionUpdate</string>
     <string name="url_method_photo_list">http://nfyh.smu.edu.cn/WebService/Data.ashx?action=getImage</string>
     <string name="url_method_photo_upload">http://nfyh.smu.edu.cn/WebService/Data.ashx?action=uploadImage</string>
     <string name="soap_method_category_add">addCategory</string>
