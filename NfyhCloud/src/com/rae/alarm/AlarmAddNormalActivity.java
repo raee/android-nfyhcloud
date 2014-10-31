@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.json.JSONObject;
+
 import kankan.wheel.widget.OnWheelChangedListener;
 import kankan.wheel.widget.WheelView;
 import kankan.wheel.widget.adapters.AlarmNumbericWhellAdapter;
@@ -20,6 +22,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.rae.alarm.view.DateSelectWindow;
 import com.rae.alarm.view.ListItemView;
@@ -115,6 +118,23 @@ public class AlarmAddNormalActivity extends Activity implements OnClickListener 
 		
 		initWeekWindow();
 		
+		autoAdd();
+		
+	}
+	
+	private void autoAdd() {
+		String type = getIntent().getStringExtra("type");
+		String json = getIntent().getStringExtra("entity");
+		if ("add".equals(type) && null != json) {
+			// 解析Json
+			AlarmEntity entity = AlarmUtils.converEntity(json);
+			if (entity != null) {
+				this.mAlarmEntity = new NfyhAlarmEntity(entity);
+			}
+			else {
+				Toast.makeText(this, "添加提醒出错。", Toast.LENGTH_SHORT).show();
+			}
+		}
 	}
 	
 	// 初始化周选择框。

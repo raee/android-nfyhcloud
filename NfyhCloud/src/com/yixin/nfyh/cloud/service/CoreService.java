@@ -1,19 +1,20 @@
 package com.yixin.nfyh.cloud.service;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Bundle;
 import android.os.IBinder;
-import android.telephony.SmsMessage;
 import android.util.Log;
 
+import com.rae.core.alarm.AlarmService;
 import com.yixin.nfyh.cloud.BroadcastReceiverFlag;
 import com.yixin.nfyh.cloud.NfyhApplication;
-import com.yixin.nfyh.cloud.OneKeySoSActivity;
 import com.yixin.nfyh.cloud.bll.ConfigServer;
+import com.yixin.nfyh.cloud.receiver.CoreBroadcastReceiver;
+import com.yixin.nfyh.cloud.receiver.PullMessageReceiver;
 
 /**
  * 核心服务
@@ -21,11 +22,14 @@ import com.yixin.nfyh.cloud.bll.ConfigServer;
  * @author 睿
  * 
  */
-public class CoreService extends Service {
-	//	public static final String		TYPE_UPLOAD_PHOTO	= "TYPE_UPLOAD_PHOTO";
+public class CoreService extends AlarmService {
 	private Context					mContext;
-	private CoreBroadcastReceiver	receiver;
-	private NfyhApplication			app;
+	private CoreBroadcastReceiver	mSMSReceiver;
+	private NfyhApplication			mApplication;
+	private PullMessageReceiver		mPullMessageReceiver;
+	private int						mCheckMessageTimeSpan	= 3000;										// 消息推送监听间隔
+	private int						mCheckMessageId			= 13800;
+	private String					mPullMessageAction		= "com.yixin.nfyh.cloud.action.pullmessage";
 	
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -36,82 +40,55 @@ public class CoreService extends Service {
 	public void onCreate() {
 		super.onCreate();
 		mContext = getApplicationContext();
-		receiver = new CoreBroadcastReceiver();
-		// 注册短信广播
-		IntentFilter intentFilter = new IntentFilter(BroadcastReceiverFlag.ACTION_REC_SMS);
-		intentFilter.setPriority(Integer.MAX_VALUE);
-		this.registerReceiver(receiver, intentFilter);
+		mApplication = (NfyhApplication) getApplication();
+		mApplication.showSOSinDesktop();
 		
-		app = (NfyhApplication) getApplication();
-		app.showSOSinDesktop();
+		regReceiver();
+		startMonitor();
+		startPullMessage();
+	}
+	
+	// 开启设备监测
+	private void startMonitor() {
 		ConfigServer config = new ConfigServer(mContext);
 		if (config.getBooleanConfig(ConfigServer.KEY_ENABLE_AUTO_RUN)) {
 			Log.i("NfyhApplication", "自动启动监测服务。");
-			app.connect();
+			mApplication.connect();
 		}
+	}
+	
+	// 开启消息监听服务
+	private void startPullMessage() {
+		AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+		Intent intent = new Intent(mPullMessageAction);
+		PendingIntent operation = PendingIntent.getBroadcast(mContext, mCheckMessageId, intent, 0);
 		
+		alarmManager.cancel(operation); // 先取消上次遗留的
+		alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), mCheckMessageTimeSpan, operation);
+	}
+	
+	void regReceiver() {
+		
+		// 注册短信广播
+		mSMSReceiver = new CoreBroadcastReceiver();
+		IntentFilter intentFilter = new IntentFilter(BroadcastReceiverFlag.ACTION_REC_SMS);
+		intentFilter.setPriority(Integer.MAX_VALUE);
+		
+		// 消息推送广播
+		mPullMessageReceiver = new PullMessageReceiver();
+		
+		this.registerReceiver(mPullMessageReceiver, new IntentFilter(mPullMessageAction));
+		this.registerReceiver(mSMSReceiver, intentFilter);
+	}
+	
+	void unregReceiver() {
+		unregisterReceiver(mSMSReceiver); //注销广播
 	}
 	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		unregisterReceiver(receiver); //注销广播
-	}
-	
-	/**
-	 * 跌倒信息接受者
-	 * 
-	 * 
-	 * @author Chenrui
-	 * 
-	 */
-	private class CoreBroadcastReceiver extends BroadcastReceiver {
-		private Intent	intent;
-		
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			mContext = context;
-			this.intent = intent;
-			String actionName = intent.getAction();
-			
-			if (actionName.equals(BroadcastReceiverFlag.ACTION_REC_SMS)) {
-				receiveSMS();
-			}
-		}
-		
-		/**
-		 * 接受跌倒报警信息
-		 */
-		private void receiveSMS() {
-			Log.v("cr", "接受跌倒报警信息");
-			Bundle bun = intent.getExtras();
-			if (bun == null) { return; }
-			
-			Object[] contents = (Object[]) bun.get("pdus");
-			
-			for (Object obj : contents) {
-				byte[] pdu = (byte[]) obj;
-				SmsMessage sms = SmsMessage.createFromPdu(pdu);
-				String content = sms.getMessageBody(); // 信息内容
-				
-				if (content.contains("自动报警") || content.contains("手动报警")) {
-					Log.v("cr", "发生跌倒情况");
-					if (mContext == null) {
-						Log.v("cr", "启动急救失败!");
-						return;
-					}
-					Intent intentSend = new Intent(mContext, OneKeySoSActivity.class);
-					intentSend.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					intentSend.putExtra(OneKeySoSActivity.EXTRA_EVENT_TYPE, "用户发生跌倒情况~");
-					mContext.startActivity(intentSend);
-				}
-				if (content.contains("状态正常") || content.contains("报警通过按键主动解除")) {
-					Log.v("cr", "跌倒被解除");
-				}
-				
-			}
-		}
-		
+		unregReceiver();
 	}
 	
 }

@@ -217,15 +217,6 @@
             android:label="核心服务" >
         </service>
 
-        <!-- 推送服务 -->
-        <service
-            android:name="com.yixin.nfyh.cloud.service.PushNotificationService"
-            android:label="消息推送服务" >
-        </service>
-        <service
-            android:name="com.rae.core.alarm.AlarmService"
-            android:label="提醒服务" >
-        </service>
         <!-- 欧姆龙核心服务 -->
         <service
             android:name="com.signove.health.service.HealthService"

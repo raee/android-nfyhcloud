@@ -168,9 +168,12 @@ public class VersionUpdate implements SoapConnectionCallback<VersionUpdateModel>
 	}
 	
 	private void show(String msg) {
+		if (ruiDialog == null) { return; }
 		ruiDialog.setMessage(msg);
 		ruiDialog.setRightButton("确定", null);
-		ruiDialog.show();
+		if (!ruiDialog.isShowing()) {
+			ruiDialog.show();
+		}
 	}
 	
 	private void installApk(File file) {

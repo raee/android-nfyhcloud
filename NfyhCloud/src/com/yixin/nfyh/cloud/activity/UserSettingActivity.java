@@ -44,18 +44,17 @@ public class UserSettingActivity extends BaseActivity implements OnCheckedChange
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		// receiver = NewVersionReceiver.registerReceiver(this);
-		
 		setContentView(R.layout.activity_setting_main);
-		// this.versionService = new CheckVersionService(this);
-		// this.versionService.setHandler(this.versionHandler);
-		this.config = new ConfigServer(this);
 		
 		this.apiDevice = NfyhCloudDataFactory.getFactory(this).getSignDevice();
 		findView();
 		initConfig();
 		setLinsener();
+		String type = getIntent().getStringExtra("type");
+		// 版本检测
+		if (type != null && "versionupdate".equals(type)) {
+			this.updateVersion();
+		}
 	}
 	
 	/**

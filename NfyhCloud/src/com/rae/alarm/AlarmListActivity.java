@@ -59,7 +59,7 @@ public class AlarmListActivity extends Activity implements OnClickListener {
 		super.onResume();
 		init();
 	}
-
+	
 	private void init() {
 		mAlarmListView = (ListView) findViewById(R.id.lv_alarm_list);
 		findViewById(R.id.tv_alarm_normal).setOnClickListener(this);
@@ -85,7 +85,9 @@ public class AlarmListActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		mTimer.cancel();
+		if (mTimer != null) {
+			mTimer.cancel();
+		}
 	}
 	
 	@Override

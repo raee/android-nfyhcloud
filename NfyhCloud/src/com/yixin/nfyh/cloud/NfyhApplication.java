@@ -15,7 +15,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import cn.rui.framework.utils.DateUtil;
 
-import com.rae.core.alarm.AlarmService;
 import com.rae.core.image.cache.disc.naming.HashCodeFileNameGenerator;
 import com.rae.core.image.cache.memory.impl.UsingFreqLimitedMemoryCache;
 import com.rae.core.image.loader.DisplayImageOptions;
@@ -34,7 +33,6 @@ import com.yixin.nfyh.cloud.device.DefaultDevice;
 import com.yixin.nfyh.cloud.model.Users;
 import com.yixin.nfyh.cloud.server.NfyhCloudUnHanderException;
 import com.yixin.nfyh.cloud.service.CoreService;
-import com.yixin.nfyh.cloud.service.PushNotificationService;
 import com.yixin.nfyh.cloud.utils.LogUtil;
 
 /**
@@ -178,15 +176,8 @@ public class NfyhApplication extends Application {
 	 * 启动各项服务
 	 */
 	private void startServices() {
-		
-		// 推送服务
-		startService(new Intent(context, PushNotificationService.class));
-		
 		// 核心服务
 		startService(new Intent(this, CoreService.class));
-		
-		// 闹钟服务
-		startService(new Intent(this, AlarmService.class));
 	}
 	
 	// private void bindMonitorService() {
