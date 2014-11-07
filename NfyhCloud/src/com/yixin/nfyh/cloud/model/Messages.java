@@ -1,8 +1,5 @@
 ﻿package com.yixin.nfyh.cloud.model;
 
-import java.util.Date;
-
-import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -62,8 +59,8 @@ public class Messages
 	private String	IntentExtra;
 
 	// SendDate
-	@DatabaseField(canBeNull = false, dataType = DataType.DATE_STRING, format = "yyyy-MM-dd HH:mm:ss", columnName = "send_date")
-	private Date	SendDate;
+	@DatabaseField(columnName = "send_date")
+	private String	SendDate;
 
 	// Status
 	@DatabaseField(canBeNull = false, defaultValue = "0", columnName = "status")
@@ -255,7 +252,7 @@ public class Messages
 	/*
 	 * 获取 SendDate
 	 */
-	public Date getSendDate()
+	public String getSendDate()
 	{
 		return SendDate;
 	}
@@ -263,7 +260,7 @@ public class Messages
 	/*
 	 * 设置 SendDate
 	 */
-	public void setSendDate(Date value)
+	public void setSendDate(String value)
 	{
 		this.SendDate = value;
 	}

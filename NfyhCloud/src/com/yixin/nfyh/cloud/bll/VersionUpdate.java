@@ -43,6 +43,7 @@ public class VersionUpdate implements SoapConnectionCallback<VersionUpdateModel>
 	private String		mDownloadPath;
 	private RuiDialog	ruiDialog;
 	private int			mCurrentVersionCode	= 1;
+	private boolean mShowDialog = true;
 	
 	public VersionUpdate(Context context) {
 		this.mContext = context;
@@ -59,12 +60,18 @@ public class VersionUpdate implements SoapConnectionCallback<VersionUpdateModel>
 	}
 	
 	public void check() {
+		if(mShowDialog){
 		ruiDialog.setTitle("正在检查更新");
 		ruiDialog.setMessage("检查更新中，请稍候。");
 		ruiDialog.setRightButton("返回", null);
 		ruiDialog.show();
+		}
 		VersionUpdateServer versionApi = NfyhWebserviceFactory.getFactory(mContext).getVersionUpdateServer();
 		versionApi.check(this);
+	}
+	
+	public void showDialog(boolean val){
+		this.mShowDialog = val;
 	}
 	
 	@Override
@@ -79,7 +86,9 @@ public class VersionUpdate implements SoapConnectionCallback<VersionUpdateModel>
 		}
 		
 		if (mCurrentVersionCode >= data.getVersionCode()) {
+			if(mShowDialog){
 			show("太牛了，当前版本已经是最新了！");
+			}
 			return;
 		}
 		
@@ -87,7 +96,7 @@ public class VersionUpdate implements SoapConnectionCallback<VersionUpdateModel>
 		edit.putInt("Version", data.getVersionCode());
 		edit.commit();
 		
-		String msg = Html.fromHtml("<p>版本号：" + data.getVersionCode() + "，更新内容：</p>" + data.getUpdateContent()).toString();
+		String msg = Html.fromHtml("<p>版本号：" + data.getVersionName() + "，更新内容：</p>" + data.getUpdateContent()).toString();
 		
 		ruiDialog.setTitle("发现新版本，是否更新？");
 		ruiDialog.setMessage(msg);
@@ -164,7 +173,8 @@ public class VersionUpdate implements SoapConnectionCallback<VersionUpdateModel>
 	
 	@Override
 	public void onSoapConnectedFalid(WebServerException e) {
-		show("检查版本出错！" + e.getMessage());
+		if(mShowDialog){
+		show("检查版本出错！" + e.getMessage());}
 	}
 	
 	private void show(String msg) {

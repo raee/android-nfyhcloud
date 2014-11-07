@@ -135,7 +135,7 @@ public class PushMessageServer extends WebserverConnection implements IPushMessa
 				item.setContent(obj.getString("Content"));
 				item.setSummary(obj.getString("Summary"));
 				item.setStatus(0);
-				item.setSendDate(CommonUtil.getDateFromJson(obj.getString("Senddate")));
+				item.setSendDate(CommonUtil.getDateString(obj.getString("Senddate")));
 				// Intent
 				item.setIntentName(obj.getString("Intentclassname"));
 				item.setIntentCategroy(obj.getString("Intentcategory"));

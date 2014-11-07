@@ -4,8 +4,12 @@ import java.sql.SQLException;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,30 +26,35 @@ import com.yixin.nfyh.cloud.bll.VersionUpdate;
 import com.yixin.nfyh.cloud.data.ISignDevice;
 import com.yixin.nfyh.cloud.data.NfyhCloudDataFactory;
 import com.yixin.nfyh.cloud.model.Devices;
+import com.yixin.nfyh.cloud.service.CoreBinder;
+import com.yixin.nfyh.cloud.service.CoreService;
 
-public class UserSettingActivity extends BaseActivity implements OnCheckedChangeListener {
-	private Button			btnLogout;
+public class UserSettingActivity extends BaseActivity implements
+		OnCheckedChangeListener {
+	private Button btnLogout;
 	// private TextView tvUserName;
 	// private SubMenu menuCheckVersion;
 	// private CheckVersionService versionService;
 	// private BroadcastReceiver receiver;
-	private TextView		tvAppVersion;
-	private ConfigServer	config;
-	private ISignDevice		apiDevice;
-	private TextView		tvDeviceName;
-	private RuiSwitch		swAutoDevice;
-	private RuiSwitch		swAutoTips;
-	private RuiSwitch		swDesktop;
-	private RuiSwitch		swFall;
-	private RuiSwitch		swPullMsg;
-	private RuiSwitch		swYuanhou;
-	private VersionUpdate	mVersionUpdate;
-	
+	private TextView tvAppVersion;
+	private ConfigServer config;
+	private ISignDevice apiDevice;
+	private TextView tvDeviceName;
+	private RuiSwitch swAutoDevice;
+	private RuiSwitch swAutoTips;
+	private RuiSwitch swDesktop;
+	private RuiSwitch swFall;
+	private RuiSwitch swPullMsg;
+	private RuiSwitch swYuanhou;
+	private VersionUpdate mVersionUpdate;
+	private CoreBinder mBinder;
+	private ServiceConnection mConnection;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_setting_main);
-		
+		config = new ConfigServer(this);
 		this.apiDevice = NfyhCloudDataFactory.getFactory(this).getSignDevice();
 		findView();
 		initConfig();
@@ -55,71 +64,93 @@ public class UserSettingActivity extends BaseActivity implements OnCheckedChange
 		if (type != null && "versionupdate".equals(type)) {
 			this.updateVersion();
 		}
+
+		this.mConnection = new ServiceConnection() {
+
+			@Override
+			public void onServiceDisconnected(ComponentName name) {
+
+			}
+
+			@Override
+			public void onServiceConnected(ComponentName name, IBinder service) {
+				if (service != null) {
+					mBinder = (CoreBinder) service;
+				}
+			}
+		};
+		bindService(new Intent(this, CoreService.class), mConnection,
+				Context.BIND_AUTO_CREATE);
 	}
-	
+
 	/**
 	 * 初始化默认配置
 	 */
 	private void initConfig() {
-		this.swDesktop.setChecked(config.getBooleanConfig(ConfigServer.KEY_ENABLE_DESKTOP));
-		this.swFall.setChecked(config.getBooleanConfig(ConfigServer.KEY_ENABLE_FALL));
-		this.swPullMsg.setChecked(config.getBooleanConfig(ConfigServer.KEY_ENABLE_PULLMSG));
-		this.swYuanhou.setChecked(config.getBooleanConfig(ConfigServer.KEY_ENABLE_TIXING));
-		this.swAutoDevice.setChecked(config.getBooleanConfig(ConfigServer.KEY_AUTO_CONNECTED));
-		this.swAutoTips.setChecked(config.getBooleanConfig(ConfigServer.KEY_AUTO_TIPS));
-		
+		this.swDesktop.setChecked(config
+				.getBooleanConfig(ConfigServer.KEY_ENABLE_DESKTOP));
+		this.swFall.setChecked(config
+				.getBooleanConfig(ConfigServer.KEY_ENABLE_FALL));
+		this.swPullMsg.setChecked(config
+				.getBooleanConfig(ConfigServer.KEY_ENABLE_PULLMSG));
+		this.swYuanhou.setChecked(config
+				.getBooleanConfig(ConfigServer.KEY_ENABLE_TIXING));
+		this.swAutoDevice.setChecked(config
+				.getBooleanConfig(ConfigServer.KEY_AUTO_CONNECTED));
+		this.swAutoTips.setChecked(config
+				.getBooleanConfig(ConfigServer.KEY_AUTO_TIPS));
+
 		Devices device;
 		try {
 			device = apiDevice.getCurrentDevices();
 			String deviceName = device == null ? "获取设备失败" : device.getName();
 			tvDeviceName.setText(deviceName);
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void onClick(View v) {
 		Intent intent = new Intent();
-		
+
 		switch (v.getId()) {
-		
-			case R.id.ll_setting_pullmsg:// 开启消息推送
-				swPullMsg.setChecked(!swPullMsg.isChecked());
-				break;
-			case R.id.ll_setting_yuanhou:// 开启院后提醒
-				swYuanhou.setChecked(!swYuanhou.isChecked());
-				break;
-			case R.id.ll_setting_autodevice:// 设备
-				swAutoDevice.setChecked(!swAutoDevice.isChecked());
-				break;
-			case R.id.ll_setting_tips:// 告警
-				swAutoTips.setChecked(!swAutoTips.isChecked());
-				break;
-			case R.id.ll_setting_device:// 监测设备选择
-				intent.setClass(this, SettingDeviceActivity.class);
-				startActivity(intent);
-				break;
-			case R.id.ll_setting_pall:// 跌倒设置
-				intent.setClass(this, SettingFallDeviceActivity.class);
-				startActivity(intent);
-				break;
-			case R.id.ll_setting_desktop:// 桌面呼救
-				intent.setClass(this, SettingDesktopActivity.class);
-				startActivity(intent);
-				break;
-			case R.id.ll_setting_version: //版本更新
-				updateVersion();
-				break;
-			case R.id.btn_exit:
-				logout();
-				break;
-			default:
-				break;
+
+		case R.id.ll_setting_pullmsg:// 开启消息推送
+			swPullMsg.setChecked(!swPullMsg.isChecked());
+			break;
+		case R.id.ll_setting_yuanhou:// 开启院后提醒
+			swYuanhou.setChecked(!swYuanhou.isChecked());
+			break;
+		case R.id.ll_setting_autodevice:// 设备
+			swAutoDevice.setChecked(!swAutoDevice.isChecked());
+			break;
+		case R.id.ll_setting_tips:// 告警
+			swAutoTips.setChecked(!swAutoTips.isChecked());
+			break;
+		case R.id.ll_setting_device:// 监测设备选择
+			intent.setClass(this, SettingDeviceActivity.class);
+			startActivity(intent);
+			break;
+		case R.id.ll_setting_pall:// 跌倒设置
+			intent.setClass(this, SettingFallDeviceActivity.class);
+			startActivity(intent);
+			break;
+		case R.id.ll_setting_desktop:// 桌面呼救
+			intent.setClass(this, SettingDesktopActivity.class);
+			startActivity(intent);
+			break;
+		case R.id.ll_setting_version: // 版本更新
+			updateVersion();
+			break;
+		case R.id.btn_exit:
+			logout();
+			break;
+		default:
+			break;
 		}
 	}
-	
+
 	private void logout() {
 		NfyhApplication app = (NfyhApplication) getApplication();
 		List<Activity> ats = app.getActivitys();
@@ -132,7 +163,7 @@ public class UserSettingActivity extends BaseActivity implements OnCheckedChange
 		startActivity(intent);
 		this.finish();
 	}
-	
+
 	@Override
 	protected void findView() {
 		swDesktop = ((RuiSwitch) findViewById(R.id.sw_setting_desktop));
@@ -141,14 +172,14 @@ public class UserSettingActivity extends BaseActivity implements OnCheckedChange
 		swYuanhou = ((RuiSwitch) findViewById(R.id.sw_setting_yuanhou));
 		swAutoDevice = (RuiSwitch) findViewById(R.id.sw_setting_autodevice);
 		swAutoTips = (RuiSwitch) findViewById(R.id.sw_setting_tips);
-		
+
 		this.btnLogout = (Button) findViewById(R.id.btn_exit);
 		tvAppVersion = (TextView) findViewById(R.id.tv_setting_app_version);
 		AppInfo appinfo = new AppInfo(this);
 		tvAppVersion.setText("V" + appinfo.getVersion());
 		tvDeviceName = (TextView) findViewById(R.id.tv_setting_device_name);
 	}
-	
+
 	@Override
 	protected void setLinsener() {
 		this.btnLogout.setOnClickListener(this);
@@ -161,58 +192,69 @@ public class UserSettingActivity extends BaseActivity implements OnCheckedChange
 		findViewById(R.id.ll_setting_autodevice).setOnClickListener(this);
 		findViewById(R.id.ll_setting_tips).setOnClickListener(this);
 		findViewById(R.id.ll_setting_version).setOnClickListener(this);
-		
+
 		swDesktop.setOnCheckedChangeListener(this);
 		swFall.setOnCheckedChangeListener(this);
 		swPullMsg.setOnCheckedChangeListener(this);
 		swYuanhou.setOnCheckedChangeListener(this);
 		swAutoDevice.setOnCheckedChangeListener(this);
 		swAutoTips.setOnCheckedChangeListener(this);
-		
+
 	}
-	
+
 	@Override
 	protected String getActivityName() {
 		return getString(R.string.grsz);
 	}
-	
+
 	@Override
 	protected void onRestart() {
 		initConfig();
 		super.onRestart();
 	}
-	
+
 	@Override
 	public void onCheckedChanged(RuiSwitch switchView, boolean isChecked) {
 		switch (switchView.getId()) {
-			case R.id.sw_setting_pall:// 开启跌倒监测
-				config.enableFall(isChecked);
-				break;
-			
-			case R.id.sw_setting_pullmsg:
-				config.enablePullMsg(isChecked);
-				break;
-			case R.id.sw_setting_yuanhou:
-				config.enableTixing(isChecked);
-				break;
-			case R.id.sw_setting_desktop:// 开启桌面呼救
-				config.enableDesktop(isChecked);
-				break;
-			case R.id.sw_setting_autodevice:
-				config.enavleAutoconnect(isChecked);
-			case R.id.sw_setting_tips:
-				config.enableAutoTips(isChecked);
-				
-			default:
-				break;
+		case R.id.sw_setting_pall:// 开启跌倒监测
+			config.enableFall(isChecked);
+			break;
+
+		case R.id.sw_setting_pullmsg:
+			config.enablePullMsg(isChecked);
+			break;
+		case R.id.sw_setting_yuanhou:
+			config.enableTixing(isChecked);
+			break;
+		case R.id.sw_setting_desktop:// 开启桌面呼救
+			config.enableDesktop(isChecked);
+			break;
+		case R.id.sw_setting_autodevice:
+			config.enavleAutoconnect(isChecked);
+		case R.id.sw_setting_tips:
+			config.enableAutoTips(isChecked);
+
+		default:
+			break;
 		}
 	}
-	
+
 	private void updateVersion() {
 		if (mVersionUpdate == null) {
 			mVersionUpdate = new VersionUpdate(this);
 		}
 		mVersionUpdate.check();
 	}
-	
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if (config.getBooleanConfig(ConfigServer.KEY_ENABLE_PULLMSG)) {
+			mBinder.startPullMessage();
+		} else {
+			mBinder.stopPullMessage();
+		}
+		unbindService(mConnection);
+	}
+
 }

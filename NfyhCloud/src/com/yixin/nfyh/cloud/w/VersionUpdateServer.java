@@ -45,6 +45,7 @@ public class VersionUpdateServer extends WebserverConnection {
 					if (model.getVersionCode() > mVersionCode) {
 						model.setUpdateContent(obj.getString("UpdateContent"));
 						model.setDownloadUrl(obj.getString("DownloadUrl"));
+						model.setVersionName(obj.getString("VersionName"));
 					}
 				}
 				catch (JSONException e) {

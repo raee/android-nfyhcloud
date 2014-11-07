@@ -27,18 +27,19 @@ import com.yixin.nfyh.cloud.w.NfyhWebserviceFactory;
 import com.yixin.nfyh.cloud.w.SoapConnectionCallback;
 import com.yixin.nfyh.cloud.w.WebServerException;
 
-public class SMSListActivity extends BaseActivity implements OnItemClickListener, SoapConnectionCallback<List<MydcViewModel>> {
-	
-	private ListView			lv;
-	
-	private Users				user;
-	
-	private List<MydcViewModel>	dataList;
-	
-	private ListAdapter			adapter;
-	
-	private TimerProgressDialog	dialog;
-	
+public class SMSListActivity extends BaseActivity implements
+		OnItemClickListener, SoapConnectionCallback<List<MydcViewModel>> {
+
+	private ListView lv;
+
+	private Users user;
+
+	private List<MydcViewModel> dataList;
+
+	private ListAdapter adapter;
+
+	private TimerProgressDialog dialog;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -52,18 +53,18 @@ public class SMSListActivity extends BaseActivity implements OnItemClickListener
 		dialog = new TimerProgressDialog(this);
 		dialog.setMessage("正在获取数据..");
 		dialog.show();
-		
+
 		String type = getIntent().getStringExtra("type");
 		String id = getIntent().getStringExtra("id");
 		if ("view".equals(type) && id != null) {
 			gotoSmsView(id); // 前去调查
 		}
 	}
-	
+
 	@Override
 	public void onClick(View v) {
 	}
-	
+
 	@Override
 	protected void findView() {
 		this.lv = (ListView) this.findViewById(R.id.lv_sms_list);
@@ -73,26 +74,26 @@ public class SMSListActivity extends BaseActivity implements OnItemClickListener
 		this.adapter = new ListAdapter();
 		this.lv.setOnItemClickListener(this);
 	}
-	
+
 	@Override
 	protected String getActivityName() {
 		return "满意度调查";
 	}
-	
+
 	@Override
 	protected void setLinsener() {
 	}
-	
+
 	private class ListAdapter extends BaseAdapter {
-		
+
 		@Override
 		public View getView(int location, View v, ViewGroup arg2) {
 			MydcViewModel m = dataList.get(location);
 			ListItemView itemView = null;
 			if (v == null) {
-				itemView = new ListItemView(SMSListActivity.this, null, R.style.setting_item);
-			}
-			else {
+				itemView = new ListItemView(SMSListActivity.this, null,
+						R.style.setting_item);
+			} else {
 				itemView = (ListItemView) v;
 			}
 			itemView.setText(m.getTitle());
@@ -102,42 +103,47 @@ public class SMSListActivity extends BaseActivity implements OnItemClickListener
 			}
 			return itemView;
 		}
-		
+
 		@Override
 		public long getItemId(int id) {
 			return id;
 		}
-		
+
 		@Override
 		public Object getItem(int location) {
 			return dataList.get(location);
 		}
-		
+
 		@Override
 		public int getCount() {
 			return dataList.size();
 		}
 	}
-	
+
 	@Override
 	public void onItemClick(AdapterView<?> vg, View v, int location, long arg3) {
 		MydcViewModel m = dataList.get(location);
 		if (m.getState() == 1) {
-			new RuiDialog.Builder(this).buildTitle("感谢您的调查").buildMessage("该调查您已经做完，感谢您的参与").buildButton("返回", null).show();
+			new RuiDialog.Builder(this).buildTitle("感谢您的调查")
+					.buildMessage("该调查您已经做完，感谢您的参与").buildButton("返回", null)
+					.show();
 			return;
 		}
 		gotoSmsView(m.getId());
 	}
-	
+
 	// 前往调查
 	private void gotoSmsView(String id) {
-		Intent intent = new Intent(SMSListActivity.this, WebViewerActivity.class);
-		Uri uri = Uri.parse(getString(R.string.url_myddc) + "?lid=" + id + "&pid=" + user.getUid());
+		Intent intent = new Intent(SMSListActivity.this,
+				WebViewerActivity.class);
+		Uri uri = Uri.parse(getString(R.string.url_myddc) + "?lid=" + id
+				+ "&pid=" + user.getUid());
 		intent.putExtra(WebViewerActivity.EXTRA_COOKIE, user.getCookie());
 		intent.setData(uri);
 		startActivity(intent);
+		finish();
 	}
-	
+
 	@Override
 	public void onSoapConnectSuccess(List<MydcViewModel> data) {
 		this.dataList = data;
@@ -145,7 +151,7 @@ public class SMSListActivity extends BaseActivity implements OnItemClickListener
 		adapter.notifyDataSetChanged();
 		dialog.dismiss();
 	}
-	
+
 	@Override
 	public void onSoapConnectedFalid(WebServerException e) {
 		dialog.dismiss();

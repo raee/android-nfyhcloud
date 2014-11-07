@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.json.JSONObject;
-
 import kankan.wheel.widget.OnWheelChangedListener;
 import kankan.wheel.widget.WheelView;
 import kankan.wheel.widget.adapters.AlarmNumbericWhellAdapter;
@@ -90,6 +88,7 @@ public class AlarmAddNormalActivity extends Activity implements OnClickListener 
 		super.onCreate(savedInstanceState);
 		mRootView = getLayoutInflater().inflate(R.layout.activity_add_normal_alarm, null);
 		setContentView(mRootView);
+
 		
 		// 获取所有的体征
 		mSignArray = new ArrayList<String>();
@@ -107,9 +106,10 @@ public class AlarmAddNormalActivity extends Activity implements OnClickListener 
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
+
 		
 		initView();
-		
+
 		initZhouqiWindow();
 		
 		initSignWindow();
@@ -118,10 +118,10 @@ public class AlarmAddNormalActivity extends Activity implements OnClickListener 
 		
 		initWeekWindow();
 		
-		autoAdd();
 		
 	}
 	
+	// 添加提醒。
 	private void autoAdd() {
 		String type = getIntent().getStringExtra("type");
 		String json = getIntent().getStringExtra("entity");
@@ -130,10 +130,24 @@ public class AlarmAddNormalActivity extends Activity implements OnClickListener 
 			AlarmEntity entity = AlarmUtils.converEntity(json);
 			if (entity != null) {
 				this.mAlarmEntity = new NfyhAlarmEntity(entity);
+				initValue();
+				save();
 			}
 			else {
 				Toast.makeText(this, "添加提醒出错。", Toast.LENGTH_SHORT).show();
 			}
+		}
+		else{
+
+		AlarmEntity entity = getIntent().getParcelableExtra("data");
+		if (entity == null) {
+			// 闹钟实体
+			mAlarmEntity = new NfyhAlarmEntity(AlarmEntity.TYPE_REPEAT_EVERY_DAY, "每天重复闹钟", AlarmUtils.getDateByTimeInMillis(System.currentTimeMillis()));
+		}
+		else {
+			mAlarmEntity = new NfyhAlarmEntity(entity);
+			initValue();
+		}
 		}
 	}
 	
@@ -334,15 +348,7 @@ public class AlarmAddNormalActivity extends Activity implements OnClickListener 
 		mItemDate.setSubTitle(mDate);
 		mItemSign.setSubTitle("不测量");
 		
-		AlarmEntity entity = getIntent().getParcelableExtra("data");
-		if (entity == null) {
-			// 闹钟实体
-			mAlarmEntity = new NfyhAlarmEntity(AlarmEntity.TYPE_REPEAT_EVERY_DAY, "每天重复闹钟", AlarmUtils.getDateByTimeInMillis(System.currentTimeMillis()));
-		}
-		else {
-			mAlarmEntity = new NfyhAlarmEntity(entity);
-			initValue();
-		}
+		autoAdd();
 		
 		setUpDateSelectView();
 	}

@@ -23,6 +23,7 @@ import android.widget.TextView;
  * @author MrChenrui
  * 
  */
+@SuppressLint("SimpleDateFormat")
 public final class CommonUtil
 {
 
@@ -170,18 +171,33 @@ public final class CommonUtil
 	 */
 	public static Date getDateFromJson(String datestring)
 	{
+		Date date ;
 		try
 		{
 			String format = datestring.replace("/Date(", "").replace("+0800)/",
 					"");
 			long milliseconds = Long.valueOf(format);
-			Date date = new Date(milliseconds);
-			return date;
+			 date = new Date(milliseconds);
 		}
 		catch (Exception e)
 		{
-			return new Date();
+			date= new Date();
 		}
+		
+		return date;
+	}
+	
+	
+	/**
+	 * 获取ASP.NET 中Json的日期格式
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public static String getDateString(String datestring)
+	{
+		String result = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(getDateFromJson(datestring));
+		return result;
 	}
 
 	/**

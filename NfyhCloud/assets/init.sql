@@ -12,8 +12,8 @@ insert into dicts(name,code_name,dic_value,comment)values('KEY_AUTO_TIPS','KEY_A
 insert into dicts(name,code_name,dic_value,comment)values('KEY_AUTO_CONNECTED','KEY_AUTO_CONNECTED','false',NULL);
 insert into dicts(name,code_name,dic_value,comment)values('KEY_ENABLE_FALL','KEY_ENABLE_FALL','false',NULL);
 insert into dicts(name,code_name,dic_value,comment)values('KEY_ENABLE_DESKTOP','KEY_ENABLE_DESKTOP','false',NULL);
-insert into dicts(name,code_name,dic_value,comment)values('KEY_ENABLE_TIXING','KEY_ENABLE_TIXING','false',NULL);
-insert into dicts(name,code_name,dic_value,comment)values('KEY_ENABLE_PULLMSG','KEY_ENABLE_PULLMSG','false',NULL);
+insert into dicts(name,code_name,dic_value,comment)values('KEY_ENABLE_TIXING','KEY_ENABLE_TIXING','true',NULL);
+insert into dicts(name,code_name,dic_value,comment)values('KEY_ENABLE_PULLMSG','KEY_ENABLE_PULLMSG','true',NULL);
 insert into dicts(name,code_name,dic_value,comment)values('KEY_DESKTOP_EVENT_LIST','KEY_DESKTOP_EVENT_LIST','旧病复发了',NULL);
 insert into dicts(name,code_name,dic_value,comment)values('KEY_DESKTOP_EVENT_LIST','KEY_DESKTOP_EVENT_LIST','摔倒了',NULL);
 insert into dicts(name,code_name,dic_value,comment)values('KEY_DESKTOP_EVENT_LIST','KEY_DESKTOP_EVENT_LIST','其他',NULL);

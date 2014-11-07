@@ -100,7 +100,9 @@
         </activity>
 
         <!-- 消息列表 -->
-        <activity android:name="com.yixin.nfyh.cloud.activity.MessageActivity" >
+        <activity
+            android:name="com.yixin.nfyh.cloud.activity.MessageActivity"
+            android:launchMode="singleTask" >
         </activity>
 
         <!-- 闹钟 -->

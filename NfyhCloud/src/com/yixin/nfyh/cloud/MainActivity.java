@@ -15,6 +15,7 @@ import cn.rui.framework.utils.CommonUtil;
 import com.yixin.nfyh.cloud.activity.SignGroupActivity;
 import com.yixin.nfyh.cloud.activity.UserSettingActivity;
 import com.yixin.nfyh.cloud.bll.ConfigServer;
+import com.yixin.nfyh.cloud.bll.VersionUpdate;
 import com.yixin.nfyh.cloud.device.DefaultDevice;
 import com.yixin.nfyh.cloud.ui.ActionBarView;
 import com.yixin.nfyh.cloud.ui.ActionbarUtil;
@@ -86,6 +87,11 @@ public class MainActivity extends TabHostActivity implements OnClickListener {
 						}
 					}).show();
 		}
+		
+		// 自動檢測新版本
+		VersionUpdate version = new VersionUpdate(this);
+		version.showDialog(false);
+		version.check();
 	}
 
 	@Override
