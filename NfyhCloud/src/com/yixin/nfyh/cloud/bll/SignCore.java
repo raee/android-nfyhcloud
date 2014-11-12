@@ -56,6 +56,7 @@ public class SignCore implements SoapConnectionCallback<List<UserSigns>> {
 
 	/**
 	 * 保存体征
+	 * 
 	 * @param list
 	 */
 	public void saveUserSign(List<SignTypes> list) {
@@ -73,7 +74,7 @@ public class SignCore implements SoapConnectionCallback<List<UserSigns>> {
 				usersign.setSignValue(m.getDefaultValue());
 				mDbSignApi.addOrUpdateUserSign(usersign);
 			}
-			this.listener.onSignCoreSuccess(1, "本地保存成功！");
+			this.listener.onSignCoreSuccess(100, "本地保存成功！");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			if (listener != null) {
@@ -176,7 +177,7 @@ public class SignCore implements SoapConnectionCallback<List<UserSigns>> {
 		// 更新状态
 		this.mDbSignApi.uploadUserSign(data);
 		if (listener != null) {
-			this.listener.onSignCoreSuccess(1, "上传成功！");
+			this.listener.onSignCoreSuccess(200, "上传成功！");
 		}
 		mIsSyncing = false;
 	}

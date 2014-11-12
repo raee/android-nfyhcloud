@@ -65,7 +65,7 @@ public class NfyhCloudDataOpenHelp extends OrmLiteSqliteOpenHelper {
 	private Dao<Messages, String>		MessagesDao;
 	
 	public NfyhCloudDataOpenHelp(Context context) {
-		super(context, databaseName, null, 103);
+		super(context, databaseName, null, 104);
 		this.context = context;
 	}
 	

@@ -147,6 +147,7 @@
     <string name="setting_comm">通用</string>
     <string name="setting_yuanhou">开启院后提醒</string>
     <string name="setting_tips">个性告警</string>
+    <string name="setting_autoupload">自动上传</string>
     <string name="setting_pullmsg">开启消息推送</string>
     <string name="setting_desktop_title">桌面悬浮框</string>
     <string name="setting_phone">紧急呼救联系人号码设置</string>

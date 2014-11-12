@@ -11,17 +11,18 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.text.Html;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import cn.rui.framework.ui.RuiDialog;
+
 import com.yixin.monitors.sdk.model.PackageModel;
 import com.yixin.nfyh.cloud.BaseActivity;
+import com.yixin.nfyh.cloud.DeviceConnectActivity;
 import com.yixin.nfyh.cloud.NfyhApplication;
 import com.yixin.nfyh.cloud.R;
+import com.yixin.nfyh.cloud.bll.ConfigServer;
 import com.yixin.nfyh.cloud.bll.SignCore;
 import com.yixin.nfyh.cloud.bll.sign.SignCoreListener;
 import com.yixin.nfyh.cloud.model.SignTypes;
@@ -32,9 +33,7 @@ import com.yixin.nfyh.cloud.ui.TopMsgView;
 
 public class SignDetailActivity extends BaseActivity implements
 		SignCoreListener {
-	// private boolean isSync = false; //是否正在同步数据
 	private boolean keyDownResult = false;
-	// private boolean mIsCreated;
 	private boolean mIsNoUpload = false; // 是否没上传
 	private TopMsgView viewMsg = null;
 	private KeyguardLock mKeyguardLock;
@@ -42,9 +41,12 @@ public class SignDetailActivity extends BaseActivity implements
 	private ViewGroup rootView;
 	private Users user;
 	private SignCore mSignCore;
-	// private List<SignTypes> mSignTypes;
 	private InputSignView mInputSignView;
 	private SignTypes mCurrentSignType;
+	private View mUploadButton;
+	private boolean mIsTipsWindowDismiss; // 提示窗口是否关闭了
+	private ConfigServer mConfig;
+	private boolean mIsFromDevice = false; // 是否来自设备的数据
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,10 +84,21 @@ public class SignDetailActivity extends BaseActivity implements
 		mSignCore = new SignCore(this);
 		mSignCore.setSignCoreListener(this);
 
+		mConfig = new ConfigServer(this);
+
 		mInputSignView = (InputSignView) findViewById(R.id.sign_view);
-		mInputSignView.findViewById(R.id.btn_sign_upload).setOnClickListener(
-				this);
+		mUploadButton = mInputSignView.findViewById(R.id.btn_sign_upload);
+		mUploadButton.setOnClickListener(this);
 		initSign();
+
+		if ("device".equals(getIntent().getStringExtra("from"))) {
+			boolean isAutoUpload = mConfig
+					.getBooleanConfig(ConfigServer.KEY_AUTO_UPLOAD);
+			if (isAutoUpload) {
+				this.sync();
+			}
+		}
+
 	}
 
 	// 初始化体征
@@ -94,10 +107,22 @@ public class SignDetailActivity extends BaseActivity implements
 		type = type == null ? "1000" : type;
 
 		if (type.equals("-1")) { // 蓝牙传递过来的的数据。
+			mIsFromDevice = true;
 			PackageModel models = getIntent().getParcelableExtra("data");// 蓝牙接收的数据
 			mInputSignView.setDataList(mSignCore
 					.converSignDataModelToDbModel(models.getSignDatas()));
 			mInputSignView.setShowType(InputSignView.TYPE_BLUETOOTH);
+			mInputSignView
+					.showTipsWindow(new DialogInterface.OnDismissListener() {
+
+						@Override
+						public void onDismiss(DialogInterface dialog) {
+							mIsTipsWindowDismiss = true;
+							if (!mUploadButton.isEnabled()) {
+								showUploadSuccess("上传成功");
+							}
+						}
+					});
 			getActionBar().setTitle(user.getName());
 			mIsNoUpload = true;
 			return;
@@ -108,12 +133,6 @@ public class SignDetailActivity extends BaseActivity implements
 		ActionbarUtil.setTitleAsUpHome(this, getActionBar(),
 				mCurrentSignType.getName()); // 返回栏
 		mInputSignView.setUp();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.menu_sign_detail, menu); // 操作栏菜单
-		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
@@ -139,24 +158,6 @@ public class SignDetailActivity extends BaseActivity implements
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.menu_sign_detail_sync:
-			upload();
-			break;
-		case android.R.id.home:
-			if (mIsNoUpload) {
-				return showUploadTips();
-			}
-			break;
-
-		default:
-			break;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
 	public void onClick(View v) {
 		super.onClick(v);
 		upload();
@@ -179,7 +180,7 @@ public class SignDetailActivity extends BaseActivity implements
 		viewMsg.anim();
 		viewMsg.setIcon(R.drawable.icon_write_faild);
 		viewMsg.setBackgroundColor(getResources().getColor(R.color.mihuang));
-		// findViewById(R.id.menu_sign_detail_sync).clearAnimation();
+		mUploadButton.setEnabled(true);
 	}
 
 	// 上传成功
@@ -190,9 +191,32 @@ public class SignDetailActivity extends BaseActivity implements
 		viewMsg.setMsg(msg);
 		viewMsg.stopAnim();
 		viewMsg.setIcon(R.drawable.icon_write_success);
-		// findViewById(R.id.menu_sign_detail_sync).clearAnimation();
+		if (code == 200) {
+
+			mUploadButton.setEnabled(false);
+			if (!mIsFromDevice) { // 不是来自设备的
+				return;
+			}
+			if (!mConfig.getBooleanConfig(ConfigServer.KEY_AUTO_TIPS)
+					|| mIsTipsWindowDismiss) { // 没有体征提示的直接显示上传成功。
+				showUploadSuccess(msg);
+			}
+		}
+
 	}
 
+	private void showUploadSuccess(String msg) {
+		Intent intent = new Intent(SignDetailActivity.this,
+				DeviceConnectActivity.class);
+		intent.putExtra(DeviceConnectActivity.INTENT_EXTRA_TIPS, msg);
+		intent.putExtra(DeviceConnectActivity.INTENT_EXTRA_MESSAGE, "");
+		intent.putExtra(DeviceConnectActivity.EXTRA_NAME,
+				DeviceConnectActivity.EXTRA_SHOW_SUCCESS);
+		startActivity(intent);
+		finish();
+	}
+
+	// 正在上传
 	@Override
 	public void onUploading() {
 		if (viewMsg != null) {
@@ -203,15 +227,6 @@ public class SignDetailActivity extends BaseActivity implements
 			drawable.start();
 		}
 	}
-
-	// @Override
-	// public void onWindowFocusChanged(boolean hasFocus) {
-	// super.onWindowFocusChanged(hasFocus);
-	// // if (hasFocus && !this.mIsCreated && showType == -1) {
-	// // autoCompare(); //自动比较数据
-	// // this.mIsCreated = true;
-	// // }
-	// }
 
 	/**
 	 * 显示数据确认对话框
@@ -289,9 +304,10 @@ public class SignDetailActivity extends BaseActivity implements
 		// findViewById(R.id.menu_sign_detail_sync).startAnimation(AnimationUtils.loadAnimation(this,
 		// R.anim.fade_in)); // start Animation
 
-		mSignCore.saveUserSign(mInputSignView.getDataList()); // 本地保存
-
-		mSignCore.upload();
+		mSignCore.sysnc(mInputSignView.getDataList(), this);
+		// mSignCore.saveUserSign(mInputSignView.getDataList()); // 本地保存
+		//
+		// mSignCore.upload();
 
 		mIsNoUpload = false;
 		mInputSignView.setChange(false);

@@ -6,6 +6,7 @@
 
             <gradient android:angle="0" android:endColor="#429F00" android:startColor="#429F00" android:type="linear" />
         </shape></item>
+    <item android:drawable="@drawable/btn_disable" android:state_enabled="false"></item>
     <item><shape android:shape="rectangle">
             <corners android:radius="5dp" />
 

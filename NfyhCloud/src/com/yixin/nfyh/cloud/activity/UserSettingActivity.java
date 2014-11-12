@@ -49,6 +49,7 @@ public class UserSettingActivity extends BaseActivity implements
 	private VersionUpdate mVersionUpdate;
 	private CoreBinder mBinder;
 	private ServiceConnection mConnection;
+	private RuiSwitch swAutoUpload;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,7 @@ public class UserSettingActivity extends BaseActivity implements
 		initConfig();
 		setLinsener();
 		String type = getIntent().getStringExtra("type");
+
 		// 版本检测
 		if (type != null && "versionupdate".equals(type)) {
 			this.updateVersion();
@@ -100,6 +102,9 @@ public class UserSettingActivity extends BaseActivity implements
 		this.swAutoTips.setChecked(config
 				.getBooleanConfig(ConfigServer.KEY_AUTO_TIPS));
 
+		this.swAutoUpload.setChecked(config
+				.getBooleanConfig(ConfigServer.KEY_AUTO_UPLOAD)); // 自动上传
+
 		Devices device;
 		try {
 			device = apiDevice.getCurrentDevices();
@@ -135,6 +140,9 @@ public class UserSettingActivity extends BaseActivity implements
 		case R.id.ll_setting_pall:// 跌倒设置
 			intent.setClass(this, SettingFallDeviceActivity.class);
 			startActivity(intent);
+			break;
+		case R.id.ll_setting_autoupload: // 自动上传
+			swAutoUpload.setChecked(!swAutoUpload.isChecked());
 			break;
 		case R.id.ll_setting_desktop:// 桌面呼救
 			intent.setClass(this, SettingDesktopActivity.class);
@@ -172,6 +180,7 @@ public class UserSettingActivity extends BaseActivity implements
 		swYuanhou = ((RuiSwitch) findViewById(R.id.sw_setting_yuanhou));
 		swAutoDevice = (RuiSwitch) findViewById(R.id.sw_setting_autodevice);
 		swAutoTips = (RuiSwitch) findViewById(R.id.sw_setting_tips);
+		swAutoUpload = (RuiSwitch) findViewById(R.id.sw_setting_autoupload);
 
 		this.btnLogout = (Button) findViewById(R.id.btn_exit);
 		tvAppVersion = (TextView) findViewById(R.id.tv_setting_app_version);
@@ -192,6 +201,7 @@ public class UserSettingActivity extends BaseActivity implements
 		findViewById(R.id.ll_setting_autodevice).setOnClickListener(this);
 		findViewById(R.id.ll_setting_tips).setOnClickListener(this);
 		findViewById(R.id.ll_setting_version).setOnClickListener(this);
+		findViewById(R.id.ll_setting_autoupload).setOnClickListener(this);
 
 		swDesktop.setOnCheckedChangeListener(this);
 		swFall.setOnCheckedChangeListener(this);
@@ -199,6 +209,7 @@ public class UserSettingActivity extends BaseActivity implements
 		swYuanhou.setOnCheckedChangeListener(this);
 		swAutoDevice.setOnCheckedChangeListener(this);
 		swAutoTips.setOnCheckedChangeListener(this);
+		swAutoUpload.setOnCheckedChangeListener(this);
 
 	}
 
@@ -219,7 +230,6 @@ public class UserSettingActivity extends BaseActivity implements
 		case R.id.sw_setting_pall:// 开启跌倒监测
 			config.enableFall(isChecked);
 			break;
-
 		case R.id.sw_setting_pullmsg:
 			config.enablePullMsg(isChecked);
 			break;
@@ -231,9 +241,13 @@ public class UserSettingActivity extends BaseActivity implements
 			break;
 		case R.id.sw_setting_autodevice:
 			config.enavleAutoconnect(isChecked);
+			break;
 		case R.id.sw_setting_tips:
 			config.enableAutoTips(isChecked);
-
+			break;
+		case R.id.sw_setting_autoupload:
+			config.enableAutoUpload(isChecked);
+			break;
 		default:
 			break;
 		}

@@ -70,7 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
-        
+
         <LinearLayout
             android:id="@+id/ll_setting_tips"
             style="@style/setting_item"
@@ -162,6 +162,35 @@
                 android:id="@+id/ImageView02"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:src="@drawable/editcomplete_right"
+                android:visibility="invisible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_setting_autoupload"
+            style="@style/setting_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/setting_item_text_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/setting_autoupload" />
+
+            <cn.rui.framework.widget.RuiSwitch
+                android:id="@+id/sw_setting_autoupload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0" />
+
+            <ImageView
+                android:id="@+id/ImageView03"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
                 android:src="@drawable/editcomplete_right"
                 android:visibility="invisible" />
 
