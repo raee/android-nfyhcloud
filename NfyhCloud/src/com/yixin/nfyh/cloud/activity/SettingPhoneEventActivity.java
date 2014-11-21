@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import cn.rui.framework.ui.RuiDialog;
 import cn.rui.framework.utils.InputUtils;
 
@@ -32,8 +33,7 @@ import com.yixin.nfyh.cloud.ui.EmpteyView;
  * @author MrChenrui
  * 
  */
-public class SettingPhoneEventActivity extends BaseActivity
-{
+public class SettingPhoneEventActivity extends BaseActivity {
 
 	private String			type;
 
@@ -50,8 +50,7 @@ public class SettingPhoneEventActivity extends BaseActivity
 	private ValueAdateper	adapter;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.activity_setting_phone_event);
 		config = new ConfigServer(this);
 		type = getIntent().getStringExtra(Intent.EXTRA_TEXT);
@@ -59,65 +58,49 @@ public class SettingPhoneEventActivity extends BaseActivity
 		super.onCreate(savedInstanceState);
 	}
 
-	private void initView()
-	{
+	private void initView() {
 		this.etValue = (EditText) this.findViewById(R.id.et_setting_phone_event);
 		this.btnAdd = (Button) findViewById(R.id.btn_setting_phone_event);
 		this.btnAdd.setOnClickListener(this);
 		this.lvValues = (ListView) findViewById(R.id.lv_setting_phone_event);
-		if (type.equals(ConfigServer.KEY_DESKTOP_PHONE_LIST))
-		{
-			etValue.setHint("输入手机号吗");
-		} else
-		{
+		if (type.equals(ConfigServer.KEY_DESKTOP_PHONE_LIST)) {
+			etValue.setHint("输入手机号码，客服手机号码前面加*号。");
+		}
+		else {
 			etValue.setHint("如:我跌倒在家里了！");
 		}
 		btnAdd.setEnabled(false);
-		this.etValue.addTextChangedListener(new TextWatcher()
-		{
+		this.etValue.addTextChangedListener(new TextWatcher() {
 
 			@Override
-			public void onTextChanged(
-					CharSequence s,
-					int start,
-					int before,
-					int count)
-			{
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				String value = s.toString().trim();
 				// 电话号码校验
-				if (InputUtils.isPhoneNumber(value)
-						&& type.equals(ConfigServer.KEY_DESKTOP_PHONE_LIST))
-				{
+				if (value.startsWith("*") && type.equals(ConfigServer.KEY_DESKTOP_PHONE_LIST)) {
 					btnAdd.setEnabled(true);
-				} else if (InputUtils.isChinese(value)
-						&& value.length() > 1
-						&& type.equals(ConfigServer.KEY_DESKTOP_EVENT_LIST))
-				{
+				}
+				else if (InputUtils.isPhoneNumber(value) && type.equals(ConfigServer.KEY_DESKTOP_PHONE_LIST)) {
 					btnAdd.setEnabled(true);
-				} else
-				{
+				}
+				else if (InputUtils.isChinese(value) && value.length() > 1 && type.equals(ConfigServer.KEY_DESKTOP_EVENT_LIST)) {
+					btnAdd.setEnabled(true);
+				}
+				else {
 					btnAdd.setEnabled(false);
 				}
 			}
 
 			@Override
-			public void beforeTextChanged(
-					CharSequence s,
-					int start,
-					int count,
-					int after)
-			{
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 			}
 
 			@Override
-			public void afterTextChanged(Editable s)
-			{
+			public void afterTextChanged(Editable s) {
 			}
 		});
 		// 获取数据
 		this.valList = config.getListConfigs(type);
-		EmpteyView emptyView = new EmpteyView(this,
-				(ViewGroup) lvValues.getParent());
+		EmpteyView emptyView = new EmpteyView(this, (ViewGroup) lvValues.getParent());
 		emptyView.setText("这里空空如也，赶紧添加一条吧");
 		this.lvValues.setEmptyView(emptyView);
 		adapter = new ValueAdateper();
@@ -126,60 +109,57 @@ public class SettingPhoneEventActivity extends BaseActivity
 	}
 
 	@Override
-	public void onClick(View arg0)
-	{
+	public void onClick(View arg0) {
 		String value = etValue.getText().toString().trim();
-		if (value.length() < 5)
-		{
+		if (value.length() < 5) {
 			showMsg("长度不得小于5");
 			return;
 		}
 		// 重复检查
-		if (valList.contains(value))
-		{
+		if (valList.contains(value)) {
 			showMsg("已经存在：" + value);
 			return;
 		}
-		try
-		{
+		try {
+			// 客服手机号码
+			if (value.startsWith("*")) {
+				config.addConfig(ConfigServer.KEY_PHONE_NUMBER, value.replace("*", "")); // 添加客服
+				Toast.makeText(this, "添加客服号码(" + value + ")成功！", Toast.LENGTH_SHORT).show();
+				etValue.setText("");
+				return;
+			}
+
 			this.valList.add(0, value);
 			config.addConfig(type, value);
 			adapter.notifyDataSetChanged();
 			etValue.setText("");
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			e.printStackTrace();
 			showMsg("添加失败");
 		}
 	}
 
-	private class ValueAdateper extends BaseAdapter implements OnItemClickListener
-	{
+	private class ValueAdateper extends BaseAdapter implements OnItemClickListener {
 
 		@Override
-		public int getCount()
-		{
+		public int getCount() {
 			return valList.size();
 		}
 
 		@Override
-		public Object getItem(int position)
-		{
+		public Object getItem(int position) {
 			return valList.get(position);
 		}
 
 		@Override
-		public long getItemId(int position)
-		{
+		public long getItemId(int position) {
 			return position;
 		}
 
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent)
-		{
-			if (convertView == null)
-			{
+		public View getView(int position, View convertView, ViewGroup parent) {
+			if (convertView == null) {
 				convertView = getLayoutInflater().inflate(R.layout.view_setting_phone_event_item, null);
 			}
 			TextView tv = (TextView) convertView;
@@ -188,23 +168,16 @@ public class SettingPhoneEventActivity extends BaseActivity
 		}
 
 		@Override
-		public void onItemClick(
-				AdapterView<?> parent,
-				View view,
-				int position,
-				long id)
-		{
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			final String val = getItem(position).toString();
 			RuiDialog dialog = new RuiDialog(SettingPhoneEventActivity.this);
 			dialog.setMessage("是否真的删除：" + val);
 			dialog.setTitle("删除");
 			dialog.setLeftButton("返回", null);
-			dialog.setRightButton("删除", new DialogInterface.OnClickListener()
-			{
+			dialog.setRightButton("删除", new DialogInterface.OnClickListener() {
 
 				@Override
-				public void onClick(DialogInterface dialog, int which)
-				{
+				public void onClick(DialogInterface dialog, int which) {
 					valList.remove(val);
 					config.removeConfig(type, val);
 					notifyDataSetChanged();
@@ -216,13 +189,11 @@ public class SettingPhoneEventActivity extends BaseActivity
 	}
 
 	@Override
-	protected String getActivityName()
-	{
-		if (type.equals(ConfigServer.KEY_DESKTOP_PHONE_LIST))
-		{
+	protected String getActivityName() {
+		if (type.equals(ConfigServer.KEY_DESKTOP_PHONE_LIST)) {
 			return getString(R.string.setting_phone);
-		} else
-		{
+		}
+		else {
 			return getString(R.string.setting_event);
 		}
 	}

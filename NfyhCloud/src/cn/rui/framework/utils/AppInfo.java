@@ -17,18 +17,15 @@ import android.os.StatFs;
 import android.text.format.Formatter;
 import android.view.WindowManager;
 
-public class AppInfo
-{
+public class AppInfo {
 
 	private Context			mContext;
 
 	private WindowManager	mManager	= null;
 
-	public AppInfo(Context context)
-	{
+	public AppInfo(Context context) {
 		this.mContext = context;
-		mManager = (WindowManager) this.mContext
-				.getSystemService(Context.WINDOW_SERVICE);
+		mManager = (WindowManager) this.mContext.getSystemService(Context.WINDOW_SERVICE);
 	}
 
 	/**
@@ -36,8 +33,7 @@ public class AppInfo
 	 * 
 	 * @return
 	 */
-	public int getScreenWidth()
-	{
+	public int getScreenWidth() {
 		return mManager.getDefaultDisplay().getWidth();
 	}
 
@@ -46,8 +42,7 @@ public class AppInfo
 	 * 
 	 * @return
 	 */
-	public int getScreenHeight()
-	{
+	public int getScreenHeight() {
 		return mManager.getDefaultDisplay().getHeight();
 	}
 
@@ -56,8 +51,7 @@ public class AppInfo
 	 * 
 	 * @return
 	 */
-	public String getModel()
-	{
+	public String getModel() {
 		return android.os.Build.MODEL;
 		// String phoneInfo = "Product: " + android.os.Build.PRODUCT;
 		// phoneInfo += ", CPU_ABI: " + android.os.Build.CPU_ABI;
@@ -84,8 +78,7 @@ public class AppInfo
 	 * 
 	 * @return
 	 */
-	public String getSDKVersion()
-	{
+	public String getSDKVersion() {
 		return android.os.Build.VERSION.RELEASE;
 	}
 
@@ -94,11 +87,8 @@ public class AppInfo
 	 * 
 	 * @return
 	 */
-	public String getSDCardSize()
-	{
-		if (Environment.getExternalStorageState().equals(
-				Environment.MEDIA_MOUNTED))
-		{
+	public String getSDCardSize() {
+		if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 			File sdcard = Environment.getExternalStorageDirectory();
 			StatFs sf = new StatFs(sdcard.getPath());
 			int size = sf.getBlockSize(); // 每一块占用的空间
@@ -106,11 +96,9 @@ public class AppInfo
 			long count = (long) sf.getBlockCount() * size;// 总空间
 			String sdcardSize = Formatter.formatFileSize(mContext, count); // 总大小
 			String sdcardAvail = Formatter.formatFileSize(mContext, avail);
-			return sdcardSize + "(可用：" + sdcardAvail + ",已用："
-					+ Formatter.formatFileSize(mContext, count - avail) + ")";
+			return sdcardSize + "(可用：" + sdcardAvail + ",已用：" + Formatter.formatFileSize(mContext, count - avail) + ")";
 		}
-		else
-		{
+		else {
 			return "null";
 		}
 	}
@@ -120,17 +108,13 @@ public class AppInfo
 	 * 
 	 * @return
 	 */
-	public String getConnectState()
-	{
-		ConnectivityManager cm = (ConnectivityManager) mContext
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
+	public String getConnectState() {
+		ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo netInfo = cm.getActiveNetworkInfo();
-		if (netInfo == null)
-		{
+		if (netInfo == null) {
 			return "没打开网络连接";
 		}
-		switch (netInfo.getType())
-		{
+		switch (netInfo.getType()) {
 			case ConnectivityManager.TYPE_WIFI:
 				return "WIFI";
 			case ConnectivityManager.TYPE_MOBILE:
@@ -148,8 +132,7 @@ public class AppInfo
 	 * 
 	 * @return
 	 */
-	public String getOME()
-	{
+	public String getOME() {
 		return android.os.Build.BRAND;
 	}
 
@@ -158,10 +141,8 @@ public class AppInfo
 	 * 
 	 * @return
 	 */
-	public String getAvailMemory()
-	{
-		ActivityManager am = (ActivityManager) mContext
-				.getSystemService(Context.ACTIVITY_SERVICE);
+	public String getAvailMemory() {
+		ActivityManager am = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
 		MemoryInfo memory = new MemoryInfo();
 		am.getMemoryInfo(memory);
 		return Formatter.formatFileSize(mContext, memory.availMem); // 可用内存
@@ -172,24 +153,20 @@ public class AppInfo
 	 * 
 	 * @return
 	 */
-	public String getTotalMemory()
-	{
+	public String getTotalMemory() {
 		String str1 = "/proc/meminfo";// 系统内存信息文件
 		String str2;
 		String[] arrayOfString;
 		long initial_memory = 0;
-		try
-		{
+		try {
 			FileReader localFileReader = new FileReader(str1);
-			BufferedReader localBufferedReader = new BufferedReader(
-					localFileReader, 8192);
+			BufferedReader localBufferedReader = new BufferedReader(localFileReader, 8192);
 			str2 = localBufferedReader.readLine();// 读取meminfo第一行，系统总内存大小
 			arrayOfString = str2.split("\\s+");
 			initial_memory = Integer.valueOf(arrayOfString[1]).intValue() * 1024;// 获得系统总内存，单位是KB，乘以1024转换为Byte
 			localBufferedReader.close();
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 		}
 		return Formatter.formatFileSize(mContext, initial_memory);// Byte转换为KB或者MB，内存大小规格化
 	}
@@ -199,20 +176,17 @@ public class AppInfo
 	 * 
 	 * @return [0]CPU型号，[1]CPU频率
 	 */
-	public String[] getCpuInfo()
-	{
+	public String[] getCpuInfo() {
 		String str1 = "/proc/cpuinfo";
 		String str2 = "";
 		String[] cpuInfo = { "", "" };
 		String[] arrayOfString;
-		try
-		{
+		try {
 			FileReader fr = new FileReader(str1);
 			BufferedReader localBufferedReader = new BufferedReader(fr, 8192);
 			str2 = localBufferedReader.readLine();
 			arrayOfString = str2.split("\\s+");
-			for (int i = 2; i < arrayOfString.length; i++)
-			{
+			for (int i = 2; i < arrayOfString.length; i++) {
 				cpuInfo[0] = cpuInfo[0] + arrayOfString[i] + " ";
 			}
 			str2 = localBufferedReader.readLine();
@@ -220,8 +194,7 @@ public class AppInfo
 			cpuInfo[1] += arrayOfString[2];
 			localBufferedReader.close();
 		}
-		catch (IOException e)
-		{
+		catch (IOException e) {
 		}
 		return cpuInfo;
 	}
@@ -231,30 +204,44 @@ public class AppInfo
 	 * 
 	 * @return 版本号
 	 */
-	public String getVersion()
-	{
+	public String getVersion() {
 		String version = "0.0";
-		try
-		{
+		try {
 			PackageManager manager = this.mContext.getPackageManager();
-			PackageInfo info = manager.getPackageInfo(
-					this.mContext.getPackageName(), 0);
+			PackageInfo info = manager.getPackageInfo(this.mContext.getPackageName(), 0);
 			version = info.versionName;
+
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 		return version;
 	}
 
+	/**
+	 * 版本
+	 * 
+	 * @return 版本号
+	 */
+	public int getVersionCode() {
+		try {
+			PackageManager manager = this.mContext.getPackageManager();
+			PackageInfo info = manager.getPackageInfo(this.mContext.getPackageName(), 0);
+			return info.versionCode;
+
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		String[] cpu = getCpuInfo();
 		StringBuilder sb = new StringBuilder();
-		append(sb, "当前程序版本", getVersion());
-		append(sb, "安卓系统版本", getSDKVersion());
+		append(sb, "版本", getVersion() + "(内部版本号：" + getVersionCode() + ")");
+		append(sb, "系统版本", getSDKVersion());
 		append(sb, "手机型号", getModel());
 		append(sb, "厂商", getOME());
 		append(sb, "CPU", cpu[0]);
@@ -266,8 +253,7 @@ public class AppInfo
 		return sb.toString();
 	}
 
-	private void append(StringBuilder sb, String key, String val)
-	{
+	private void append(StringBuilder sb, String key, String val) {
 		sb.append(key);
 		sb.append(":");
 		sb.append(val);

@@ -17,7 +17,7 @@ import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.device.DeviceConnectView;
 
 public class DeviceMsgView extends LinearLayout implements DeviceConnectView, View.OnClickListener {
-	
+
 	private ImageView	mLoadingImageView;
 	private ImageView	mLoadingBgImageView;
 	private TextView	mMsgTextView;
@@ -27,9 +27,9 @@ public class DeviceMsgView extends LinearLayout implements DeviceConnectView, Vi
 	private ImageView	mIconImageView;
 	private Context		mContext;
 	private ViewGroup	mContentView;
-	
+
 	// private boolean mShowable = true;
-	
+
 	public DeviceMsgView(Context context) {
 		super(context, null);
 		mContext = context;
@@ -43,53 +43,58 @@ public class DeviceMsgView extends LinearLayout implements DeviceConnectView, Vi
 		this.mConncetButton = (Button) view.findViewById(R.id.btn_device_connect);
 		this.mConncetButton.setOnClickListener(this);
 		setLayoutParams(new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
+
+		findViewById(R.id.btn_device_back).setOnClickListener(this); // 返回
+
 		// setWidth(LayoutParams.MATCH_PARENT);
 		// setHeight(LayoutParams.MATCH_PARENT);
 		// setFocusable(true);
 		// setBackgroundDrawable(new BitmapDrawable());
 		// setContentView(view);
 	}
-	
+
 	@Override
 	public void setName(final String name) {
 		mNameTextView.post(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				mNameTextView.setText(name);
 			}
 		});
 	}
-	
+
 	public void setShowable(boolean val) {
 		// this.mShowable = val;
 	}
-	
+
 	public void setTips(final String msg) {
-		if (TextUtils.isEmpty(msg)) { return; }
+		if (TextUtils.isEmpty(msg)) {
+			return;
+		}
 		mTipsTextView.post(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				mTipsTextView.setText(msg);
 			}
 		});
 	}
-	
+
 	public void setMsg(final String msg) {
 		mMsgTextView.post(new Runnable() {
-			
+
 			@Override
 			public void run() {
-				
+
 				mMsgTextView.setText(msg);
 			}
 		});
 	}
-	
+
 	public void startAnim() {
 		mLoadingImageView.post(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				if (mLoadingImageView.getVisibility() != View.VISIBLE) {
@@ -98,12 +103,12 @@ public class DeviceMsgView extends LinearLayout implements DeviceConnectView, Vi
 				mLoadingImageView.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.spinning));
 			}
 		});
-		
+
 	}
-	
+
 	public void stopAnim() {
 		mLoadingImageView.post(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				mLoadingImageView.clearAnimation();
@@ -111,10 +116,10 @@ public class DeviceMsgView extends LinearLayout implements DeviceConnectView, Vi
 			}
 		});
 	}
-	
+
 	private void initView(final int backgroundId, final int iconId, final String btnText) {
 		mLoadingBgImageView.post(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				mLoadingBgImageView.setImageResource(backgroundId);
@@ -129,7 +134,7 @@ public class DeviceMsgView extends LinearLayout implements DeviceConnectView, Vi
 			}
 		});
 	}
-	
+
 	private void show() {
 		// if (!mShowable) {
 		// return;
@@ -143,36 +148,46 @@ public class DeviceMsgView extends LinearLayout implements DeviceConnectView, Vi
 		setName(((NfyhApplication) getContext().getApplicationContext()).getApiMonitor().getDeviceInfo().getDeviceName());
 		// showAtLocation(mContentView, Gravity.TOP, 0, 0);
 	}
-	
+
 	@Override
 	public void setContentViewGroup(View view) {
 		this.mContentView = (ViewGroup) view;
 	}
-	
+
 	@Override
 	public void dismiss() {
 		// super.dismiss();
 		stopAnim();
 		((Activity) getContext()).finish();
 	}
-	
+
 	@Override
 	public void onClick(View v) {
-		if (mConncetButton.getText().equals("开始测量")) {
-			dismiss();
+
+		switch (v.getId()) {
+			case R.id.btn_device_back:
+				dismiss();
+				break;
+			default:
+				if (mConncetButton.getText().equals("完成")) {
+					dismiss();
+				}
+				else if (mConncetButton.getText().equals("断开连接")) {
+					((NfyhApplication) getContext().getApplicationContext()).disconnect();
+				}
+
+				else {
+					((NfyhApplication) getContext().getApplicationContext()).connect();
+				}
+				break;
 		}
-		else if (mConncetButton.getText().equals("断开连接")) {
-			((NfyhApplication) getContext().getApplicationContext()).disconnect();
-		}
-		else {
-			((NfyhApplication) getContext().getApplicationContext()).connect();
-		}
+
 	}
-	
+
 	// private Context getContext() {
 	// return mContext;
 	// }
-	
+
 	@Override
 	public void show(String tips, String msg) {
 		setMsg(msg);
@@ -181,7 +196,7 @@ public class DeviceMsgView extends LinearLayout implements DeviceConnectView, Vi
 		initView(R.drawable.device_connect_search_bg, R.drawable.icon_search, "");
 		show();
 	}
-	
+
 	@Override
 	public void showError(String tips, String msg) {
 		setMsg(msg);
@@ -190,13 +205,13 @@ public class DeviceMsgView extends LinearLayout implements DeviceConnectView, Vi
 		initView(R.drawable.device_connect_error_bg, R.drawable.icon_device_info, "重新连接");
 		show();
 	}
-	
+
 	@Override
 	public void showSuccess(String tips, String msg) {
 		setMsg(msg);
 		setTips(tips);
 		stopAnim();
-		initView(R.drawable.device_connect_search_bg, R.drawable.icon_device_connected, "开始测量");
+		initView(R.drawable.device_connect_search_bg, R.drawable.icon_device_connected, "完成");
 		show();
 	}
 }

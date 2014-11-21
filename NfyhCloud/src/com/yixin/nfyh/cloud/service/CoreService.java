@@ -19,10 +19,10 @@ import com.yixin.nfyh.cloud.receiver.CoreBroadcastReceiver;
  * 
  */
 public class CoreService extends AlarmService {
-	private Context mContext;
-	private CoreBroadcastReceiver mSMSReceiver;
-	private NfyhApplication mApplication;
-	private CoreBinder binder;
+	private Context					mContext;
+	private CoreBroadcastReceiver	mSMSReceiver;
+	private NfyhApplication			mApplication;
+	private CoreBinder				binder;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -53,8 +53,7 @@ public class CoreService extends AlarmService {
 
 		// 注册短信广播
 		mSMSReceiver = new CoreBroadcastReceiver();
-		IntentFilter intentFilter = new IntentFilter(
-				BroadcastReceiverFlag.ACTION_REC_SMS);
+		IntentFilter intentFilter = new IntentFilter(BroadcastReceiverFlag.ACTION_REC_SMS);
 		intentFilter.setPriority(Integer.MAX_VALUE);
 
 		this.registerReceiver(mSMSReceiver, intentFilter);
@@ -68,6 +67,7 @@ public class CoreService extends AlarmService {
 	public void onDestroy() {
 		super.onDestroy();
 		unregReceiver();
+		mApplication.disconnect(); // 服务已经关闭，断开设备连接。
 	}
 
 }

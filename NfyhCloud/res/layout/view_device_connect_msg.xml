@@ -12,7 +12,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="120dp"
             android:background="@drawable/scan_top_bg"
             android:gravity="center"
             android:orientation="vertical" >
@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:layout_marginTop="30dp" >
+            android:layout_marginTop="45dp" >
 
             <ImageView
                 android:id="@+id/img_device_connect_loading_bg"
@@ -57,7 +57,8 @@
                     android:id="@+id/img_device_connect_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_search" />
+                    android:src="@drawable/icon_search"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tv_device_connet_tips"
@@ -91,6 +92,19 @@
             android:paddingLeft="30dp"
             android:paddingRight="30dp"
             android:text="重新连接" />
+
+        <Button
+            android:id="@+id/btn_device_back"
+            style="@style/btn_green"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:text="@string/back" />
+
     </LinearLayout>
 
 </com.yixin.nfyh.cloud.ui.ScrollLineLayoutView>

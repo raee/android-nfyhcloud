@@ -3,6 +3,7 @@ package com.yixin.nfyh.cloud.device;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
@@ -22,12 +23,12 @@ import com.yixin.nfyh.cloud.activity.SignDetailActivity;
 
 public class DeviceReceiverListener implements BluetoothListener {
 
-	private static MediaPlayer Player;
+	private static MediaPlayer	Player;
 
-	private Context context;
-	private int connectTime;
-	private int maxConnectTime = -1; // 重试一次
-	private ApiMonitor mApi;
+	private Context				context;
+	private int					connectTime;
+	private int					maxConnectTime	= -1;	// 重试一次
+	private ApiMonitor			mApi;
 
 	public DeviceReceiverListener(Context context, ApiMonitor api) {
 		this.context = context;
@@ -66,7 +67,8 @@ public class DeviceReceiverListener implements BluetoothListener {
 	public void onStopDiscovery() {
 		if (mApi.isConnected()) {
 			showSuccess("连接成功", "");
-		} else {
+		}
+		else {
 			showSuccess("扫描完成", "没发现设备！");
 		}
 
@@ -111,7 +113,7 @@ public class DeviceReceiverListener implements BluetoothListener {
 
 	@Override
 	public void onBluetoothBondNone(BluetoothDevice device) {
-		showError("配对失败", "蓝牙配对失败，请重试。");
+		showError("配对失败", "蓝牙配对失败，部分手机由于系统限制导致自动配对失败，如果设备上蓝牙状态显示已经连接，可以不必再重新连接。");
 	}
 
 	@Override
@@ -137,8 +139,7 @@ public class DeviceReceiverListener implements BluetoothListener {
 			Log.i("CoreServerBinder", m.getDataName() + "|" + m.getValue());
 		}
 		Intent intent = new Intent(context, SignDetailActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-				| Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
 		intent.putExtra("data", model);
 		intent.putExtra(Intent.EXTRA_TEXT, "-1");
 		intent.putExtra("from", "device"); // 数据来自设备
@@ -157,10 +158,12 @@ public class DeviceReceiverListener implements BluetoothListener {
 
 	@Override
 	public void onError(int errorCode, String msg) {
+		// 关闭蓝牙
+		BluetoothAdapter.getDefaultAdapter().disable();
+
 		stopMusic();
 		if (connectTime < maxConnectTime) {
-			msg = "5秒后尝试连接（" + connectTime + "/" + maxConnectTime + "）<br>"
-					+ msg;
+			msg = "5秒后尝试连接（" + connectTime + "/" + maxConnectTime + "）<br>" + msg;
 			msg = Html.fromHtml(msg).toString();
 			showError("连接失败", msg);
 			connectTime++;
@@ -172,7 +175,8 @@ public class DeviceReceiverListener implements BluetoothListener {
 				}
 			}, 5000);
 
-		} else {
+		}
+		else {
 			showError("连接失败", msg);
 		}
 	}
@@ -180,6 +184,7 @@ public class DeviceReceiverListener implements BluetoothListener {
 	@Override
 	public void onBluetoothCancle() {
 		stopMusic();
+		showSuccess("连接取消", "设备连接已经取消！");
 	}
 
 	// @Override
@@ -201,14 +206,15 @@ public class DeviceReceiverListener implements BluetoothListener {
 				Player.prepare();
 				Player.start();
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Override
 	public void onBluetoothSendData(byte[] arg0) {
-		showSuccess("发送数据完成", "您可以开始测量了！");
+		showSuccess("完成", "您可以开始测量了！");
 		stopMusic();
 	}
 

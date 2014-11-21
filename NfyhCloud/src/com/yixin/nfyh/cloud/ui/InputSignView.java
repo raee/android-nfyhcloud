@@ -31,7 +31,7 @@ public class InputSignView extends LinearLayout {
 
 	private SignTypeItemGridViewAdapter mSignTypeAdapter;
 	private ListView mSignListView;
-	private boolean mHasDataChange = true; // 数据是否发生改变
+	private boolean mHasDataChange = false; // 数据是否发生改变
 
 	private int mShowType = TYPE_NORMAL;
 	private SignCore mSignCore;

@@ -108,7 +108,7 @@ public class NfyhCloudDataOpenHelp extends OrmLiteSqliteOpenHelper {
 			}
 			String[] sqls = outStream.toString().split(";");
 			for (String sql : sqls) {
-				log.info(TAG, "正在执行sql语句：" + sql);
+				//log.info(TAG, "正在执行sql语句：" + sql);
 				try {
 					if (sql != null && sql.length() > 1) db.execSQL(sql);
 				}

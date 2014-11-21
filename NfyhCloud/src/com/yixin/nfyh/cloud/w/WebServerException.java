@@ -11,8 +11,7 @@ import android.util.SparseArray;
  * @author MrChenrui
  * 
  */
-public class WebServerException
-{
+public class WebServerException {
 
 	private int									code				= 0;
 
@@ -29,8 +28,7 @@ public class WebServerException
 	private static final SparseArray<String>	Messages			= new SparseArray<String>();
 
 	private String								data;
-	static
-	{
+	static {
 		Messages.put(CODE_NET_DISCONNECT, "网络连接没有打开！");
 		Messages.put(500, "服务器发生错误！code:500");
 		Messages.put(505, "服务器发生错误！code:500");
@@ -38,47 +36,45 @@ public class WebServerException
 		Messages.put(CODE_NULL_DATA, "服务器返回数据为空！");
 	}
 
-	public WebServerException()
-	{
+	public WebServerException() {
 	}
 
-	public WebServerException(String msg)
-	{
+	public WebServerException(String msg) {
 		this.setMessage(msg);
 	}
 
-	public WebServerException(int code)
-	{
+	public WebServerException(int code) {
 		this.setCode(code);
 		this.message = Messages.get(code);
 	}
 
-	public WebServerException(int code, String msg)
-	{
+	public WebServerException(int code, String msg) {
 		this.setCode(code);
-		if (Messages.get(code) != null)
-		{
+		if (Messages.get(code) != null) {
 			this.message = Messages.get(code);
 		}
-		else
-		{
+		else {
 			this.setMessage(msg);
 		}
 	}
 
-	public static WebServerException parser(String json)
-	{
+	public static WebServerException parser(String json) {
 		WebServerException result = new WebServerException();
 		JSONObject obj;
-		try
-		{
+		try {
 			obj = new JSONObject(json);
-			result.setCode(obj.getInt("status"));
-			result.setMessage(obj.getString("message"));
-			result.setData(obj.getString("data"));
+			if (json.contains("message")) {
+				result.setCode(obj.getInt("status"));
+				result.setMessage(obj.getString("message"));
+				result.setData(obj.getString("data"));
+			}
+			else {
+				result.setCode(1);
+				result.setData(json);
+				result.setMessage("数据解析！");
+			}
 		}
-		catch (JSONException e)
-		{
+		catch (JSONException e) {
 			e.printStackTrace();
 			result.setCode(1);
 			result.setData(json);
@@ -87,33 +83,27 @@ public class WebServerException
 		return result;
 	}
 
-	public int getCode()
-	{
+	public int getCode() {
 		return code;
 	}
 
-	public void setCode(int code)
-	{
+	public void setCode(int code) {
 		this.code = code;
 	}
 
-	public String getMessage()
-	{
+	public String getMessage() {
 		return message;
 	}
 
-	public void setMessage(String message)
-	{
+	public void setMessage(String message) {
 		this.message = message;
 	}
 
-	public String getData()
-	{
+	public String getData() {
 		return data;
 	}
 
-	public void setData(String data)
-	{
+	public void setData(String data) {
 		this.data = data;
 	}
 }

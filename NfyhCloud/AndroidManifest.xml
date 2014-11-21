@@ -226,6 +226,9 @@
             android:label="欧姆龙底层服务"
             android:permission="android.permission.BLUETOOTH"
             android:stopWithTask="false" >
+            <intent-filter>
+                <action android:name="com.signove.health.service.HealthService" />
+            </intent-filter>
         </service>
         <!-- 欧姆龙蓝牙服务 -->
         <service
