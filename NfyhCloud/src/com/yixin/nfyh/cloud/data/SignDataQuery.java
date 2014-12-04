@@ -33,10 +33,10 @@ public class SignDataQuery implements ISignDevice {
 	private Dao<SignRange, Long>	signRangeDao;
 	private String					tag	= "SignDataQuery";
 	private IUser					mDbUser;
-	
+
 	public SignDataQuery(Context context) throws SQLException {
 		NfyhCloudDataOpenHelp db = NfyhCloudDataBase.getDataOpenHelp(context);
-		
+
 		this.usersign = db.getUserSigns();
 		this.dev = db.getDevices();
 		this.signTypesDao = db.getSignTypes();
@@ -44,7 +44,7 @@ public class SignDataQuery implements ISignDevice {
 		this.signRangeDao = db.getSignRange();
 		mDbUser = new DataQuery(context);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.yixin.nfyh.cloud.data.ISignDevice#getSignTypes()
@@ -54,7 +54,7 @@ public class SignDataQuery implements ISignDevice {
 		QueryBuilder<SignTypes, String> builder = signTypesDao.queryBuilder();
 		return builder.orderBy("order_id", true).where().isNull("p_typeid").query();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see
@@ -68,7 +68,7 @@ public class SignDataQuery implements ISignDevice {
 		where.and();
 		return where.eq("_Users_uid", uid).query();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.yixin.nfyh.cloud.data.ISignDevice#getCurrentDevices()
@@ -77,7 +77,7 @@ public class SignDataQuery implements ISignDevice {
 	public Devices getCurrentDevices() throws SQLException {
 		return this.dev.queryBuilder().where().eq("isused", 1).query().get(0);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see
@@ -88,7 +88,7 @@ public class SignDataQuery implements ISignDevice {
 	public int updateDevices(Devices d) throws SQLException {
 		return this.dev.update(d);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see
@@ -98,17 +98,19 @@ public class SignDataQuery implements ISignDevice {
 	public int setCurrentDevices(String devid) throws SQLException {
 		Devices devinfo = this.getCurrentDevices();
 		Devices tagdev = this.dev.queryForEq("devid", devid).get(0);
-		
+
 		if (devinfo != null && tagdev != null) {
 			// 关闭当前的设备
 			devinfo.setIsUsed(1);
 			tagdev.setIsUsed(1);
-			if (this.updateDevices(devinfo) > 0) { return this.updateDevices(tagdev); }
+			if (this.updateDevices(devinfo) > 0) {
+				return this.updateDevices(tagdev);
+			}
 		}
-		
+
 		return 0;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see
@@ -120,7 +122,7 @@ public class SignDataQuery implements ISignDevice {
 		QueryBuilder<SignTypes, String> builder = signTypesDao.queryBuilder();
 		return builder.orderBy("order_id", true).where().eq("p_typeid", m.getTypeId()).and().eq("is_sign", "0").query();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.yixin.nfyh.cloud.data.ISignDevice#getSignType(java.lang.String)
@@ -129,7 +131,7 @@ public class SignDataQuery implements ISignDevice {
 	public SignTypes getSignType(String signId) throws SQLException {
 		return signTypesDao.queryBuilder().where().eq("typeId", signId).queryForFirst();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see
@@ -139,14 +141,16 @@ public class SignDataQuery implements ISignDevice {
 	@Override
 	public List<SignTips> getSignTips(UserSigns m) throws SQLException {
 		SignTypes types = m.getSignTypes();
-		if (types.getPTypeid() != 0) { return null; } // 不是体征
+		if (types.getPTypeid() != 0) {
+			return null;
+		} // 不是体征
 		Where<SignTips, Long> where = signTipsDao.queryBuilder().where();
 		where.eq("_SignTypes_typeId", types.getTypeId()).query();
 		where.and();
 		where.raw(m.getSignValue() + " between left_range and right_range");
 		return where.query();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see
@@ -157,7 +161,7 @@ public class SignDataQuery implements ISignDevice {
 		QueryBuilder<SignTypes, String> builder = signTypesDao.queryBuilder();
 		return builder.orderBy("order_id", true).where().eq("p_typeid", m.getTypeId()).query();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see
@@ -182,7 +186,7 @@ public class SignDataQuery implements ISignDevice {
 		if (count < 1) Log.i(tag, "新增或更新用户体征数据失败！");
 		return result;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see
@@ -191,15 +195,16 @@ public class SignDataQuery implements ISignDevice {
 	 */
 	@Override
 	public UserSigns getLastUserSignsByType(String uid, SignTypes types) throws SQLException {
-		
-		long id = usersign.queryRawValue("select max(recordid) from user_signs where groupid='" + types.getPTypeid() + "' and _signtypes_typeid='" + types.getTypeId() + "' and  rec_date = (select max(rec_date) from user_signs)");
+
+		long id = usersign.queryRawValue("select max(recordid) from user_signs where groupid='" + types.getPTypeid() + "' and _signtypes_typeid='" + types.getTypeId()
+				+ "' and  rec_date = (select max(rec_date) from user_signs)");
 		UserSigns result = usersign.queryForId(id);
 		try {
 			if (result != null && types.getIsSign() == 0) {
 				DialogViewModel dm = new DialogViewModel();
 				String jsonString = this.getUserSignRangeArray(types.getTypeId());
 				dm.setDatas(jsonString);
-				
+
 				String val = result.getSignValue();
 				if (val.contains(".")) {
 					float value = Float.valueOf(val);
@@ -208,7 +213,7 @@ public class SignDataQuery implements ISignDevice {
 				else {
 					dm.setCurrentItem(Integer.valueOf(result.getSignValue()));
 				}
-				
+
 				dm.setCurrentItem(0);
 				String value = dm.getDatas().get(dm.getCurrentItem());
 				result.setSignValue(value);
@@ -217,10 +222,10 @@ public class SignDataQuery implements ISignDevice {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return result;
 	}
-	
+
 	@Override
 	public double[] getUserSignRange(String typeId) throws SQLException {
 		List<SignRange> datas = signRangeDao.queryBuilder().where().eq("range_type", "0").and().eq("_SignTypes_typeId", typeId).query();
@@ -234,11 +239,11 @@ public class SignDataQuery implements ISignDevice {
 			return new double[] { left, right };
 		}
 	}
-	
+
 	@Override
 	public String getUserSignRangeArray(String typeId) throws SQLException {
 		List<SignRange> datas = signRangeDao.queryBuilder().where().eq("range_type", 0).and().eq("_SignTypes_typeId", typeId).query();
-		
+
 		if (datas.size() > 0) {
 			return datas.get(0).getRangeArr();
 		}
@@ -246,41 +251,42 @@ public class SignDataQuery implements ISignDevice {
 			return "[]";
 		}
 	}
-	
+
 	@Override
 	public List<SignRange> getUserSignRange(String typeId, String value) throws SQLException {
 		/*
 		 * select * from sign_range where typeid=1001 and 120>left_range and
 		 * 120<right_range
 		 */
-		List<SignRange> result = signRangeDao.queryBuilder().where().eq("_SignTypes_typeId", typeId).and().le("left_range", value).and().ge("right_range", value).and().notIn("range_type", 0).query();
-		
+		List<SignRange> result = signRangeDao.queryBuilder().where().eq("_SignTypes_typeId", typeId).and().le("left_range", value).and().ge("right_range", value).and()
+				.notIn("range_type", 0).query();
+
 		return result;
 	}
-	
+
 	@Override
 	public List<SignTips> getSignTipsBySignRangeId(String rangeid) throws SQLException {
 		List<SignTips> result = signTipsDao.queryBuilder().where().eq("_signrange_rangeid", rangeid).query();
-		
+
 		return result;
 	}
-	
+
 	@Override
 	public List<SignRange> getSignRange(String typeId) throws SQLException {
 		List<SignRange> result = signRangeDao.queryBuilder().where().eq("_SignTypes_typeId", typeId).query();
 		return result;
 	}
-	
+
 	@Override
 	public List<Devices> getDevices() throws SQLException {
 		return dev.queryForAll();
 	}
-	
+
 	@Override
 	public Devices getDevicesByid(String devId) throws SQLException {
 		return dev.queryForId(devId);
 	}
-	
+
 	@Override
 	public SignTypes getSignTypeByName(String name) throws SQLException {
 		List<SignTypes> signs = signTypesDao.queryBuilder().where().eq("name", name).and().isNotNull("p_typeid").query();
@@ -292,9 +298,9 @@ public class SignDataQuery implements ISignDevice {
 		else {
 			return signs.get(0);
 		}
-		
+
 	}
-	
+
 	@Override
 	public List<UserSigns> getUserSignsNotSysnc() {
 		try {
@@ -305,7 +311,7 @@ public class SignDataQuery implements ISignDevice {
 		}
 		return null;
 	}
-	
+
 	@Override
 	public List<UserSigns> getGuestUserSignsNotSysnc() {
 		try {
@@ -316,7 +322,7 @@ public class SignDataQuery implements ISignDevice {
 		}
 		return null;
 	}
-	
+
 	@Override
 	public void convertGuestData(String uid) {
 		try {
@@ -332,7 +338,7 @@ public class SignDataQuery implements ISignDevice {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void uploadUserSign(List<UserSigns> signs) {
 		try {
@@ -344,5 +350,17 @@ public class SignDataQuery implements ISignDevice {
 			e.printStackTrace();
 		}
 	}
-	
+
+	@Override
+	public List<SignTypes> getSignTypes(List<String> filter) throws SQLException {
+		QueryBuilder<SignTypes, String> builder = signTypesDao.queryBuilder();
+		Where<SignTypes, String> where = builder.orderBy("order_id", true).where().isNull("p_typeid");
+		if (filter == null || filter.size() <= 0) {
+			return where.query();
+		}
+		else {
+			return where.and().in("typeId", filter).query();
+		}
+	}
+
 }

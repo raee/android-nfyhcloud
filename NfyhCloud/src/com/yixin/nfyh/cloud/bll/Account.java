@@ -3,8 +3,6 @@ package com.yixin.nfyh.cloud.bll;
 import android.content.Context;
 
 import com.yixin.nfyh.cloud.NfyhApplication;
-import com.yixin.nfyh.cloud.data.IUser;
-import com.yixin.nfyh.cloud.data.NfyhCloudDataFactory;
 import com.yixin.nfyh.cloud.i.ILogin;
 import com.yixin.nfyh.cloud.model.Users;
 import com.yixin.nfyh.cloud.w.NfyhWebserviceFactory;
@@ -16,23 +14,24 @@ public class Account implements SoapConnectionCallback<Users> {
 	private ILoginCallback	mListener;
 	private GlobalSetting	mSetting;
 	private NfyhApplication	mApplication;
-	private IUser			mDbUser;
-	
+
+	// private IUser mDbUser;
+
 	public Account(Context context) {
 		this.mContext = context;
 		this.mSetting = new GlobalSetting(context);
 		this.mApplication = (NfyhApplication) mContext.getApplicationContext();
-		mDbUser = NfyhCloudDataFactory.getFactory(mContext).getUser();
+		// mDbUser = NfyhCloudDataFactory.getFactory(mContext).getUser();
 	}
-	
+
 	public void setLoginCallbackListener(ILoginCallback l) {
 		this.mListener = l;
 	}
-	
+
 	public void loginInLocal(String username, String pwd) {
 		onSoapConnectSuccess(getGuestUser());
 	}
-	
+
 	/**
 	 * 获取游客帐号
 	 * 
@@ -46,10 +45,10 @@ public class Account implements SoapConnectionCallback<Users> {
 		guest.setUid("0");
 		guest.setName("离线用户");
 		guest.setSex("男");
-		
+
 		return guest;
 	}
-	
+
 	/**
 	 * 登录
 	 * 
@@ -60,9 +59,9 @@ public class Account implements SoapConnectionCallback<Users> {
 		ILogin loginApi = NfyhWebserviceFactory.getFactory(mContext).getLogin();
 		loginApi.setOnConnectonCallback(this);
 		loginApi.login(username, pwd);
-		
+
 	}
-	
+
 	@Override
 	public void onSoapConnectSuccess(Users data) {
 		this.mApplication.setUserInfo(data);
@@ -72,7 +71,7 @@ public class Account implements SoapConnectionCallback<Users> {
 		}
 		mListener.OnLoginSuccess(data.getUsername(), data.getPwd());
 	}
-	
+
 	@Override
 	public void onSoapConnectedFalid(WebServerException e) {
 		if (e.getCode() == WebServerException.CODE_NULL_DATA) {

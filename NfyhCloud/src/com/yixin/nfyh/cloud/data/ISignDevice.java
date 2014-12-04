@@ -19,9 +19,9 @@ import com.yixin.nfyh.cloud.model.UserSigns;
  * 
  */
 public interface ISignDevice {
-	
+
 	// ============ 体征相关接口 ================//
-	
+
 	/**
 	 * 添加或更新体征记录,如果体征记录不存在则新增否则更新数据
 	 * 
@@ -30,7 +30,7 @@ public interface ISignDevice {
 	 * @return 返回更新后的数据
 	 */
 	UserSigns addOrUpdateUserSign(UserSigns m) throws SQLException;
-	
+
 	/**
 	 * 根据体征类型获取用户的体征数据
 	 * 
@@ -41,7 +41,7 @@ public interface ISignDevice {
 	 * @return
 	 */
 	List<UserSigns> getUserSignByType(String uid, SignTypes types) throws SQLException;
-	
+
 	/**
 	 * 获取最近的用户体征
 	 * 
@@ -51,14 +51,23 @@ public interface ISignDevice {
 	 * @throws SQLException
 	 */
 	UserSigns getLastUserSignsByType(String uid, SignTypes types) throws SQLException;
-	
+
 	/**
 	 * 获取所有的体征测量类型,已经分组的。
 	 * 
 	 * @return
 	 */
 	List<SignTypes> getSignTypes() throws SQLException;
-	
+
+	/**
+	 * 获取所有的父类体征测量类型
+	 * @param filter
+	 *            过滤列表，只获取该列表的体征
+	 * 
+	 * @return
+	 */
+	List<SignTypes> getSignTypes(List<String> filter) throws SQLException;
+
 	/**
 	 * 获取分组下所有的体征类型，主要！
 	 * 
@@ -66,7 +75,7 @@ public interface ISignDevice {
 	 * @throws SQLException
 	 */
 	List<SignTypes> getGroupSignTypes(SignTypes m) throws SQLException;
-	
+
 	/**
 	 * 根据ID获取一条体征类型
 	 * 
@@ -76,7 +85,7 @@ public interface ISignDevice {
 	 * @throws SQLException
 	 */
 	SignTypes getSignType(String signId) throws SQLException;
-	
+
 	/**
 	 * 获取体征提示，根据体征类型
 	 * 
@@ -85,7 +94,7 @@ public interface ISignDevice {
 	 * @throws SQLException
 	 */
 	List<SignTips> getSignTips(UserSigns m) throws SQLException;
-	
+
 	/**
 	 * 获取用户体征的选择范围
 	 * 
@@ -93,7 +102,7 @@ public interface ISignDevice {
 	 * @throws SQLException
 	 */
 	double[] getUserSignRange(String typeId) throws SQLException;
-	
+
 	/**
 	 * 获取体征类型的体征范围
 	 * 
@@ -102,7 +111,7 @@ public interface ISignDevice {
 	 * @throws SQLException
 	 */
 	List<SignRange> getSignRange(String typeId) throws SQLException;
-	
+
 	/**
 	 * 获取用户体征的选择范围
 	 * 
@@ -110,7 +119,7 @@ public interface ISignDevice {
 	 * @throws SQLException
 	 */
 	String getUserSignRangeArray(String typeId) throws SQLException;
-	
+
 	/**
 	 * 获取体征的额外参数，如测试时间段
 	 * 
@@ -120,25 +129,25 @@ public interface ISignDevice {
 	 * @throws SQLException
 	 */
 	List<SignTypes> getSignParames(SignTypes m) throws SQLException;
-	
+
 	// ============ 设备相关接口 ================//
-	
+
 	/**
 	 * 获取当前正在监测的设备
 	 * 
 	 * @return
 	 */
 	Devices getCurrentDevices() throws SQLException;
-	
+
 	Devices getDevicesByid(String devId) throws SQLException;
-	
+
 	/**
 	 * 更新正在使用的设备
 	 * 
 	 * @param d
 	 */
 	int updateDevices(Devices d) throws SQLException;
-	
+
 	/**
 	 * 设置新的当前监测设备
 	 * 
@@ -148,9 +157,9 @@ public interface ISignDevice {
 	 * @throws SQLException
 	 */
 	int setCurrentDevices(String devid) throws SQLException;
-	
+
 	List<Devices> getDevices() throws SQLException;
-	
+
 	/**
 	 * 获取体征范围
 	 * 
@@ -162,7 +171,7 @@ public interface ISignDevice {
 	 * @throws SQLException
 	 */
 	List<SignRange> getUserSignRange(String typeId, String value) throws SQLException;
-	
+
 	/**
 	 * 获取体征类型，根据类型名称
 	 * 
@@ -171,7 +180,7 @@ public interface ISignDevice {
 	 * @throws SQLException
 	 */
 	SignTypes getSignTypeByName(String name) throws SQLException;
-	
+
 	/**
 	 * 获取体征提示，根据范围ID
 	 * 
@@ -180,21 +189,21 @@ public interface ISignDevice {
 	 * @throws SQLException
 	 */
 	List<SignTips> getSignTipsBySignRangeId(String rangeid) throws SQLException;
-	
+
 	/**
 	 * 获取所有没有同步的数据
 	 * 
 	 * @return
 	 */
 	List<UserSigns> getUserSignsNotSysnc();
-	
+
 	/**
 	 * 更新体征数据
 	 * 
 	 * @param signs
 	 */
 	void uploadUserSign(List<UserSigns> signs);
-	
+
 	/**
 	 * 转换离线数据到用户中
 	 * 
@@ -203,7 +212,7 @@ public interface ISignDevice {
 	 * @return
 	 */
 	void convertGuestData(String uid);
-	
+
 	/**
 	 * 获取离线用户体征数据。
 	 * 

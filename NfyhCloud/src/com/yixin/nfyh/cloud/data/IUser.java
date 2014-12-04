@@ -15,8 +15,7 @@ import com.yixin.nfyh.cloud.model.Users;
  * @author MrChenrui
  * 
  */
-public interface IUser
-{
+public interface IUser {
 
 	/**
 	 * 获取单个用户
@@ -111,4 +110,36 @@ public interface IUser
 	 * @throws SQLException
 	 */
 	List<Users> getUserRanking(String uid) throws SQLException;
+
+	/**
+	 * 添加用户模块
+	 * @param uid
+	 *            用户Id
+	 * @param modules
+	 *            模块代码
+	 */
+	void addUserModule(String uid, String[] modules);
+
+	/**
+	 * 添加用户体征类型
+	 * @param uid
+	 *            用户Id
+	 * @param modules
+	 *            体征代码
+	 */
+	void addUserSignType(String uid, String[] types);
+
+	/**
+	 * 获取用户模块
+	 * @param uid
+	 *            用户Id
+	 */
+	List<String> getUserModule(String uid);
+
+	/**
+	 * 获取用户体征类型
+	 * @param uid
+	 *            用户Id
+	 */
+	List<String> getUserSignType(String uid);
 }

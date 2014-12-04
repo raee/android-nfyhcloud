@@ -12,121 +12,96 @@ import cn.rui.framework.widget.RuiSwitch;
 
 import com.yixin.nfyh.cloud.R;
 
-public class SubMenu extends LinearLayout
-{
+public class SubMenu extends LinearLayout {
 	public static final String	namespace	= "http://schemas.android.com/apk/res/android";
-	private TextView	tvTitle;
-	private TextView	tvRightTitle;
-	private ImageView	imgIcon, imgRight;
-	private RuiSwitch	btnSwitch;
+	private TextView			tvTitle;
+	private TextView			tvRightTitle;
+	private ImageView			imgIcon, imgRight;
+	private RuiSwitch			btnSwitch;
 
-	public SubMenu(Context context, AttributeSet attrs)
-	{
+	public SubMenu(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		View v = LayoutInflater.from(context).inflate(R.layout.view_submenu,
-				this);
-		try
-		{
+		LayoutInflater.from(context).inflate(R.layout.view_submenu, this);
+		try {
 			this.tvTitle = (TextView) this.findViewById(R.id.tv_menu_title);
-			this.tvRightTitle = (TextView) this
-					.findViewById(R.id.tv_menu_right_title);
+			this.tvRightTitle = (TextView) this.findViewById(R.id.tv_menu_right_title);
 
 			this.imgIcon = (ImageView) this.findViewById(R.id.img_submenu_icon);
-			this.imgRight = (ImageView) this
-					.findViewById(R.id.img_bg_menu_right);
+			this.imgRight = (ImageView) this.findViewById(R.id.img_bg_menu_right);
 			this.btnSwitch = (RuiSwitch) this.findViewById(R.id.rui_switch);
 
-			int gravity = attrs.getAttributeIntValue(namespace,
-					"layout_gravity", 0);
+			int gravity = attrs.getAttributeIntValue(namespace, "layout_gravity", 0);
 
-			int resid = attrs.getAttributeResourceValue(namespace,
-					"tag", 0);
+			int resid = attrs.getAttributeResourceValue(namespace, "tag", 0);
 
-			int iconId = attrs.getAttributeResourceValue(namespace,
-					"background", 0);
+			int iconId = attrs.getAttributeResourceValue(namespace, "background", 0);
 
 			this.setBackgroundResource(android.R.color.transparent);
 
-			if (resid != 0)
-				setTitle(context.getResources().getString(resid));
+			if (resid != 0) setTitle(context.getResources().getString(resid));
 
 			if (iconId != 0)
 				setIcon(iconId);
 			else
 				this.imgIcon.setVisibility(View.GONE);
 
-			if (gravity == 0)
-				gravity = Gravity.START;
+			if (gravity == 0) gravity = Gravity.LEFT;
 			setGravity(gravity);
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	public void setTitle(String title)
-	{
+	public void setTitle(String title) {
 		this.tvTitle.setText(title);
 	}
 
-	public void setRightTitle(String title)
-	{
+	public void setRightTitle(String title) {
 		this.tvRightTitle.setText(title);
 	}
 
-	public void showSwitch()
-	{
+	public void showSwitch() {
 		this.btnSwitch.setVisibility(View.VISIBLE);
 		this.imgRight.setVisibility(View.INVISIBLE);
 	}
 
-	public RuiSwitch getSwitch()
-	{
+	public RuiSwitch getSwitch() {
 		return this.btnSwitch;
 	}
 
-	public void showRightImage()
-	{
+	public void showRightImage() {
 		this.imgRight.setVisibility(View.VISIBLE);
 	}
 
-	public String getRightTitle()
-	{
+	public String getRightTitle() {
 		return this.tvRightTitle.getText().toString();
 	}
 
-	public void setIcon(int resId)
-	{
+	public void setIcon(int resId) {
 		this.imgIcon.setImageResource(resId);
 		this.imgIcon.setVisibility(View.VISIBLE);
 	}
 
 	@Override
-	public void setGravity(int gravity)
-	{
-		switch (gravity)
-		{
+	public void setGravity(int gravity) {
+		switch (gravity) {
 			case Gravity.BOTTOM:
-				this.getChildAt(0).setBackgroundResource(
-						R.drawable.common_setting_bottom);
+				this.getChildAt(0).setBackgroundResource(R.drawable.common_setting_bottom);
 
 				break;
 			case Gravity.CENTER:
-				this.getChildAt(0).setBackgroundResource(
-						R.drawable.common_setting_middle);
+				this.getChildAt(0).setBackgroundResource(R.drawable.common_setting_middle);
 
 				break;
 			case Gravity.START:
-				this.getChildAt(0).setBackgroundResource(
-						R.drawable.common_setting_sigle);
+				this.getChildAt(0).setBackgroundResource(R.drawable.common_setting_sigle);
 
 				break;
 			case Gravity.TOP:
 			default:
-				this.getChildAt(0).setBackgroundResource(
-						R.drawable.common_setting_top);
+				this.getChildAt(0).setBackgroundResource(R.drawable.common_setting_top);
 				break;
 		}
 	}

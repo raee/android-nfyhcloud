@@ -4,12 +4,14 @@
 package com.yixin.nfyh.cloud.data;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import android.content.Context;
 
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.Where;
 import com.yixin.nfyh.cloud.model.Dicts;
 import com.yixin.nfyh.cloud.model.Users;
@@ -39,7 +41,6 @@ public class DataQuery implements IUser, IDict {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see com.yixin.nfyh.cloud.data.IUser#getUser(java.lang.String)
 	 */
 	@Override
@@ -49,7 +50,6 @@ public class DataQuery implements IUser, IDict {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see com.yixin.nfyh.cloud.data.IUser#getUserFriends(java.lang.String)
 	 */
 	@Override
@@ -60,7 +60,6 @@ public class DataQuery implements IUser, IDict {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see
 	 * com.yixin.nfyh.cloud.data.IUser#createUser(com.yixin.nfyh.cloud.model
 	 * .Users)
@@ -81,7 +80,6 @@ public class DataQuery implements IUser, IDict {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see com.yixin.nfyh.cloud.data.IUser#delUser(java.lang.String)
 	 */
 	@Override
@@ -91,7 +89,6 @@ public class DataQuery implements IUser, IDict {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see com.yixin.nfyh.cloud.data.IUser#exitUser(java.lang.String)
 	 */
 	@Override
@@ -101,7 +98,6 @@ public class DataQuery implements IUser, IDict {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see com.yixin.nfyh.cloud.data.IUser#addUserLoginTime()
 	 */
 	@Override
@@ -114,7 +110,6 @@ public class DataQuery implements IUser, IDict {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see com.yixin.nfyh.cloud.data.IUser#addUserRecordTime()
 	 */
 	@Override
@@ -128,7 +123,6 @@ public class DataQuery implements IUser, IDict {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see com.yixin.nfyh.cloud.data.IUser#updateLoginDate(java.util.Date)
 	 */
 	@Override
@@ -148,7 +142,6 @@ public class DataQuery implements IUser, IDict {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see com.yixin.nfyh.cloud.data.IUser#getUserRanking(java.lang.String)
 	 */
 	@Override
@@ -174,7 +167,6 @@ public class DataQuery implements IUser, IDict {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see
 	 * com.yixin.nfyh.cloud.data.IUser#updateUser(com.yixin.nfyh.cloud.model
 	 * .Users)
@@ -188,7 +180,6 @@ public class DataQuery implements IUser, IDict {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see
 	 * com.yixin.nfyh.cloud.data.IDict#addDicts(com.yixin.nfyh.cloud.model.Dicts
 	 * )
@@ -207,7 +198,6 @@ public class DataQuery implements IUser, IDict {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see
 	 * com.yixin.nfyh.cloud.data.IDict#updateDicts(com.yixin.nfyh.cloud.model
 	 * .Dicts)
@@ -219,7 +209,6 @@ public class DataQuery implements IUser, IDict {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see
 	 * com.yixin.nfyh.cloud.data.IDict#delDicts(com.yixin.nfyh.cloud.model.Dicts
 	 * )
@@ -231,7 +220,6 @@ public class DataQuery implements IUser, IDict {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see com.yixin.nfyh.cloud.data.IDict#getDictsByCode(java.lang.String)
 	 */
 	@Override
@@ -252,20 +240,80 @@ public class DataQuery implements IUser, IDict {
 		return query.queryForFirst();
 	}
 
+	private List<Dicts> getDictListByCode(String code, String key, String value) throws SQLException {
+		Where<Dicts, Long> query = this.dicts.queryBuilder().where().eq("code_name", code);
+		if (key != null) {
+			query = query.and().eq("name", key);
+		}
+		if (value != null) {
+			query = query.and().eq("dic_value", value);
+		}
+
+		return query.query();
+	}
+
 	@Override
 	public boolean login(String username, String pwd) {
 		return true; // 离线登录返回真
-		// try
-		// {
-		// List<Users> results = this.user.queryBuilder().where()
-		// .eq("username", username).and().eq("pwd", pwd).query();
-		// return results.size() > 0;
-		// }
-		// catch (SQLException e)
-		// {
-		// e.printStackTrace();
-		// }
-		// return false;
+	}
+
+	private void addOrUpdateDictModuleOrSignType(String[] arrs, String uid, String dictName) {
+		try {
+			// 首先删除该用户的数据
+			DeleteBuilder<Dicts, Long> deltebuilder = this.dicts.deleteBuilder();
+			deltebuilder.where().eq("code_name", uid).and().eq("name", dictName);
+			deltebuilder.delete();
+
+			for (String module : arrs) {
+				Dicts m = new Dicts();
+				m.setCodeName(uid);
+				m.setDicValue(module);
+				m.setName(dictName);
+
+				this.dicts.create(m);
+			}
+		}
+		catch (SQLException e) {
+			log.setExcetion(TAG, e);
+		}
+	}
+
+	@Override
+	public void addUserModule(String uid, String[] modules) {
+		addOrUpdateDictModuleOrSignType(modules, uid, "Module");
+	}
+
+	@Override
+	public void addUserSignType(String uid, String[] types) {
+		addOrUpdateDictModuleOrSignType(types, uid, "SignType");
+	}
+
+	private List<String> getUserModuleOrTypes(String uid, String dictName) {
+		List<String> result = new ArrayList<String>();
+		try {
+			List<Dicts> dicts = getDictListByCode(uid, dictName, null);
+			// String[] result = new String[dicts.size()];
+
+			for (int i = 0; i < dicts.size(); i++) {
+				String val = dicts.get(i).getDicValue();
+				result.add(val);
+			}
+			return result;
+		}
+		catch (SQLException e) {
+			log.setExcetion(TAG, e);
+		}
+		return result;
+	}
+
+	@Override
+	public List<String> getUserModule(String uid) {
+		return getUserModuleOrTypes(uid, "Module");
+	}
+
+	@Override
+	public List<String> getUserSignType(String uid) {
+		return getUserModuleOrTypes(uid, "SignType");
 	}
 
 }
