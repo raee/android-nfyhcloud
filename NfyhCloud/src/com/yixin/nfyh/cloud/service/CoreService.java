@@ -26,13 +26,13 @@ public class CoreService extends AlarmService {
 
 	@Override
 	public IBinder onBind(Intent intent) {
-		binder = new CoreBinder(this);
 		return binder;
 	}
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		binder = new CoreBinder(this);
 		mContext = getApplicationContext();
 		mApplication = (NfyhApplication) getApplication();
 		mApplication.showSOSinDesktop();

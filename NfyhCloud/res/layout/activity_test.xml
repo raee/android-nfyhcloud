@@ -5,10 +5,18 @@
     android:orientation="vertical" >
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/btn_test_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:background="@drawable/btn_qq_login"
+        android:onClick="onClick" />
+
+    <Button
+        android:id="@+id/btn_test_userinfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="onClick"
-        android:text="Button" />
+        android:text="获取用户信息" />
 
 </LinearLayout>

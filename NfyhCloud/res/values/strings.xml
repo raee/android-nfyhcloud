@@ -180,6 +180,8 @@
     <string name="soap_method_category_update">updateCategory</string>
     <string name="soap_method_myd">GetSmsPatList</string>
     <string name="soap_method_login">Login</string>
+    <string name="soap_method_login_qq">LoginByQQ</string>
+    <string name="soap_method_login_bind">BindQQAuth</string>
     <string name="soap_method_message">GetMessage</string>
 
     <!-- FeatureListItemView 要显示的模式 -->

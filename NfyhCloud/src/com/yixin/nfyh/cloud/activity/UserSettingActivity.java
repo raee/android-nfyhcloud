@@ -1,9 +1,7 @@
 package com.yixin.nfyh.cloud.activity;
 
 import java.sql.SQLException;
-import java.util.List;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -19,7 +17,6 @@ import cn.rui.framework.widget.RuiSwitch.OnCheckedChangeListener;
 
 import com.yixin.nfyh.cloud.BaseActivity;
 import com.yixin.nfyh.cloud.LoginActivity;
-import com.yixin.nfyh.cloud.NfyhApplication;
 import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.bll.ConfigServer;
 import com.yixin.nfyh.cloud.bll.VersionUpdate;
@@ -29,27 +26,26 @@ import com.yixin.nfyh.cloud.model.Devices;
 import com.yixin.nfyh.cloud.service.CoreBinder;
 import com.yixin.nfyh.cloud.service.CoreService;
 
-public class UserSettingActivity extends BaseActivity implements
-		OnCheckedChangeListener {
-	private Button btnLogout;
+public class UserSettingActivity extends BaseActivity implements OnCheckedChangeListener {
+	private Button				btnLogout;
 	// private TextView tvUserName;
 	// private SubMenu menuCheckVersion;
 	// private CheckVersionService versionService;
 	// private BroadcastReceiver receiver;
-	private TextView tvAppVersion;
-	private ConfigServer config;
-	private ISignDevice apiDevice;
-	private TextView tvDeviceName;
-	private RuiSwitch swAutoDevice;
-	private RuiSwitch swAutoTips;
-	private RuiSwitch swDesktop;
-	private RuiSwitch swFall;
-	private RuiSwitch swPullMsg;
-	private RuiSwitch swYuanhou;
-	private VersionUpdate mVersionUpdate;
-	private CoreBinder mBinder;
-	private ServiceConnection mConnection;
-	private RuiSwitch swAutoUpload;
+	private TextView			tvAppVersion;
+	private ConfigServer		config;
+	private ISignDevice			apiDevice;
+	private TextView			tvDeviceName;
+	private RuiSwitch			swAutoDevice;
+	private RuiSwitch			swAutoTips;
+	private RuiSwitch			swDesktop;
+	private RuiSwitch			swFall;
+	private RuiSwitch			swPullMsg;
+	private RuiSwitch			swYuanhou;
+	private VersionUpdate		mVersionUpdate;
+	private CoreBinder			mBinder;
+	private ServiceConnection	mConnection;
+	private RuiSwitch			swAutoUpload;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,36 +77,29 @@ public class UserSettingActivity extends BaseActivity implements
 				}
 			}
 		};
-		bindService(new Intent(this, CoreService.class), mConnection,
-				Context.BIND_AUTO_CREATE);
+		bindService(new Intent(this, CoreService.class), mConnection, Context.BIND_AUTO_CREATE);
 	}
 
 	/**
 	 * 初始化默认配置
 	 */
 	private void initConfig() {
-		this.swDesktop.setChecked(config
-				.getBooleanConfig(ConfigServer.KEY_ENABLE_DESKTOP));
-		this.swFall.setChecked(config
-				.getBooleanConfig(ConfigServer.KEY_ENABLE_FALL));
-		this.swPullMsg.setChecked(config
-				.getBooleanConfig(ConfigServer.KEY_ENABLE_PULLMSG));
-		this.swYuanhou.setChecked(config
-				.getBooleanConfig(ConfigServer.KEY_ENABLE_TIXING));
-		this.swAutoDevice.setChecked(config
-				.getBooleanConfig(ConfigServer.KEY_AUTO_CONNECTED));
-		this.swAutoTips.setChecked(config
-				.getBooleanConfig(ConfigServer.KEY_AUTO_TIPS));
+		this.swDesktop.setChecked(config.getBooleanConfig(ConfigServer.KEY_ENABLE_DESKTOP));
+		this.swFall.setChecked(config.getBooleanConfig(ConfigServer.KEY_ENABLE_FALL));
+		this.swPullMsg.setChecked(config.getBooleanConfig(ConfigServer.KEY_ENABLE_PULLMSG));
+		this.swYuanhou.setChecked(config.getBooleanConfig(ConfigServer.KEY_ENABLE_TIXING));
+		this.swAutoDevice.setChecked(config.getBooleanConfig(ConfigServer.KEY_AUTO_CONNECTED));
+		this.swAutoTips.setChecked(config.getBooleanConfig(ConfigServer.KEY_AUTO_TIPS));
 
-		this.swAutoUpload.setChecked(config
-				.getBooleanConfig(ConfigServer.KEY_AUTO_UPLOAD)); // 自动上传
+		this.swAutoUpload.setChecked(config.getBooleanConfig(ConfigServer.KEY_AUTO_UPLOAD)); // 自动上传
 
 		Devices device;
 		try {
 			device = apiDevice.getCurrentDevices();
 			String deviceName = device == null ? "获取设备失败" : device.getName();
 			tvDeviceName.setText(deviceName);
-		} catch (SQLException e) {
+		}
+		catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
@@ -121,51 +110,48 @@ public class UserSettingActivity extends BaseActivity implements
 
 		switch (v.getId()) {
 
-		case R.id.ll_setting_pullmsg:// 开启消息推送
-			swPullMsg.setChecked(!swPullMsg.isChecked());
-			break;
-		case R.id.ll_setting_yuanhou:// 开启院后提醒
-			swYuanhou.setChecked(!swYuanhou.isChecked());
-			break;
-		case R.id.ll_setting_autodevice:// 设备
-			swAutoDevice.setChecked(!swAutoDevice.isChecked());
-			break;
-		case R.id.ll_setting_tips:// 告警
-			swAutoTips.setChecked(!swAutoTips.isChecked());
-			break;
-		case R.id.ll_setting_device:// 监测设备选择
-			intent.setClass(this, SettingDeviceActivity.class);
-			startActivity(intent);
-			break;
-		case R.id.ll_setting_pall:// 跌倒设置
-			intent.setClass(this, SettingFallDeviceActivity.class);
-			startActivity(intent);
-			break;
-		case R.id.ll_setting_autoupload: // 自动上传
-			swAutoUpload.setChecked(!swAutoUpload.isChecked());
-			break;
-		case R.id.ll_setting_desktop:// 桌面呼救
-			intent.setClass(this, SettingDesktopActivity.class);
-			startActivity(intent);
-			break;
-		case R.id.ll_setting_version: // 版本更新
-			updateVersion();
-			break;
-		case R.id.btn_exit:
-			logout();
-			break;
-		default:
-			break;
+			case R.id.ll_setting_pullmsg:// 开启消息推送
+				swPullMsg.setChecked(!swPullMsg.isChecked());
+				break;
+			case R.id.ll_setting_yuanhou:// 开启院后提醒
+				swYuanhou.setChecked(!swYuanhou.isChecked());
+				break;
+			case R.id.ll_setting_autodevice:// 设备
+				swAutoDevice.setChecked(!swAutoDevice.isChecked());
+				break;
+			case R.id.ll_setting_tips:// 告警
+				swAutoTips.setChecked(!swAutoTips.isChecked());
+				break;
+			case R.id.ll_setting_device:// 监测设备选择
+				intent.setClass(this, SettingDeviceActivity.class);
+				startActivity(intent);
+				break;
+			case R.id.ll_setting_pall:// 跌倒设置
+				intent.setClass(this, SettingFallDeviceActivity.class);
+				startActivity(intent);
+				break;
+			case R.id.ll_setting_autoupload: // 自动上传
+				swAutoUpload.setChecked(!swAutoUpload.isChecked());
+				break;
+			case R.id.ll_setting_desktop:// 桌面呼救
+				intent.setClass(this, SettingDesktopActivity.class);
+				startActivity(intent);
+				break;
+			case R.id.ll_setting_version: // 版本更新
+				updateVersion();
+				break;
+			case R.id.btn_exit:
+				logout();
+				break;
+			default:
+				break;
 		}
 	}
 
 	private void logout() {
-		NfyhApplication app = (NfyhApplication) getApplication();
-		List<Activity> ats = app.getActivitys();
-		for (Activity activity : ats) {
-			activity.finish();
-		}
-		getNfyhApplication().setIsLogin(false);
+		getNfyhApplication().exit();
+		getNfyhApplication().logout();
+
 		Intent intent = new Intent(this, LoginActivity.class);
 		intent.putExtra(Intent.EXTRA_TEXT, true);
 		startActivity(intent);
@@ -227,29 +213,29 @@ public class UserSettingActivity extends BaseActivity implements
 	@Override
 	public void onCheckedChanged(RuiSwitch switchView, boolean isChecked) {
 		switch (switchView.getId()) {
-		case R.id.sw_setting_pall:// 开启跌倒监测
-			config.enableFall(isChecked);
-			break;
-		case R.id.sw_setting_pullmsg:
-			config.enablePullMsg(isChecked);
-			break;
-		case R.id.sw_setting_yuanhou:
-			config.enableTixing(isChecked);
-			break;
-		case R.id.sw_setting_desktop:// 开启桌面呼救
-			config.enableDesktop(isChecked);
-			break;
-		case R.id.sw_setting_autodevice:
-			config.enavleAutoconnect(isChecked);
-			break;
-		case R.id.sw_setting_tips:
-			config.enableAutoTips(isChecked);
-			break;
-		case R.id.sw_setting_autoupload:
-			config.enableAutoUpload(isChecked);
-			break;
-		default:
-			break;
+			case R.id.sw_setting_pall:// 开启跌倒监测
+				config.enableFall(isChecked);
+				break;
+			case R.id.sw_setting_pullmsg:
+				config.enablePullMsg(isChecked);
+				break;
+			case R.id.sw_setting_yuanhou:
+				config.enableTixing(isChecked);
+				break;
+			case R.id.sw_setting_desktop:// 开启桌面呼救
+				config.enableDesktop(isChecked);
+				break;
+			case R.id.sw_setting_autodevice:
+				config.enavleAutoconnect(isChecked);
+				break;
+			case R.id.sw_setting_tips:
+				config.enableAutoTips(isChecked);
+				break;
+			case R.id.sw_setting_autoupload:
+				config.enableAutoUpload(isChecked);
+				break;
+			default:
+				break;
 		}
 	}
 
@@ -265,7 +251,8 @@ public class UserSettingActivity extends BaseActivity implements
 		super.onDestroy();
 		if (config.getBooleanConfig(ConfigServer.KEY_ENABLE_PULLMSG)) {
 			mBinder.startPullMessage();
-		} else {
+		}
+		else {
 			mBinder.stopPullMessage();
 		}
 		unbindService(mConnection);

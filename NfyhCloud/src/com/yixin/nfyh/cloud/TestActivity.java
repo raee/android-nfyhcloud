@@ -1,36 +1,64 @@
 package com.yixin.nfyh.cloud;
 
-import com.rae.alarm.AlarmAddNormalActivity;
-import com.yixin.nfyh.cloud.bll.VersionUpdate;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 
-public class TestActivity extends Activity {
-	private VersionUpdate	update;
-	
+import com.tencent.tauth.Tencent;
+import com.yixin.nfyh.cloud.bll.Account;
+import com.yixin.nfyh.cloud.bll.ILoginCallback;
+
+public class TestActivity extends Activity implements OnClickListener {
+	private static final String	APPID	= "1103162244";
+	private String				Tag		= "TestActivity";
+	private Account				account;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//		NfyhAlarmEntity entity = new NfyhAlarmEntity(AlarmEntity.TYPE_ONCE, "测试闹钟", AlarmUtils.getDateByTimeInMillis((System.currentTimeMillis() + 2000)));
-		//		entity.setSignName("1000");
-		//		AlarmProviderFactory.getProvider(this, entity).create();
-		
-//		setContentView(R.layout.activity_test);
-//		update = new VersionUpdate(this);
-		
-		Intent intent = new Intent(this,AlarmAddNormalActivity.class);
-		intent.putExtra("type", "add");
-		intent.putExtra("entity", "{\"cycle\":\"TYPE_REPEAT_EVERY_DAY\",\"title\":\"服务器闹钟\",\"time\":\"12:00\",\"content\":\"客服温馨提醒，中午测血压！！\",\"weeks\":\"\",\"otherParam\":\"{\\\"sign\\\":\\\"2000\\\"}\"}");
-		
-		//intent.putExtras(extra);
-		
-		startActivity(intent);
-		
+		setContentView(R.layout.activity_test);
+		findViewById(R.id.btn_test_login).setOnClickListener(this);
+		findViewById(R.id.btn_test_userinfo).setOnClickListener(this);
+		account = new Account(this);
+		account.setLoginCallbackListener(new ILoginCallback() {
+
+			@Override
+			public void OnLoginSuccess(String username, String pwd) {
+				Log.i(Tag, "登录成功！");
+			}
+
+			@Override
+			public void OnLoginFaild(String msg) {
+				Log.e(Tag, msg);
+			}
+		});
 	}
-	
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		account.getTencent().onActivityResult(requestCode, resultCode, data);
+	}
+
+	@Override
 	public void onClick(View view) {
-		update.check();
+		switch (view.getId()) {
+			case R.id.btn_test_login:
+				login();
+				break;
+			case R.id.btn_test_userinfo:
+				break;
+
+			default:
+				break;
+		}
 	}
+
+	private void login() {
+		account.loginByQQ();
+	}
+
 }

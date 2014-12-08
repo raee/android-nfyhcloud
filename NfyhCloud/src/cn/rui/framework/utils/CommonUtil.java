@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.SmsManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -24,8 +25,7 @@ import android.widget.TextView;
  * 
  */
 @SuppressLint("SimpleDateFormat")
-public final class CommonUtil
-{
+public final class CommonUtil {
 
 	/**
 	 * 发送短信，注意添加发送短信权限
@@ -33,32 +33,24 @@ public final class CommonUtil
 	 * @param message
 	 *            短信内容，自动拆分发送
 	 */
-	public static void sendSms(Context context, String number, String message)
-	{
-		try
-		{
-			if (isNullorEmpt(number, message))
-				return;
+	public static void sendSms(Context context, String number, String message) {
+		try {
+			if (isNullorEmpt(number, message)) return;
 			SmsManager sms = SmsManager.getDefault();
 			Intent intent = new Intent();
-			PendingIntent sentIntent = PendingIntent.getActivity(context, 0,
-					intent, 0);
-			if (message.length() > 70)
-			{
+			PendingIntent sentIntent = PendingIntent.getActivity(context, 0, intent, 0);
+			if (message.length() > 70) {
 				// 拆分短信
 				ArrayList<String> messages = sms.divideMessage(message);
-				for (String msg : messages)
-				{
+				for (String msg : messages) {
 					sms.sendTextMessage(number, null, msg, sentIntent, null);
 				}
 			}
-			else
-			{
+			else {
 				sms.sendTextMessage(number, null, message, sentIntent, null);
 			}
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -69,10 +61,8 @@ public final class CommonUtil
 	 * @param strs
 	 * @return
 	 */
-	public static boolean isNullorEmpt(String... strs)
-	{
-		for (String str : strs)
-		{
+	public static boolean isNullorEmpt(String... strs) {
+		for (String str : strs) {
 			if (str == null || str.trim().length() < 1)
 				return true;
 			else
@@ -90,22 +80,16 @@ public final class CommonUtil
 	 * @param resid
 	 *            图片资源
 	 */
-	public static void setActionViewItemIcon(View actionView, int resid)
-	{
-		if (actionView == null || resid == 0)
-			return;
+	public static void setActionViewItemIcon(View actionView, int resid) {
+		if (actionView == null || resid == 0) return;
 		if (actionView instanceof TextView) // ActionMenuItemView 是继承于 textview
 		{
-			try
-			{
-				Drawable icon = actionView.getContext().getResources()
-						.getDrawable(resid);
-				Method method = actionView.getClass().getMethod("setIcon",
-						Drawable.class);
+			try {
+				Drawable icon = actionView.getContext().getResources().getDrawable(resid);
+				Method method = actionView.getClass().getMethod("setIcon", Drawable.class);
 				method.invoke(actionView, icon);
 			}
-			catch (Exception e)
-			{
+			catch (Exception e) {
 				Log.e("tt", "设置ActionView错误：" + e.getMessage());
 				e.printStackTrace();
 			}
@@ -118,18 +102,12 @@ public final class CommonUtil
 	 * 
 	 * @return 连通返回真
 	 */
-	public static boolean checkNetConnected(Context context)
-	{
-		ConnectivityManager net = (ConnectivityManager) context
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		if (net == null)
-			return false;
+	public static boolean checkNetConnected(Context context) {
+		ConnectivityManager net = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (net == null) return false;
 
-		for (NetworkInfo info : net.getAllNetworkInfo())
-		{
-			if (info.getState() == NetworkInfo.State.CONNECTED
-					&& info.isAvailable())
-			{
+		for (NetworkInfo info : net.getAllNetworkInfo()) {
+			if (info.getState() == NetworkInfo.State.CONNECTED && info.isAvailable()) {
 				return true;
 			}
 		}
@@ -142,10 +120,8 @@ public final class CommonUtil
 	 * @param key
 	 * @return
 	 */
-	public static String decryptBASE64(String key)
-	{
-		byte[] data = android.util.Base64.decode(key.getBytes(),
-				android.util.Base64.DEFAULT);
+	public static String decryptBASE64(String key) {
+		byte[] data = android.util.Base64.decode(key.getBytes(), android.util.Base64.DEFAULT);
 
 		return new String(data);
 	}
@@ -157,10 +133,11 @@ public final class CommonUtil
 	 * @return
 	 * @throws Exception
 	 */
-	public static String encryptBASE64(String key)
-	{
-		return android.util.Base64.encodeToString(key.getBytes(),
-				android.util.Base64.DEFAULT);
+	public static String encryptBASE64(String key) {
+		if (TextUtils.isEmpty(key)) {
+			return "";
+		}
+		return android.util.Base64.encodeToString(key.getBytes(), android.util.Base64.DEFAULT);
 	}
 
 	/**
@@ -169,33 +146,27 @@ public final class CommonUtil
 	 * @param str
 	 * @return
 	 */
-	public static Date getDateFromJson(String datestring)
-	{
-		Date date ;
-		try
-		{
-			String format = datestring.replace("/Date(", "").replace("+0800)/",
-					"");
+	public static Date getDateFromJson(String datestring) {
+		Date date;
+		try {
+			String format = datestring.replace("/Date(", "").replace("+0800)/", "");
 			long milliseconds = Long.valueOf(format);
-			 date = new Date(milliseconds);
+			date = new Date(milliseconds);
 		}
-		catch (Exception e)
-		{
-			date= new Date();
+		catch (Exception e) {
+			date = new Date();
 		}
-		
+
 		return date;
 	}
-	
-	
+
 	/**
 	 * 获取ASP.NET 中Json的日期格式
 	 * 
 	 * @param str
 	 * @return
 	 */
-	public static String getDateString(String datestring)
-	{
+	public static String getDateString(String datestring) {
 		String result = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(getDateFromJson(datestring));
 		return result;
 	}
@@ -207,8 +178,7 @@ public final class CommonUtil
 	 * @return
 	 */
 	@SuppressLint("SimpleDateFormat")
-	public static String getDateStringFromJson(String datestring)
-	{
+	public static String getDateStringFromJson(String datestring) {
 		Date date = getDateFromJson(datestring);
 		return new SimpleDateFormat("yyyy-MM-dd").format(date);
 	}

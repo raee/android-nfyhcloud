@@ -68,6 +68,8 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.IOS.Light" >
+
+        <!-- 测试页 -->
         <activity android:name=".TestActivity" >
         </activity>
         <!-- 欢迎页 -->
@@ -91,6 +93,31 @@
             android:name="com.yixin.nfyh.cloud.MainActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" >
+        </activity>
+
+        <!-- QQ登录 -->
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="tencent1103162244" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!-- QQ绑定 -->
+        <activity
+            android:name="com.yixin.nfyh.cloud.QQBindActivity"
+            android:theme="@style/NoTitleBarTheme" >
         </activity>
 
         <!-- 登录 -->

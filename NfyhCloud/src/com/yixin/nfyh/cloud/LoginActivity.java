@@ -43,6 +43,8 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 
 	private Button			btnLoginOffline;
 
+	private Button			btnLoginQQ;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		try {
@@ -77,6 +79,7 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 
 		btnLogin = (Button) findViewById(R.id.btn_login);
 		btnLoginOffline = (Button) findViewById(R.id.btn_login_offline);
+		btnLoginQQ = (Button) findViewById(R.id.btn_login_qq);
 	}
 
 	@Override
@@ -118,6 +121,8 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 	protected void setLinsener() {
 		btnLogin.setOnClickListener(this);
 		btnLoginOffline.setOnClickListener(this);
+		btnLoginQQ.setOnClickListener(this);
+
 		InputUtils inputUtil = new InputUtils();
 		inputUtil.setButtonEnableOnEditTextChange(btnLogin, etPwd, etUserName);
 		inputUtil.setInputValidateLinsener(this);
@@ -132,9 +137,17 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 			case R.id.btn_login_offline:
 				loginInLocal();
 				break;
+			case R.id.btn_login_qq:
+				loginByQQ();
+				break;
 			default:
 				break;
 		}
+	}
+
+	// qq 登录
+	private void loginByQQ() {
+		account.loginByQQ();
 	}
 
 	private void login() {

@@ -12,8 +12,7 @@ import com.yixin.nfyh.cloud.model.Users;
  * @author MrChenrui
  * 
  */
-public class GlobalSetting
-{
+public class GlobalSetting {
 
 	private static final String	GLOBAL_NAME	= "GLOBAL_NAME";
 
@@ -23,30 +22,25 @@ public class GlobalSetting
 
 	private Users				user;
 
-	public GlobalSetting(Context context)
-	{
+	public GlobalSetting(Context context) {
 		this.share = context.getSharedPreferences(GLOBAL_NAME, Context.MODE_PRIVATE);
 		this.editor = this.share.edit();
 	}
 
-	public void setApplicationInstalled()
-	{
+	public void setApplicationInstalled() {
 		editor.putBoolean("ApplicationInstalled", true);
 		commit();
 	}
 
-	public boolean isApplicationInstalled()
-	{
+	public boolean isApplicationInstalled() {
 		return share.getBoolean("ApplicationInstalled", false);
 	}
 
-	public void commit()
-	{
+	public void commit() {
 		this.editor.commit();
 	}
 
-	public void setUser(Users user)
-	{
+	public void setUser(Users user) {
 		this.user = user;
 		setValue("uid", user.getUid());
 		setValue("username", user.getUsername());
@@ -55,8 +49,7 @@ public class GlobalSetting
 		commit();
 	}
 
-	public Users getUser()
-	{
+	public Users getUser() {
 		String userName = share.getString("username", "");
 		String uid = share.getString("uid", "");
 		String pwd = share.getString("pwd", "");
@@ -69,14 +62,19 @@ public class GlobalSetting
 		return user;
 	}
 
-	public void setValue(String key, String value)
-	{
+	public void remove(String key) {
+		if (share.contains(key)) {
+			editor.remove(key);
+			editor.commit();
+		}
+	}
+
+	public void setValue(String key, String value) {
 		if (share.contains(key)) editor.remove(key);
 		editor.putString(key, value);
 	}
 
-	public String getValue(String key, String defaultValue)
-	{
+	public String getValue(String key, String defaultValue) {
 		return share.getString(key, defaultValue);
 	}
 }

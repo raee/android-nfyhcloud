@@ -43,7 +43,7 @@ import com.yixin.nfyh.cloud.utils.LogUtil;
  */
 @SuppressLint("SimpleDateFormat")
 public class NfyhApplication extends Application {
-	
+
 	private Context				context;
 	private GlobalSetting		globalsetting;
 	public static final int		ACTIVITY_RESULT_CAMARA_OK	= 0;
@@ -57,7 +57,7 @@ public class NfyhApplication extends Application {
 	private Account				mAccount;
 	private ApiMonitor			mApiMonitor;
 	private BluetoothListener	mBluetoothListener;
-	
+
 	@Override
 	public void onCreate() {
 		context = getApplicationContext();
@@ -70,29 +70,27 @@ public class NfyhApplication extends Application {
 		commitLogFile();// 上传日志文件
 		mApiMonitor = DefaultDevice.getInstance(context);
 		mAccount = new Account(this);
-		
 		NfyhCloudUnHanderException.init(getApplicationContext());
-		
 	}
-	
+
 	public void addActivity(Activity at) {
 		this.activitys.add(at);
 	}
-	
+
 	public void removeActivity(Activity at) {
 		if (this.activitys.contains(at)) {
 			this.activitys.remove(at);
 		}
 	}
-	
+
 	public List<Activity> getActivitys() {
 		return this.activitys;
 	}
-	
+
 	// public CoreServerBinder getBinder() {
 	// return binder;
 	// }
-	
+
 	/**
 	 * 连接设备
 	 */
@@ -101,7 +99,7 @@ public class NfyhApplication extends Application {
 			mApiMonitor.connect();
 		}
 	}
-	
+
 	/**
 	 * 断开设备
 	 */
@@ -110,7 +108,7 @@ public class NfyhApplication extends Application {
 			mApiMonitor.disconnect();
 		}
 	}
-	
+
 	/**
 	 * 是否连接
 	 * 
@@ -119,17 +117,17 @@ public class NfyhApplication extends Application {
 	public boolean isConnected() {
 		return mApiMonitor == null ? false : mApiMonitor.isConnected();
 	}
-	
+
 	public void updateApi() {
 		mApiMonitor = DefaultDevice.getInstance(context);
 		mApiMonitor.setBluetoothListener(mBluetoothListener);
 	}
-	
+
 	public void setBluetoothListener(BluetoothListener listener) {
 		mBluetoothListener = listener;
 		mApiMonitor.setBluetoothListener(listener);
 	}
-	
+
 	/**
 	 * 获取当前监测设备
 	 * 
@@ -138,7 +136,7 @@ public class NfyhApplication extends Application {
 	public ApiMonitor getApiMonitor() {
 		return mApiMonitor;
 	}
-	
+
 	/**
 	 * 设置是否登录
 	 * 
@@ -147,20 +145,20 @@ public class NfyhApplication extends Application {
 	public void setIsLogin(boolean value) {
 		this.isLogined = value;
 	}
-	
+
 	public void exit() {
 		try {
 			List<Activity> ats = getActivitys();
 			for (Activity activity : ats) {
 				activity.finish();
 			}
-			System.exit(0);
+			//System.exit(0);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 是否已经登录
 	 * 
@@ -169,9 +167,14 @@ public class NfyhApplication extends Application {
 	public boolean isLogin() {
 		return isLogined;
 	}
-	
+
+	public void logout() {
+		setIsLogin(false);
+		mAccount.logout();
+	}
+
 	// private boolean isInDesktop = false;
-	
+
 	/**
 	 * 启动各项服务
 	 */
@@ -179,14 +182,14 @@ public class NfyhApplication extends Application {
 		// 核心服务
 		startService(new Intent(this, CoreService.class));
 	}
-	
+
 	// private void bindMonitorService() {
 	// 核心服务
 	// Intent service = new Intent(context, CoreService.class);
 	// conn = new CoreServicerConnection();
 	// bindService(service, conn, Context.BIND_AUTO_CREATE);
 	// }
-	
+
 	/**
 	 * 上传日志文件
 	 */
@@ -212,7 +215,7 @@ public class NfyhApplication extends Application {
 			e.printStackTrace();
 		}
 	}
-	
+
 	// private class CoreServicerConnection implements ServiceConnection {
 	//
 	// @Override
@@ -224,18 +227,18 @@ public class NfyhApplication extends Application {
 	// public void onServiceDisconnected(ComponentName name) {
 	// }
 	// }
-	
+
 	public void showSOSinDesktop() {
 		if (this.config.getBooleanConfig(ConfigServer.KEY_ENABLE_DESKTOP)) {
 			this.removeSOSinDesktop();
 			this.desktopSos.initFloatView();
 		}
 	}
-	
+
 	public void removeSOSinDesktop() {
 		this.desktopSos.remove();
 	}
-	
+
 	// /**
 	// * 获取当前用户的基本信息
 	// *
@@ -258,7 +261,7 @@ public class NfyhApplication extends Application {
 			e.printStackTrace();
 		}
 	}
-	
+
 	// /**
 	// * 打开照相机
 	// *
@@ -295,15 +298,15 @@ public class NfyhApplication extends Application {
 	public String getCurrentCameraPath() {
 		return takePhotoCurrentPath;
 	}
-	
+
 	public static class DesktopBroderRecevice extends BroadcastReceiver {
-		
+
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			context.startActivity(new Intent(context, OneKeySoSActivity.class));
 		}
 	}
-	
+
 	//
 	// /**
 	// * 创建图片的文件名：2013-12-12-12-10-10-10-23566.jpg
@@ -328,19 +331,21 @@ public class NfyhApplication extends Application {
 	public GlobalSetting getGlobalsetting() {
 		return globalsetting;
 	}
-	
+
 	public Users getCurrentUser() {
 		if (mLoginUser == null) {
 			mLoginUser = mAccount.getGuestUser();
 		}
 		return mLoginUser;
 	}
-	
+
 	public static void initImageLoader(final Context context) {
-		DisplayImageOptions options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.ic_stub).showImageForEmptyUri(R.drawable.ic_empty).showImageOnFail(R.drawable.ic_error).cacheInMemory(true).cacheOnDisk(true).considerExifParams(true)
-		// .displayer(new FadeInBitmapDisplayer(1000))
+		DisplayImageOptions options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.ic_stub).showImageForEmptyUri(R.drawable.ic_empty)
+				.showImageOnFail(R.drawable.ic_error).cacheInMemory(true).cacheOnDisk(true).considerExifParams(true)
+				// .displayer(new FadeInBitmapDisplayer(1000))
 				.bitmapConfig(Bitmap.Config.RGB_565).build();
-		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context).memoryCacheExtraOptions(480, 800).threadPoolSize(3).threadPriority(Thread.NORM_PRIORITY - 1).denyCacheImageMultipleSizesInMemory().memoryCache(new UsingFreqLimitedMemoryCache(2 * 1024 * 1024))
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context).memoryCacheExtraOptions(480, 800).threadPoolSize(3)
+				.threadPriority(Thread.NORM_PRIORITY - 1).denyCacheImageMultipleSizesInMemory().memoryCache(new UsingFreqLimitedMemoryCache(2 * 1024 * 1024))
 				.diskCacheFileNameGenerator(new HashCodeFileNameGenerator()).tasksProcessingOrder(QueueProcessingType.LIFO).writeDebugLogs() // TODO:发布时，移除调试模式
 				.defaultDisplayImageOptions(options) // 默认配置
 				.build();

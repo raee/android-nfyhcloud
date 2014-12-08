@@ -20,7 +20,7 @@ import com.yixin.nfyh.cloud.model.Users;
  */
 public class LoginServer extends WebserverConnection implements ILogin {
 	private SoapConnectionCallback<Users>	mListener;
-	private String							password;
+	private String							password	= "123";
 	private IUser							mUser;
 
 	public LoginServer(Context context) {
@@ -44,15 +44,17 @@ public class LoginServer extends WebserverConnection implements ILogin {
 
 		@Override
 		public Users parser(String json) {
+
+			Users userInfo = new Users();
+
 			try {
 				JSONObject obj = new JSONObject(json);
 				Object isNull = obj.get("Userinfo");
 
 				if (isNull.toString().equals("null")) {
-					return null;
+					return userInfo;
 				} // 没有对象
 
-				Users userInfo = new Users();
 				JSONObject user = obj.getJSONObject("Userinfo");
 
 				String username = user.getString("Useraccount");
@@ -81,7 +83,7 @@ public class LoginServer extends WebserverConnection implements ILogin {
 			}
 			catch (JSONException e) {
 				e.printStackTrace();
-				return null;
+				return userInfo;
 			}
 		}
 
@@ -118,5 +120,27 @@ public class LoginServer extends WebserverConnection implements ILogin {
 		catch (JSONException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void loginByQQ(String openId) {
+		String methodName = context.getString(R.string.soap_method_login_qq);
+		NfyhSoapConnection<Users> conn = new NfyhSoapConnection<Users>(context);
+		conn.setParser(new LoginParser());
+		conn.setParams("openId", openId);
+		conn.setonSoapConnectionCallback(mListener);
+		conn.request(methodName);
+	}
+
+	@Override
+	public void bindQQ(String username, String pwd, String openId) {
+		String methodName = context.getString(R.string.soap_method_login_bind);
+		NfyhSoapConnection<Users> conn = new NfyhSoapConnection<Users>(context);
+		conn.setParser(new LoginParser());
+		conn.setonSoapConnectionCallback(mListener);
+		conn.setParams("username", username);
+		conn.setParams("pwd", pwd);
+		conn.setParams("openId", openId);
+		conn.request(methodName);
 	}
 }
