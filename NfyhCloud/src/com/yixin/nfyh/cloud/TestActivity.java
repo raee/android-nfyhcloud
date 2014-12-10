@@ -7,12 +7,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import com.tencent.tauth.Tencent;
 import com.yixin.nfyh.cloud.bll.Account;
 import com.yixin.nfyh.cloud.bll.ILoginCallback;
 
 public class TestActivity extends Activity implements OnClickListener {
-	private static final String	APPID	= "1103162244";
+	//private static final String	APPID	= "1103162244";
 	private String				Tag		= "TestActivity";
 	private Account				account;
 

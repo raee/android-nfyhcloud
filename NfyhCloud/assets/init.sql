@@ -43,8 +43,8 @@ insert into sign_types(typeid,name,type_unit,p_typeid,type_icon,data_type,order_
 insert into sign_types(typeid,name,type_unit,p_typeid,type_icon,data_type,order_id,is_sign,default_value)values('5001','呼吸峰速',' L/Min','5000','ic_tizhong',1,1,1,120);
 insert into sign_types(typeid,name,type_unit,p_typeid,type_icon,data_type,order_id,is_sign,default_value)values('5002','测量时间','','5000','ic_default_item',-1,1,0,'早');
 
-insert into sign_types(typeid,name,type_unit,p_typeid,type_icon,data_type,order_id,is_sign,default_value)values('6000','心跳','次/分',NULL,'ic_xintiao',1,6,0,80);
-insert into sign_types(typeid,name,type_unit,p_typeid,type_icon,data_type,order_id,is_sign,default_value)values('6001','心跳','次/分','6000','ic_xintiao',1,1,1,90);
+insert into sign_types(typeid,name,type_unit,p_typeid,type_icon,data_type,order_id,is_sign,default_value)values('6000','心电','次/分',NULL,'ic_xintiao',1,6,0,80);
+insert into sign_types(typeid,name,type_unit,p_typeid,type_icon,data_type,order_id,is_sign,default_value)values('6001','心电','次/分','6000','ic_xintiao',1,1,1,90);
 
 
 -- 体征范围
@@ -56,7 +56,7 @@ insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_ty
 insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_type,name) values(5,'3001',0,100,0,'血氧取值范围');
 insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_type,name) values(6,'4001',0,50,0,'体温取值范围');
 insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_type,name) values(7,'5001',60,850,0,'呼吸峰速取值范围');
-insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_type,name) values(8,'6001',0,120,0,'心跳取值范围');
+insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_type,name) values(8,'6001',0,120,0,'心电取值范围');
 insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_type,range_arr,name) values(9,'2002',0,0,0,'["胰岛素治疗","微量血糖测定"]','血糖类型');
 insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_type,range_arr,name) values(10,'4002',0,0,0,'["腋下","口腔"]','体温位置');
 insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_type,range_arr,name) values(11,'5002',0,0,0,'["早","中","晚"]','测量时间');
@@ -86,7 +86,7 @@ insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_ty
 
 insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_type,name) values(29,'1003',50,120,0,'正常脉搏范围');
 insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_type,name) values(30,'3001',50,100,0,'正常血氧范围');
-insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_type,name) values(31,'6001',0,120,0,'心跳正常范围');
+insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_type,name) values(31,'6001',0,120,0,'心电正常范围');
 insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_type,name) values(32,'4001',0,50,0,'体温正常范围');
 insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_type,name) values(33,'5001',40,120,0,'呼吸峰速正常范围');
 
@@ -115,6 +115,6 @@ insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tip
 
 insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(29,1,-1,'脉搏正常！',5);
 insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(30,1,-1,'血氧正常！',5);
-insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(31,1,-1,'心跳正常！',5);
+insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(31,1,-1,'心电正常！',5);
 insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(32,1,-1,'体温正常！',5);
 insert into sign_tips(_signrange_rangeid,tips_symbol,tips_value,tips_comment,tips_level)values(33,1,-1,'呼吸峰速正常！',5);
