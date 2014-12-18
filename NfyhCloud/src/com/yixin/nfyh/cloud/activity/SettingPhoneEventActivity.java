@@ -123,7 +123,7 @@ public class SettingPhoneEventActivity extends BaseActivity {
 		try {
 			// 客服手机号码
 			if (value.startsWith("*")) {
-				config.addConfig(ConfigServer.KEY_PHONE_NUMBER, value.replace("*", "")); // 添加客服
+				config.setConfig(ConfigServer.KEY_PHONE_NUMBER, value.replace("*", "")); // 添加客服
 				Toast.makeText(this, "添加客服号码(" + value + ")成功！", Toast.LENGTH_SHORT).show();
 				etValue.setText("");
 				return;

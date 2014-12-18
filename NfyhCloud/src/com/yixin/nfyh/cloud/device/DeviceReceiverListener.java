@@ -8,6 +8,8 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
+import android.media.MediaPlayer.OnPreparedListener;
 import android.text.Html;
 import android.util.Log;
 import android.widget.Toast;
@@ -60,6 +62,7 @@ public class DeviceReceiverListener implements BluetoothListener {
 
 	@Override
 	public void onStartDiscovery() {
+		play(R.raw.tips, 0);
 		show("扫描设备中", "");
 	}
 
@@ -77,6 +80,7 @@ public class DeviceReceiverListener implements BluetoothListener {
 	@Override
 	public void onOpenBluetooth() {
 		show("打开蓝牙", "");
+		play(R.raw.tips, 0);
 	}
 
 	@Override
@@ -93,11 +97,13 @@ public class DeviceReceiverListener implements BluetoothListener {
 	@Override
 	public boolean onFindBluetooth(BluetoothDevice device, boolean isBonded) {
 		// show("发现设备", "");
+		play(R.raw.tips, R.raw.open_bluetooth);
 		return false;
 	}
 
 	@Override
 	public void onBluetoothBonding(BluetoothDevice device) {
+		play(R.raw.tips, R.raw.wait);
 		show("设备配对中", "如果出现配对框3秒后不消失，请手动输入配对码。");
 	}
 
@@ -113,7 +119,8 @@ public class DeviceReceiverListener implements BluetoothListener {
 
 	@Override
 	public void onBluetoothBondNone(BluetoothDevice device) {
-		showError("配对失败", "蓝牙配对失败，部分手机由于系统限制导致自动配对失败，如果设备上蓝牙状态显示已经连接，可以不必再重新连接。");
+		onError(0, "蓝牙配对失败，部分手机由于系统限制导致自动配对失败，如果设备上蓝牙状态显示已经连接，可以不必再重新连接。");
+		// showError("配对失败", "");
 	}
 
 	@Override
@@ -154,10 +161,12 @@ public class DeviceReceiverListener implements BluetoothListener {
 	@Override
 	public void onConnected(BluetoothDevice device) {
 		showSuccess("连接成功", "");
+		play(R.raw.tips, R.raw.bluetooth_success);
 	}
 
 	@Override
 	public void onError(int errorCode, String msg) {
+		play(R.raw.tips_error, R.raw.bluetooth_error);
 		// 关闭蓝牙
 		BluetoothAdapter.getDefaultAdapter().disable();
 
@@ -184,7 +193,7 @@ public class DeviceReceiverListener implements BluetoothListener {
 	@Override
 	public void onBluetoothCancle() {
 		stopMusic();
-		showSuccess("连接取消", "设备连接已经取消！");
+		//showSuccess("连接取消", "设备连接已经取消！");
 	}
 
 	// @Override
@@ -200,8 +209,8 @@ public class DeviceReceiverListener implements BluetoothListener {
 		try {
 			if (Player == null) {
 				Player = MediaUtil.playMusic(context, R.raw.ring);
+				return;
 			}
-
 			if (!Player.isPlaying()) {
 				Player.prepare();
 				Player.start();
@@ -209,6 +218,57 @@ public class DeviceReceiverListener implements BluetoothListener {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	private void play(int tips, int wmv) {
+		stopMusic(); // 停止之前播放的
+
+		Player = MediaPlayer.create(context, tips);
+		try {
+			Player.setVolume(1, 1);
+			// player.prepare();
+			Player.setOnPreparedListener(new BluetoothPreparedListener());
+			Player.setOnCompletionListener(new BluetoothCompletionListener(wmv));
+
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			Toast.makeText(context, "播放提示异常！", Toast.LENGTH_SHORT).show();
+			MediaUtil.stopPlayMusic(Player);
+		}
+	}
+
+	class BluetoothPreparedListener implements OnPreparedListener {
+
+		@Override
+		public void onPrepared(MediaPlayer mp) {
+			mp.start();
+		}
+	}
+
+	class BluetoothCompletionListener implements OnCompletionListener {
+		private int	resid;
+
+		BluetoothCompletionListener(int resid) {
+			this.resid = resid;
+		}
+
+		@Override
+		public void onCompletion(MediaPlayer mp) {
+			if (resid != 0) {
+				Player = MediaPlayer.create(context, resid);
+				try {
+					Player.setVolume(1, 1);
+					Player.setOnPreparedListener(new BluetoothPreparedListener());
+				}
+				catch (Exception e) {
+					Toast.makeText(context, "onCompletion Error", Toast.LENGTH_SHORT).show();
+					e.printStackTrace();
+					MediaUtil.stopPlayMusic(Player);
+				}
+			}
+			MediaUtil.stopPlayMusic(mp);
 		}
 	}
 

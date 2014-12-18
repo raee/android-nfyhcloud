@@ -35,7 +35,10 @@ public class ConfigServer {
 
 	public static final String	KEY_DESKTOP_PHONE_LIST	= "KEY_DESKTOP_PHONE_LIST"; // 联系人列表
 	public static final String	KEY_DESKTOP_EVENT_LIST	= "KEY_DESKTOP_EVENT_LIST"; // 事件列表
-	public static final String	KEY_PHONE_NUMBER		= "KEY_PHONE_NUMBER";		// 客服电话
+	/**
+	 * 客服电话
+	 */
+	public static final String	KEY_PHONE_NUMBER		= "KEY_PHONE_NUMBER";
 
 	private IDict				api;
 	private ISignDevice			apiDevice;
@@ -76,7 +79,7 @@ public class ConfigServer {
 			m.setCodeName(key);
 			m.setDicValue(val);
 			m.setName(key);
-			api.addDicts(m);
+			api.addDicts(m, true);
 		}
 		catch (SQLException e) {
 			e.printStackTrace();

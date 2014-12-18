@@ -7,14 +7,21 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.MapStatusUpdate;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
+import com.baidu.mapapi.map.MyLocationConfiguration;
+import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
+import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.model.LatLng;
 
-public class BaiduLocation
-{
+public class BaiduLocation {
 	private static final String		TAG				= "BaiduLocation";
 	private static final String		BAIDU_KEY		= "1venUaFhMfvFqGkEDiNzVhW7";
 	public LocationClient			mLocationClient	= null;
 	private MyLocationListenner		myListener		= new MyLocationListenner();
 	private IBaiduLocationResult	resultCallback;
+	private BaiduMap				mBaiduMap;
 
 	/**
 	 * 构造函数
@@ -24,8 +31,7 @@ public class BaiduLocation
 	 * @param resultCallback
 	 *            定位成功后调用的接口
 	 */
-	public BaiduLocation(Context context, IBaiduLocationResult resultCallback)
-	{
+	public BaiduLocation(Context context, IBaiduLocationResult resultCallback) {
 		mLocationClient = new LocationClient(context);
 		mLocationClient.setAK(BAIDU_KEY);
 		mLocationClient.registerLocationListener(myListener);
@@ -34,19 +40,22 @@ public class BaiduLocation
 		this.start();
 	}
 
+	public void setFromBaiduMap(BaiduMap map) {
+		this.mBaiduMap = map;
+		mBaiduMap.setMyLocationEnabled(true);// 开启定位图层
+	}
+
 	/**
 	 * 开始请求位置
 	 */
-	public void start()
-	{
+	public void start() {
 		mLocationClient.start();
 	}
 
 	/**
 	 * 请求其他位置信息
 	 */
-	public void request()
-	{
+	public void request() {
 		this.mLocationClient.requestLocation();
 		this.mLocationClient.requestPoi();
 	}
@@ -54,19 +63,16 @@ public class BaiduLocation
 	/**
 	 * 停止请求
 	 */
-	public void stop()
-	{
+	public void stop() {
 		this.mLocationClient.stop();
 	}
 
 	/**
 	 * 监听函数，又新位置的时候，格式化成字符串，输出到屏幕中
 	 */
-	public class MyLocationListenner implements BDLocationListener
-	{
+	public class MyLocationListenner implements BDLocationListener {
 		@Override
-		public void onReceiveLocation(BDLocation location)
-		{
+		public void onReceiveLocation(BDLocation location) {
 			int code = location.getLocType();
 			Log.i(TAG, "error code:" + code);
 			Log.i(TAG, "经度：" + location.getLatitude());
@@ -81,63 +87,51 @@ public class BaiduLocation
 			 * 网络连接失败时，查找本地离线定位时对应的返回结果 161： 表示网络定位结果 162~167： 服务端定位失败。
 			 */
 
-			if (code == 63)
-			{
+			if (code == 63) {
 				resultCallback.onReceiveLocationFaild(code, "网络异常，定位失败");
 				return;
 			}
 
-			if (code > 161)
-			{
+			if (code > 161) {
 				resultCallback.onReceiveLocationFaild(code, "服务器定位失败");
 				return;
 			}
 
-			if (location == null || resultCallback == null)
-			{
+			if (location == null || resultCallback == null) {
 				return;
 			}
-			else if (location.getLatitude() != Double.MIN_VALUE)
-			{
+			else if (location.getLatitude() != Double.MIN_VALUE) {
+				if (mBaiduMap != null) {
+					location.setLatitude(location.getLatitude() - 0.00050);
+					// 构造定位数据
+					MyLocationData locData = new MyLocationData.Builder().accuracy(location.getRadius())		// 设置定位数据的精度信息，单位：米
+							.latitude(location.getLatitude()).longitude(location.getLongitude()).direction(100) // 设置定位数据的方向信息
+							.build();
+					mBaiduMap.setMyLocationData(locData);
+
+					// 设置定位图层的配置（定位模式，是否允许方向信息，用户自定义定位图标）
+					MyLocationConfiguration config = new MyLocationConfiguration(LocationMode.NORMAL, true, null);
+					mBaiduMap.setMyLocationConfigeration(config);
+					LatLng lat = new LatLng(location.getLatitude(), location.getLongitude());
+					MapStatusUpdate update = MapStatusUpdateFactory.newLatLngZoom(lat, 19);
+					mBaiduMap.animateMapStatus(update);
+					mLocationClient.stop();
+				}
+
 				resultCallback.onReceiveLocationSuccess(location);
 			}
-			else
-			{
-				resultCallback
-						.onReceiveLocationFaild(code, "定位失败，未知异常:" + code);
+			else {
+				resultCallback.onReceiveLocationFaild(code, "定位失败，未知异常:" + code);
 			}
 
-			/*
-			 * StringBuffer sb = new StringBuffer(256); sb.append("time : ");
-			 * sb.append(location.getTime()); sb.append("\nerror code : ");
-			 * sb.append(location.getLocType()); sb.append("\nlatitude : ");
-			 * sb.append(location.getLatitude()); sb.append("\nlontitude : ");
-			 * sb.append(location.getLongitude()); sb.append("\nradius : ");
-			 * sb.append(location.getRadius()); if (location.getLocType() ==
-			 * BDLocation.TypeGpsLocation) { sb.append("\nspeed : ");
-			 * sb.append(location.getSpeed()); sb.append("\nsatellite : ");
-			 * sb.append(location.getSatelliteNumber()); } else if
-			 * (location.getLocType() == BDLocation.TypeNetWorkLocation) { //
-			 * sb.append("\n省："); // sb.append(location.getProvince()); //
-			 * sb.append("\n市："); // sb.append(location.getCity()); //
-			 * sb.append("\n区/县："); // sb.append(location.getDistrict());
-			 * sb.append("\naddr : "); sb.append(location.getAddrStr()); }
-			 * sb.append("\nsdk version : ");
-			 * sb.append(mLocationClient.getVersion());
-			 * sb.append("\nisCellChangeFlag : ");
-			 * sb.append(location.isCellChangeFlag());
-			 */
 		}
 
 		@Override
-		public void onReceivePoi(BDLocation location)
-		{
-			if (location == null || resultCallback == null)
-			{
+		public void onReceivePoi(BDLocation location) {
+			if (location == null || resultCallback == null) {
 				return;
 			}
-			else if (location.getLatitude() != Double.MIN_VALUE)
-			{
+			else if (location.getLatitude() != Double.MIN_VALUE) {
 				resultCallback.onReceiveLocationSuccess(location);
 				Log.v("cr", "poi:");
 			}
@@ -145,8 +139,7 @@ public class BaiduLocation
 	}
 
 	// 设置相关参数
-	private void setLocationOption()
-	{
+	private void setLocationOption() {
 		LocationClientOption option = new LocationClientOption();
 		option.setServiceName("com.baidu.location.service_v2.9");
 		option.setOpenGps(true);

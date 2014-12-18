@@ -118,14 +118,15 @@
         </LinearLayout>
     </LinearLayout>
 
-    <Button
+    <ImageButton
         android:id="@+id/btn_login_qq"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_centerInParent="false"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/btn_qq_login" />
+        android:layout_marginBottom="34dp"
+        android:adjustViewBounds="true"
+        android:background="@android:color/transparent"
+        android:src="@drawable/btn_qq_login" />
 
 </RelativeLayout>

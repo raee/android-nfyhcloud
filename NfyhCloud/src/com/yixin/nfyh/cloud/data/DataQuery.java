@@ -185,15 +185,22 @@ public class DataQuery implements IUser, IDict {
 	 * )
 	 */
 	@Override
-	public int addDicts(Dicts m) throws SQLException {
+	public int addDicts(Dicts m, boolean enableRep) throws SQLException {
 		// 检查重复
-		Dicts dict = getDictsByCode(m.getCodeName(), null, null);
-		if (dict != null) {
-			dict.setDicValue(m.getDicValue());
-			return updateDicts(dict); // 更新字典
+		if (!enableRep) {
+			Dicts dict = getDictsByCode(m.getCodeName(), null, null);
+			if (dict != null) {
+				dict.setDicValue(m.getDicValue());
+				return updateDicts(dict); // 更新字典
+			}
 		}
 
 		return this.dicts.create(m);
+	}
+
+	@Override
+	public int addDicts(Dicts m) throws SQLException {
+		return addDicts(m, false);
 	}
 
 	/*

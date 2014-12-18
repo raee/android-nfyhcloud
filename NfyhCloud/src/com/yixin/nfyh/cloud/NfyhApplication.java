@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import cn.rui.framework.utils.DateUtil;
 
+import com.baidu.mapapi.SDKInitializer;
 import com.rae.core.image.cache.disc.naming.HashCodeFileNameGenerator;
 import com.rae.core.image.cache.memory.impl.UsingFreqLimitedMemoryCache;
 import com.rae.core.image.loader.DisplayImageOptions;
@@ -71,6 +72,7 @@ public class NfyhApplication extends Application {
 		mApiMonitor = DefaultDevice.getInstance(context);
 		mAccount = new Account(this);
 		NfyhCloudUnHanderException.init(getApplicationContext());
+		SDKInitializer.initialize(getApplicationContext());
 	}
 
 	public void addActivity(Activity at) {
@@ -152,7 +154,7 @@ public class NfyhApplication extends Application {
 			for (Activity activity : ats) {
 				activity.finish();
 			}
-			//System.exit(0);
+			// System.exit(0);
 		}
 		catch (Exception e) {
 			e.printStackTrace();

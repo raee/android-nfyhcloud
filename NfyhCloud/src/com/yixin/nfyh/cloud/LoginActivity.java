@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
@@ -43,7 +44,7 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 
 	private Button			btnLoginOffline;
 
-	private Button			btnLoginQQ;
+	private ImageButton		btnLoginQQ;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +80,7 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 
 		btnLogin = (Button) findViewById(R.id.btn_login);
 		btnLoginOffline = (Button) findViewById(R.id.btn_login_offline);
-		btnLoginQQ = (Button) findViewById(R.id.btn_login_qq);
+		btnLoginQQ = (ImageButton) findViewById(R.id.btn_login_qq);
 	}
 
 	@Override

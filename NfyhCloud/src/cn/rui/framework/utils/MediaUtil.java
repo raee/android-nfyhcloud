@@ -28,7 +28,7 @@ public class MediaUtil {
 		}
 		return player;
 	}
-	
+
 	/**
 	 * 播放音乐
 	 * 
@@ -40,7 +40,7 @@ public class MediaUtil {
 	public static MediaPlayer playMusic(Context context, int resid) {
 		return playMusic(context, resid, true);
 	}
-	
+
 	/**
 	 * 播放音乐
 	 * 
@@ -53,14 +53,14 @@ public class MediaUtil {
 	public static MediaPlayer playMusic(Context context, int resid, boolean isLooping) {
 		MediaPlayer player = MediaPlayer.create(context, resid);
 		player.setLooping(isLooping); // 循环播放
-		
+
 		player.setVolume(1, 1); // 设置声音为最大
 		if (!player.isPlaying()) {
 			player.start();
 		}
 		return player;
 	}
-	
+
 	/**
 	 * 停止播放
 	 * 
@@ -70,7 +70,7 @@ public class MediaUtil {
 		try {
 			if (player != null && player.isPlaying()) {
 				player.stop();
-				// player.release();
+				//player.release();
 				player = null;
 			}
 		}
@@ -78,7 +78,7 @@ public class MediaUtil {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 设置外放音量
 	 * 
@@ -99,5 +99,5 @@ public class MediaUtil {
 			audio.setMode(AudioManager.MODE_IN_CALL);
 		}
 	}
-	
+
 }

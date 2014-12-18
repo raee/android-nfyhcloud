@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white" >
+    android:layout_height="match_parent" >
+
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/bmapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true" />
 
     <FrameLayout
         android:id="@+id/frameLayout1"
@@ -17,10 +22,12 @@
             android:id="@+id/img_sos_rotate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
             android:src="@drawable/icon_sos_top" />
     </FrameLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/frameLayout1"
@@ -34,13 +41,14 @@
             android:layout_height="wrap_content"
             android:text="@string/sos_tips"
             android:textColor="@color/green"
-            android:textSize="24sp" />
+            android:textSize="16sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:visibility="gone" >
 
             <ImageView
                 android:id="@+id/img_sos_location"
@@ -65,4 +73,16 @@
             android:textSize="12sp" />
     </LinearLayout>
 
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/img_sos_loc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/btn_location"
+        android:padding="10dp"
+        android:src="@drawable/indoor_loc_suc" />
+
+</RelativeLayout> 

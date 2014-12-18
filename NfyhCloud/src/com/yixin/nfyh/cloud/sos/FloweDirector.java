@@ -1,5 +1,7 @@
 package com.yixin.nfyh.cloud.sos;
 
+import com.baidu.mapapi.map.BaiduMap;
+
 import android.content.Context;
 import android.os.Bundle;
 
@@ -9,8 +11,7 @@ import android.os.Bundle;
  * @author MrChenrui
  * 
  */
-public class FloweDirector implements IFlowerResult
-{
+public class FloweDirector implements IFlowerResult {
 
 	/*
 	 * 这里定义好所有的流程
@@ -23,12 +24,11 @@ public class FloweDirector implements IFlowerResult
 	private OnekeySosCallback			callback;
 	private SOSFlower					flower;
 
-	public FloweDirector(Context context, OnekeySosCallback l)
-	{
+	public FloweDirector(Context context, OnekeySosCallback l, BaiduMap map) {
 		flower = new SOSFlower(context, this);
 		this.callback = l;
 
-		location = flower.new SOSLocationFlower();
+		location = flower.new SOSLocationFlower(map);
 		selectEvent = flower.new SOSSelectEventFlower();
 		sendToServer = flower.new SOSSendSOSToServerFlower();
 		callPhone = flower.new SOSCallPhoneFlower();
@@ -37,8 +37,7 @@ public class FloweDirector implements IFlowerResult
 		location.start(null);
 	}
 
-	public void start()
-	{
+	public void start() {
 		callback.sosStarted();
 		flower.stopTTS();
 		this.isStarted = true;
@@ -49,41 +48,41 @@ public class FloweDirector implements IFlowerResult
 			selectEvent.start(location.getData());
 	}
 
-	public void start(String name)
-	{
+	/**
+	 * 重新定位
+	 */
+	public void reLocation() {
+		location.getBaiduLocation().start();
+		location.getBaiduLocation().request();
+	}
+
+	public void start(String name) {
 		selectEvent.setEventName(name);
 		start();
 	}
 
-	public void stop()
-	{
+	public void stop() {
 		flower.stop();
 	}
 
 	@Override
-	public void onLocation(int status, Bundle data)
-	{
-		switch (status)
-		{
+	public void onLocation(int status, Bundle data) {
+		switch (status) {
 			case IFlowerResult.FLOW_STATUS_ERROR:
 				callback.sosError(status, data.getString(EXTRA_DATA));
 				break;
 			case IFlowerResult.FLOW_STATUS_SUCCESS:
-				callback.sosLocated(data.getString("jwd"),
-						data.getString("address"));
+				callback.sosLocated(data.getString("jwd"), data.getString("address"));
 				break;
 			default:
 				break;
 		}
-		if (isStarted)
-			this.selectEvent.start(data); // 定位结束，开始选择事件
+		if (isStarted) this.selectEvent.start(data); // 定位结束，开始选择事件
 	}
 
 	@Override
-	public void onSelectEvent(int status, Bundle data)
-	{
-		switch (status)
-		{
+	public void onSelectEvent(int status, Bundle data) {
+		switch (status) {
 			case IFlowerResult.FLOW_STATUS_ERROR:
 				callback.sosError(status, "您没有选择发生的事件");
 				break;
@@ -98,10 +97,8 @@ public class FloweDirector implements IFlowerResult
 	}
 
 	@Override
-	public void onSendToserver(int status, Bundle data)
-	{
-		switch (status)
-		{
+	public void onSendToserver(int status, Bundle data) {
+		switch (status) {
 			case IFlowerResult.FLOW_STATUS_ERROR:
 				callback.sosError(status, "位置上传失败");
 				break;
@@ -114,36 +111,29 @@ public class FloweDirector implements IFlowerResult
 	}
 
 	@Override
-	public void onCallingPhone(int status, Bundle data)
-	{
-		try
-		{
+	public void onCallingPhone(int status, Bundle data) {
+		try {
 			callback.sosCalled(data.getString("number"));
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public void onException(int status, Bundle data)
-	{
+	public void onException(int status, Bundle data) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void onFlowError(int status, Bundle data)
-	{
+	public void onFlowError(int status, Bundle data) {
 		callback.sosError(status, data.getString(IFlowerResult.EXTRA_DATA));
 	}
 
 	@Override
-	public void onFinsh(int status, Bundle data)
-	{
-		if (status == IFlowerResult.FLOW_STATUS_ERROR)
-			callback.sosError(status, data.getString(IFlowerResult.EXTRA_DATA));
+	public void onFinsh(int status, Bundle data) {
+		if (status == IFlowerResult.FLOW_STATUS_ERROR) callback.sosError(status, data.getString(IFlowerResult.EXTRA_DATA));
 		callback.sosFinsh("点击继续发出呼救");
 	}
 

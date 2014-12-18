@@ -14,8 +14,7 @@ import com.yixin.nfyh.cloud.model.Dicts;
  * @author MrChenrui
  * 
  */
-public interface IDict
-{
+public interface IDict {
 
 	/**
 	 * 添加一个字典
@@ -61,6 +60,14 @@ public interface IDict
 	 * @return
 	 * @throws SQLException
 	 */
-	Dicts getDictsByCode(String code, String key, String value)
-			throws SQLException;
+	Dicts getDictsByCode(String code, String key, String value) throws SQLException;
+
+	/**
+	 * 添加到字典中，允许KEY重复
+	 * @param m
+	 * @param enableRep
+	 * @return
+	 * @throws SQLException
+	 */
+	int addDicts(Dicts m, boolean enableRep) throws SQLException;
 }

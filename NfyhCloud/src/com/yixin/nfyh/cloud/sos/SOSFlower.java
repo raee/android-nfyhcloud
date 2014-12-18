@@ -26,6 +26,7 @@ import cn.rui.framework.utils.NetWorkTest;
 import cn.rui.framework.utils.SoapCallback;
 
 import com.baidu.location.BDLocation;
+import com.baidu.mapapi.map.BaiduMap;
 import com.yixin.nfyh.cloud.NfyhApplication;
 import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.bll.ConfigServer;
@@ -101,10 +102,15 @@ public class SOSFlower implements IToast {
 			return result;
 		}
 
-		public SOSLocationFlower() {
+		public SOSLocationFlower(BaiduMap map) {
 			baiduLocation = new BaiduLocation(context.getApplicationContext(), this);
+			baiduLocation.setFromBaiduMap(map);
 			this.baiduLocation.start();
 			result = new Bundle();
+		}
+
+		public BaiduLocation getBaiduLocation() {
+			return baiduLocation;
 		}
 
 		@Override
