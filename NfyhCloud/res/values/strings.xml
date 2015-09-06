@@ -14,13 +14,13 @@
     <string name="android_offlinelogin_name">离线登录</string>
     <string name="databasename">nfyhcloud.db</string>
     <string name="login_forgetpassword"><a href="www.baidu.com">忘记密码？</a></string>
-    <string name="url_webservice">http://nfyh.smu.edu.cn/WebService/Api.asmx</string>
-    <string name="url_chat">http://nfyh.smu.edu.cn/User/healthControl/HealthMonitor.aspx?action=m</string>
+    <string name="url_webservice">http://nfyh.kermatelmed.com/WebService/Api.asmx</string>
+    <string name="url_chat">http://nfyh.kermatelmed.com/User/healthControl/HealthMonitor.aspx?action=m</string>
     <string name="url_webservice_namespace">http://nfyxHospital.org/</string>
-    <string name="upload_photo_url">http://nfyh.smu.edu.cn/Upload.aspx</string>
-    <string name="url_health_assess">http://nfyh.smu.edu.cn/RMBase/SysHealthAM/HealthReport.aspx</string>
-    <string name="url_myddc">http://nfyh.smu.edu.cn/RMBase/SysSurvey/SmsSurveyRecord.aspx</string>
-    <string name="url_yjfk">http://nfyh.smu.edu.cn/RMBase/SysFeedback/Feedback.aspx</string>
+    <string name="upload_photo_url">http://nfyh.kermatelmed.com/Upload.aspx</string>
+    <string name="url_health_assess">http://nfyh.kermatelmed.com/RMBase/SysHealthAM/HealthReport.aspx</string>
+    <string name="url_myddc">http://nfyh.kermatelmed.com/RMBase/SysSurvey/SmsSurveyRecord.aspx</string>
+    <string name="url_yjfk">http://nfyh.kermatelmed.com/RMBase/SysFeedback/Feedback.aspx</string>
     <string name="soap_login">Login</string>
     <string name="tab_title_tzcl">体征测量</string>
     <string name="tab_title_yhgl">院后管理</string>
@@ -158,7 +158,7 @@
     <string name="empty">这里空空如也..</string>
     <string name="setting_add">添加</string>
     <string name="setting_fall_bind">绑定</string>
-    <string name="company">广州南方宜信信息科技有限公司</string>
+    <string name="company">重庆柯尔迈科技有限公司</string>
     <string name="setting_fall_info"><p>点击绑定后，系统会发一条信息到跌倒设备</p><p>如果安全软件提示[发送短信]请点击允许。</p><p>等待1分钟您将收到一条绑定成功的信息。</p><p>    如果开启第三方通讯录软件（360安全通讯录、QQ通讯录等）该功能将失效。</p></string>
     <string name="rui_cancle">取消</string>
     <string name="rui_sure">确定</string>
@@ -168,14 +168,14 @@
     <string name="xr_exit">退出</string>
     <string name="xr_logout">注销</string>
     <string name="xr_loadding">正在从云端获取数据..</string>
-    <string name="soap_url">http://nfyh.smu.edu.cn/WebService/Api.asmx</string>
+    <string name="soap_url">http://nfyh.kermatelmed.com/WebService/Api.asmx</string>
     <string name="soap_namespace">http://nfyxHospital.org/</string>
     <string name="soap_method_category">GetCategories</string>
     <string name="soap_method_upload_sign">UploadData</string>
     <string name="soap_method_photo_list">GetPhotos</string>
     <string name="soap_method_version_update">VersionUpdate</string>
-    <string name="url_method_photo_list">http://nfyh.smu.edu.cn/WebService/Data.ashx?action=getImage</string>
-    <string name="url_method_photo_upload">http://nfyh.smu.edu.cn/WebService/Data.ashx?action=uploadImage</string>
+    <string name="url_method_photo_list">http://nfyh.kermatelmed.com/WebService/Data.ashx?action=getImage</string>
+    <string name="url_method_photo_upload">http://nfyh.kermatelmed.com/WebService/Data.ashx?action=uploadImage</string>
     <string name="soap_method_category_add">addCategory</string>
     <string name="soap_method_category_update">updateCategory</string>
     <string name="soap_method_myd">GetSmsPatList</string>
