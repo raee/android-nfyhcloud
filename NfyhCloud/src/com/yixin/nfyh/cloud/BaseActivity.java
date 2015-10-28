@@ -2,6 +2,10 @@ package com.yixin.nfyh.cloud;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -60,8 +64,9 @@ public abstract class BaseActivity extends Activity implements OnClickListener {
 
 		app.setBluetoothListener(mDeviceReceiverListener);
 		app.addActivity(this);
-
 	}
+	
+	
 
 	protected void setLinsener() {
 	}

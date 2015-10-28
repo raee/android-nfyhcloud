@@ -1,5 +1,15 @@
 南方院后云服务安卓客户端
+#项目导入说明
+
+>依赖下面几个项目，都Clone到同一个目录下。<br>
+>家庭设备监测库[monitorsdk](https://github.com/raee/monitorsdk)<br>
+>闹钟库[android-lib-alarm](https://github.com/raee/android-lib-alarm)<br>
+>图表库[MPAndroidChart](https://github.com/PhilJay/MPAndroidChart)
+
 ---
+##V1.0.5
+时间：2015-10-28 <br>
+1、添加心电图显示<br>
 
 ##V1.0.4
 1、添加自动上传；<br>

@@ -18,7 +18,6 @@
         android:id="@+id/submenu_setting_sos"
         style="@style/submenu"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/actionbar"
         android:layout_marginTop="17dp"
         android:onClick="onClick"
         android:tag="@string/setting_floatsos" >

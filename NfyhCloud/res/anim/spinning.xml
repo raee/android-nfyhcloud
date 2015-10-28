@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<set xmlns:android="http://schemas.android.com/apk/res/android" >
-
-    <rotate
-        android:duration="600"
-        android:fromDegrees="0"
-        android:pivotX="50%"
-        android:pivotY="50%"
-        android:repeatCount="-1"
-        android:repeatMode="restart"        
-        android:toDegrees="361" />
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="1200"
+    android:fromDegrees="0"
+    android:interpolator="@android:anim/linear_interpolator"
+    android:pivotX="50%"
+    android:pivotY="50%"
+    android:repeatCount="-1"
+    android:toDegrees="720" />
 
     <!--
 android:fromDegrees 起始的角度度数
@@ -28,5 +26,3 @@ android:zAdjustment 表示被animated的内容在运行时在z轴上的位置，
 	top运行时在最顶层显示；
 	bottom运行时在最底层显示；运行速度为运行时间(android:duration)除以运行角度差(android:toDegrees-android:fromDegrees)，比如android:duration为1000，android:toDegrees为360，android:fromDegrees为0就表示1秒转1圈。
     -->
-
-</set>
