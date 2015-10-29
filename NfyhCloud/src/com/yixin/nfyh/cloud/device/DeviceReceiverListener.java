@@ -143,8 +143,11 @@ public class DeviceReceiverListener implements BluetoothListener {
 		stopMusic();
 		Log.i("CoreServerBinder", "---- 接收到数据  -----");
 		for (SignDataModel m : model.getSignDatas()) {
-			Log.i("CoreServerBinder", m.getDataName() + "|" + m.getValue());
+			Log.i("CoreServerBinder", m.getDataName() + "|" + m.getValue());			
 		}
+		
+		// 心电处理
+		
 		Intent intent = new Intent(context, SignDetailActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
 		intent.putExtra("data", model);

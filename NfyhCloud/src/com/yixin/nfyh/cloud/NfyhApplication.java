@@ -12,6 +12,7 @@ import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import cn.rui.framework.utils.DateUtil;
 
@@ -24,6 +25,8 @@ import com.rae.core.image.loader.ImageLoaderConfiguration;
 import com.rae.core.image.loader.assist.QueueProcessingType;
 import com.yixin.monitors.sdk.api.ApiMonitor;
 import com.yixin.monitors.sdk.api.BluetoothListener;
+import com.yixin.monitors.sdk.model.PackageModel;
+import com.yixin.monitors.sdk.model.SignDataModel;
 import com.yixin.nfyh.cloud.bll.Account;
 import com.yixin.nfyh.cloud.bll.ConfigServer;
 import com.yixin.nfyh.cloud.bll.DesktopSOS;
@@ -43,8 +46,9 @@ import com.yixin.nfyh.cloud.utils.LogUtil;
  * 
  */
 @SuppressLint("SimpleDateFormat")
-public class NfyhApplication extends Application {
-
+public class NfyhApplication extends Application
+{
+	
 	private Context				context;
 	private GlobalSetting		globalsetting;
 	public static final int		ACTIVITY_RESULT_CAMARA_OK	= 0;
@@ -58,9 +62,10 @@ public class NfyhApplication extends Application {
 	private Account				mAccount;
 	private ApiMonitor			mApiMonitor;
 	private BluetoothListener	mBluetoothListener;
-
+	
 	@Override
-	public void onCreate() {
+	public void onCreate()
+	{
 		context = getApplicationContext();
 		initImageLoader(context);
 		globalsetting = new GlobalSetting(context);
@@ -73,151 +78,204 @@ public class NfyhApplication extends Application {
 		mAccount = new Account(this);
 		NfyhCloudUnHanderException.init(getApplicationContext());
 		SDKInitializer.initialize(getApplicationContext());
+		
+		// 注册测试广播
+		
+		IntentFilter filter = new IntentFilter();
+		filter.addAction("com.demo.xindian");
+		
+		BroadcastReceiver receiver = new BroadcastReceiver()
+		{
+			
+			@Override
+			public void onReceive(Context context, Intent intent)
+			{
+				String action = intent.getAction();
+				PackageModel model = new PackageModel();
+				List<SignDataModel> signDatas = new ArrayList<SignDataModel>();
+				SignDataModel xindian = new SignDataModel();
+				
+				xindian.setDataName("心电");
+				xindian.setValue(intent.getStringExtra("data"));
+				signDatas.add(xindian);
+				
+				model.setSignDatas(signDatas);
+				mBluetoothListener.onReceived(model);
+			}
+		};
+		
+		// 注册测试广播
+		registerReceiver(receiver, filter);
 	}
-
-	public void addActivity(Activity at) {
+	
+	public void addActivity(Activity at)
+	{
 		this.activitys.add(at);
 	}
-
-	public void removeActivity(Activity at) {
-		if (this.activitys.contains(at)) {
+	
+	public void removeActivity(Activity at)
+	{
+		if (this.activitys.contains(at))
+		{
 			this.activitys.remove(at);
 		}
 	}
-
-	public List<Activity> getActivitys() {
+	
+	public List<Activity> getActivitys()
+	{
 		return this.activitys;
 	}
-
+	
 	// public CoreServerBinder getBinder() {
 	// return binder;
 	// }
-
+	
 	/**
 	 * 连接设备
 	 */
-	public void connect() {
-		if (mApiMonitor != null) {
+	public void connect()
+	{
+		if (mApiMonitor != null)
+		{
 			mApiMonitor.connect();
 		}
 	}
-
+	
 	/**
 	 * 断开设备
 	 */
-	public void disconnect() {
-		if (mApiMonitor != null) {
+	public void disconnect()
+	{
+		if (mApiMonitor != null)
+		{
 			mApiMonitor.disconnect();
 		}
 	}
-
+	
 	/**
 	 * 是否连接
 	 * 
 	 * @return
 	 */
-	public boolean isConnected() {
+	public boolean isConnected()
+	{
 		return mApiMonitor == null ? false : mApiMonitor.isConnected();
 	}
-
-	public void updateApi() {
+	
+	public void updateApi()
+	{
 		mApiMonitor = DefaultDevice.getInstance(context);
 		mApiMonitor.setBluetoothListener(mBluetoothListener);
 	}
-
-	public void setBluetoothListener(BluetoothListener listener) {
+	
+	public void setBluetoothListener(BluetoothListener listener)
+	{
 		mBluetoothListener = listener;
 		mApiMonitor.setBluetoothListener(listener);
 	}
-
+	
 	/**
 	 * 获取当前监测设备
 	 * 
 	 * @return
 	 */
-	public ApiMonitor getApiMonitor() {
+	public ApiMonitor getApiMonitor()
+	{
 		return mApiMonitor;
 	}
-
+	
 	/**
 	 * 设置是否登录
 	 * 
 	 * @param value
 	 */
-	public void setIsLogin(boolean value) {
+	public void setIsLogin(boolean value)
+	{
 		this.isLogined = value;
 	}
-
-	public void exit() {
-		try {
+	
+	public void exit()
+	{
+		try
+		{
 			List<Activity> ats = getActivitys();
-			for (Activity activity : ats) {
+			for (Activity activity : ats)
+			{
 				activity.finish();
 			}
 			// System.exit(0);
 		}
-		catch (Exception e) {
+		catch (Exception e)
+		{
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
 	 * 是否已经登录
 	 * 
 	 * @return
 	 */
-	public boolean isLogin() {
+	public boolean isLogin()
+	{
 		return isLogined;
 	}
-
-	public void logout() {
+	
+	public void logout()
+	{
 		setIsLogin(false);
 		mAccount.logout();
 	}
-
+	
 	// private boolean isInDesktop = false;
-
+	
 	/**
 	 * 启动各项服务
 	 */
-	private void startServices() {
+	private void startServices()
+	{
 		// 核心服务
 		startService(new Intent(this, CoreService.class));
 	}
-
+	
 	// private void bindMonitorService() {
 	// 核心服务
 	// Intent service = new Intent(context, CoreService.class);
 	// conn = new CoreServicerConnection();
 	// bindService(service, conn, Context.BIND_AUTO_CREATE);
 	// }
-
+	
 	/**
 	 * 上传日志文件
 	 */
-	private void commitLogFile() {
+	private void commitLogFile()
+	{
 		String key = "last-log-commit";
 		String now = DateUtil.getCurrentDateString("yyyy-MM-dd hh:mm:ss");
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		try {
+		try
+		{
 			Date nowDate = new Date();
 			Date lastDate = df.parse(globalsetting.getValue(key, now));
 			long diff = nowDate.getTime() - lastDate.getTime();
 			long minute = diff / (1000 * 60);
-			if (minute > 1 && minute < 30) {
+			if (minute > 1 && minute < 30)
+			{
 				return; // 提交间隔小于30分钟不提交
 			}
-			else {
+			else
+			{
 				LogUtil.getLog().commit(getApplicationContext());
 				globalsetting.setValue(key, now);
 				globalsetting.commit();
 			}
 		}
-		catch (Exception e) {
+		catch (Exception e)
+		{
 			e.printStackTrace();
 		}
 	}
-
+	
 	// private class CoreServicerConnection implements ServiceConnection {
 	//
 	// @Override
@@ -229,18 +287,21 @@ public class NfyhApplication extends Application {
 	// public void onServiceDisconnected(ComponentName name) {
 	// }
 	// }
-
-	public void showSOSinDesktop() {
-		if (this.config.getBooleanConfig(ConfigServer.KEY_ENABLE_DESKTOP)) {
+	
+	public void showSOSinDesktop()
+	{
+		if (this.config.getBooleanConfig(ConfigServer.KEY_ENABLE_DESKTOP))
+		{
 			this.removeSOSinDesktop();
 			this.desktopSos.initFloatView();
 		}
 	}
-
-	public void removeSOSinDesktop() {
+	
+	public void removeSOSinDesktop()
+	{
 		this.desktopSos.remove();
 	}
-
+	
 	// /**
 	// * 获取当前用户的基本信息
 	// *
@@ -254,16 +315,19 @@ public class NfyhApplication extends Application {
 	// userinfo = MonitorDataHandle.getUserInfo(uid);
 	// return userinfo;
 	// }
-	public void setUserInfo(Users user) {
-		try {
+	public void setUserInfo(Users user)
+	{
+		try
+		{
 			apiUser.createUser(user);
 			mLoginUser = user;
 		}
-		catch (SQLException e) {
+		catch (SQLException e)
+		{
 			e.printStackTrace();
 		}
 	}
-
+	
 	// /**
 	// * 打开照相机
 	// *
@@ -297,18 +361,21 @@ public class NfyhApplication extends Application {
 	 * 
 	 * @return
 	 */
-	public String getCurrentCameraPath() {
+	public String getCurrentCameraPath()
+	{
 		return takePhotoCurrentPath;
 	}
-
-	public static class DesktopBroderRecevice extends BroadcastReceiver {
-
+	
+	public static class DesktopBroderRecevice extends BroadcastReceiver
+	{
+		
 		@Override
-		public void onReceive(Context context, Intent intent) {
+		public void onReceive(Context context, Intent intent)
+		{
 			context.startActivity(new Intent(context, OneKeySoSActivity.class));
 		}
 	}
-
+	
 	//
 	// /**
 	// * 创建图片的文件名：2013-12-12-12-10-10-10-23566.jpg
@@ -330,18 +397,22 @@ public class NfyhApplication extends Application {
 	/**
 	 * @return the globalsetting
 	 */
-	public GlobalSetting getGlobalsetting() {
+	public GlobalSetting getGlobalsetting()
+	{
 		return globalsetting;
 	}
-
-	public Users getCurrentUser() {
-		if (mLoginUser == null) {
+	
+	public Users getCurrentUser()
+	{
+		if (mLoginUser == null)
+		{
 			mLoginUser = mAccount.getGuestUser();
 		}
 		return mLoginUser;
 	}
-
-	public static void initImageLoader(final Context context) {
+	
+	public static void initImageLoader(final Context context)
+	{
 		DisplayImageOptions options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.ic_stub).showImageForEmptyUri(R.drawable.ic_empty)
 				.showImageOnFail(R.drawable.ic_error).cacheInMemory(true).cacheOnDisk(true).considerExifParams(true)
 				// .displayer(new FadeInBitmapDisplayer(1000))

@@ -1,7 +1,7 @@
 ﻿<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.yixin.nfyh.cloud"
-    android:versionCode="104"
-    android:versionName="1.0.4" >
+    android:versionCode="105"
+    android:versionName="1.0.5" >
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -79,14 +79,27 @@
         <activity android:name=".TestActivity" >
         </activity>
         <!-- 欢迎页 -->
+
         <activity
             android:name="com.yixin.nfyh.cloud.WelcomeActivity"
             android:theme="@style/NoTitleBarTheme" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <!-- 心电视图 -->
+        <activity
+            android:name="com.yixin.nfyh.cloud.activity.ECGViewActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/NoTitleBarThemeFullscreen" >
+          <!--   <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter> -->
         </activity>
         <activity
             android:name="com.yixin.nfyh.cloud.DeviceConnectActivity"
@@ -130,6 +143,12 @@
         <activity
             android:name="com.yixin.nfyh.cloud.LoginActivity"
             android:theme="@style/NoTitleBarTheme" >
+
+          <!--   <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter> -->
         </activity>
 
         <!-- 消息列表 -->
