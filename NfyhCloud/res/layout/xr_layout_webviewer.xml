@@ -31,7 +31,7 @@
             android:id="@+id/img_xr_webview_loadding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/webapp_loading_progress" />
+            android:src="@drawable/common_loading" />
 
         <TextView
             android:id="@+id/tv_alarm_ring_tips"

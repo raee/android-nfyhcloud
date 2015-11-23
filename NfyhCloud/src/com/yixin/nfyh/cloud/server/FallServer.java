@@ -47,7 +47,7 @@ public class FallServer
 	public void bind(String number)
 	{
 		SmsManager sms = SmsManager.getDefault();
-		String msg = "BD";
+		String msg = "KBD";
 
 		// 发送状态
 		PendingIntent sentIntent = PendingIntent.getBroadcast(context, 0,

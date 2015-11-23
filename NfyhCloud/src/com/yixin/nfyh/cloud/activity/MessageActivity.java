@@ -99,9 +99,10 @@ public class MessageActivity extends BaseActivity {
 									// 删除所有
 									for (int i = 0; i < mDataList.size(); i++) {
 										Messages model = mDataList.get(i);
-										mDbPushMessage.delete(model);
-										mDataList.remove(i);
+										mDbPushMessage.delete(model); // 从数据库删除
+										//mDataList.remove(i);
 									}
+									mDataList.clear();
 									mAdapter.notifyDataSetChanged();
 									mListView.invalidate();
 									dialog.dismiss();
@@ -120,7 +121,7 @@ public class MessageActivity extends BaseActivity {
 							dialog.dismiss();
 						}
 					}).show();
-			return false;
+			return true;
 		}
 
 	}

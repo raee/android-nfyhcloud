@@ -308,6 +308,22 @@
                 android:layout_height="wrap_content"
                 android:text="@string/canshuxuanzhe" />
         </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/ll_menu_yjfk"
+            style="@style/setting_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/setting_item_text_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/yjfk" />
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/btn_exit"

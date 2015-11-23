@@ -70,7 +70,7 @@
         </LinearLayout> -->
 
         <LinearLayout
-            android:id="@+id/ll_menu_grsz"
+            android:id="@+id/ll_menu_bqpg"
             style="@style/list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -78,8 +78,8 @@
 
             <TextView
                 style="@style/default_text_img"
-                android:drawableLeft="@drawable/icon_settings"
-                android:text="@string/grsz" />
+                android:drawableLeft="@drawable/icon_offic_chat"
+                android:text="@string/bqpg" />
         </LinearLayout>
 
         <!-- <LinearLayout
@@ -95,7 +95,7 @@
                 android:text="@string/grzx" />
         </LinearLayout> -->
 
-        <LinearLayout
+        <!-- <LinearLayout
             android:id="@+id/ll_menu_yjfk"
             style="@style/list"
             android:layout_width="match_parent"
@@ -106,7 +106,7 @@
                 style="@style/default_text_img"
                 android:drawableLeft="@drawable/icon_note_lager"
                 android:text="@string/yjfk" />
-        </LinearLayout>
+        </LinearLayout> -->
     </LinearLayout>
 
 </com.yixin.nfyh.cloud.ui.ScrollLineLayoutView>
