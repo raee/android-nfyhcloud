@@ -16,20 +16,24 @@ import com.yixin.nfyh.cloud.activity.UserSettingActivity;
  * @author 睿
  * 
  */
-public class HospitalManagerActivity extends BaseActivity {
+public class HospitalManagerActivity extends BaseActivity
+{
 	
 	private NfyhApplication	app;
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_yhgl);
 		app = (NfyhApplication) getApplication();
 	}
 	
 	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
+	public void onClick(View v)
+	{
+		switch (v.getId())
+		{
 			case R.id.ll_menu_myddc: //满意度
 				Intent webIntent = new Intent(this, SMSListActivity.class);
 				startActivity(webIntent);
@@ -37,17 +41,22 @@ public class HospitalManagerActivity extends BaseActivity {
 			case R.id.ll_menu_cyxj: // 出院提醒
 				startActivity(new Intent(this, AlarmListActivity.class));
 				break;
-			case R.id.ll_menu_grsz: //个人设置
-				Intent intent = new Intent(this, UserSettingActivity.class);
-				startActivity(intent);
+			case R.id.ll_menu_bqpg: // 病情评估
+				
+				Intent bqpgIntent = new Intent(this, WebViewerActivity.class);
+				Uri bqpguri = Uri.parse(getString(R.string.url_bqpg).replace("@uid", app.getCurrentUser().getUid()));
+				bqpgIntent.setData(bqpguri);
+				bqpgIntent.putExtra(WebViewerActivity.EXTRA_COOKIE, app.getGlobalsetting().getUser().getCookie());
+				startActivity(bqpgIntent);
+				
 				break;
-			case R.id.ll_menu_yjfk: //意见反馈
-				Intent feedbackIntent = new Intent(this, WebViewerActivity.class);
-				Uri feedbackuri = Uri.parse(getString(R.string.url_yjfk));
-				feedbackIntent.setData(feedbackuri);
-				feedbackIntent.putExtra(WebViewerActivity.EXTRA_COOKIE, app.getGlobalsetting().getUser().getCookie()); //TODO:获取Cookie
-				startActivity(feedbackIntent);
-				break;
+//			case R.id.ll_menu_yjfk: //意见反馈
+//				Intent feedbackIntent = new Intent(this, WebViewerActivity.class);
+//				Uri feedbackuri = Uri.parse(getString(R.string.url_yjfk));
+//				feedbackIntent.setData(feedbackuri);
+//				feedbackIntent.putExtra(WebViewerActivity.EXTRA_COOKIE, app.getGlobalsetting().getUser().getCookie()); 
+//				startActivity(feedbackIntent);
+//				break;
 			default:
 				break;
 		}

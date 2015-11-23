@@ -21,6 +21,7 @@
     <string name="url_health_assess">http://nfyh.kermatelmed.com/RMBase/SysHealthAM/HealthReport.aspx</string>
     <string name="url_myddc">http://nfyh.kermatelmed.com/RMBase/SysSurvey/SmsSurveyRecord.aspx</string>
     <string name="url_yjfk">http://nfyh.kermatelmed.com/RMBase/SysFeedback/Feedback.aspx</string>
+    <string name="url_bqpg">http://nfyh.smu.edu.cn/RMBase/SysAssess/MyAssess_List.aspx?uid=@uid</string>
     <string name="soap_login">Login</string>
     <string name="tab_title_tzcl">体征测量</string>
     <string name="tab_title_yhgl">院后管理</string>
@@ -110,6 +111,7 @@
     <string name="yhhd">医患互动</string>
     <string name="grzx">个人中心</string>
     <string name="grsz">个性设置</string>
+    <string name="bqpg">病情评估</string>
     <string name="yjfk">意见反馈</string>
     <string name="canshuxuanzhe">参数选择</string>
     <string name="wu">无</string>
@@ -167,7 +169,7 @@
     <string name="xr_reg">注册</string>
     <string name="xr_exit">退出</string>
     <string name="xr_logout">注销</string>
-    <string name="xr_loadding">正在从云端获取数据..</string>
+    <string name="xr_loadding">正在加载...</string>
     <string name="soap_url">http://nfyh.kermatelmed.com/WebService/Api.asmx</string>
     <string name="soap_namespace">http://nfyxHospital.org/</string>
     <string name="soap_method_category">GetCategories</string>

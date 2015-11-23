@@ -1,7 +1,7 @@
 ﻿<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.yixin.nfyh.cloud"
-    android:versionCode="105"
-    android:versionName="1.0.5" >
+    android:versionCode="106"
+    android:versionName="1.0.6" >
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -83,7 +83,6 @@
         <activity
             android:name="com.yixin.nfyh.cloud.WelcomeActivity"
             android:theme="@style/NoTitleBarTheme" >
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -95,11 +94,14 @@
             android:name="com.yixin.nfyh.cloud.activity.ECGViewActivity"
             android:screenOrientation="landscape"
             android:theme="@style/NoTitleBarThemeFullscreen" >
-          <!--   <intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter> -->
+            </intent-filter>
+            -->
         </activity>
         <activity
             android:name="com.yixin.nfyh.cloud.DeviceConnectActivity"
@@ -144,11 +146,13 @@
             android:name="com.yixin.nfyh.cloud.LoginActivity"
             android:theme="@style/NoTitleBarTheme" >
 
-          <!--   <intent-filter>
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter> -->
+            </intent-filter>
+            -->
         </activity>
 
         <!-- 消息列表 -->
@@ -164,6 +168,7 @@
         </activity>
         <activity
             android:name="com.rae.alarm.AlarmListActivity"
+            android:launchMode="singleTask"
             android:theme="@style/NoTitleBarTheme" >
         </activity>
         <activity

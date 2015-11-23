@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.rae.alarm.AlarmListActivity;
 import com.yixin.nfyh.cloud.NfyhApplication;
 import com.yixin.nfyh.cloud.i.IPushMessage;
 import com.yixin.nfyh.cloud.i.IPushMessageCallback;
@@ -19,59 +20,54 @@ import com.yixin.nfyh.cloud.w.NfyhWebserviceFactory;
  * @author ChenRui
  * 
  */
-public class PullMessageReceiver extends BroadcastReceiver implements
-		IPushMessageCallback {
-
-	private NotificationManager mNotificationManager;
-	private IPushMessage mPushMessage;
-	private Context mContext;
-
+public class PullMessageReceiver extends BroadcastReceiver implements IPushMessageCallback
+{
+	
+	private NotificationManager	mNotificationManager;
+	private IPushMessage		mPushMessage;
+	private Context				mContext;
+	
 	@Override
-	public void onReceive(Context context, Intent intent) {
+	public void onReceive(Context context, Intent intent)
+	{
 		this.mContext = context;
-		NfyhApplication application = (NfyhApplication) context
-				.getApplicationContext();
-		if (!application.isLogin()
-				|| !"com.yixin.nfyh.cloud.action.pullmessage".equals(intent
-						.getAction())) {
-			return;
-		}
-		if (mPushMessage == null) {
-			mPushMessage = NfyhWebserviceFactory.getFactory(context)
-					.getPushMessage();
+		NfyhApplication application = (NfyhApplication) context.getApplicationContext();
+		if (!application.isLogin() || !"com.yixin.nfyh.cloud.action.pullmessage".equals(intent.getAction())) { return; }
+		if (mPushMessage == null)
+		{
+			mPushMessage = NfyhWebserviceFactory.getFactory(context).getPushMessage();
 			mPushMessage.setPushMessageListener(this);
 		}
-
+		
 		mPushMessage.setCookie(application.getCurrentUser().getCookie());
 		mPushMessage.check();
 	}
-
+	
 	@Override
-	public void onPushNewMessage(int count, int index, Messages model,
-			Intent intent) {
-		if (mContext == null) {
-			return;
-		}
-		if (mNotificationManager == null) {
+	public void onPushNewMessage(int count, int index, Messages model, Intent intent)
+	{
+		if (mContext == null) { return; }
+		if (mNotificationManager == null)
+		{
 			mNotificationManager = NotificationManager.getManager(mContext);
 		}
-
+		
 		// 消息为操作数据库类型，不发出通知栏。
-		if (MessageManager.query(model, mContext)) {
-			Toast.makeText(mContext, "服务端更新了数据，请重新打开应用。", Toast.LENGTH_SHORT)
-					.show();
+		if (MessageManager.query(model, mContext))
+		{
+			Toast.makeText(mContext, "服务端更新了数据，请重新打开应用。", Toast.LENGTH_SHORT).show();
 			return;
 		}
-
+		
 		// 创建闹钟。
-		if (MessageManager.MESSAGE_TYPE_ALARM.equals(model.getTypeCode())) {
-			MessageManager.createAlarm(mContext, model,
-					intent.getStringExtra("entity"));
+		if (MessageManager.MESSAGE_TYPE_ALARM.equals(model.getTypeCode()))
+		{
+			MessageManager.createAlarm(mContext, model, intent.getStringExtra("entity"));
+			intent = new Intent(mContext, AlarmListActivity.class);
 		}
-
+		
 		// 发出通知
-		mNotificationManager.notify(model.getTitle(), model.getSummary(),
-				intent);
+		mNotificationManager.notify(model.getTitle(), model.getSummary(), intent);
 	}
-
+	
 }
