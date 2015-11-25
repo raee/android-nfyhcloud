@@ -6,16 +6,18 @@
 >闹钟库[android-lib-alarm](https://github.com/raee/android-lib-alarm)<br>
 >图表库[MPAndroidChart](https://github.com/PhilJay/MPAndroidChart)
 ---
-##V1.0.5
+
+
+
+##V1.0.6
 时间：2015-11-23 <br>
 1、添加病情评估<br>
 2、添加出院提醒响铃自定义跳转URL。<br>
 3、修复添加出院提醒无效崩溃问题<br>
 4、修复孝为先绑定信息为KBD<br>
 5、调整一些功能位置<br>
+5、修复体征上传失败问题<br>
 
-
----
 ##V1.0.5
 时间：2015-10-28 <br>
 1、添加心电图显示<br>
