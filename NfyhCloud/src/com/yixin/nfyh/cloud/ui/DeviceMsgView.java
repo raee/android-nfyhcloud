@@ -3,6 +3,7 @@ package com.yixin.nfyh.cloud.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,33 +17,44 @@ import com.yixin.nfyh.cloud.NfyhApplication;
 import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.device.DeviceConnectView;
 
-public class DeviceMsgView extends LinearLayout implements DeviceConnectView, View.OnClickListener {
+public class DeviceMsgView extends LinearLayout implements DeviceConnectView,
+		View.OnClickListener {
 
-	private ImageView	mLoadingImageView;
-	private ImageView	mLoadingBgImageView;
-	private TextView	mMsgTextView;
-	private TextView	mTipsTextView;
-	private TextView	mNameTextView;
-	private Button		mConncetButton;
-	private ImageView	mIconImageView;
-	private Context		mContext;
-	private ViewGroup	mContentView;
+	private ImageView mLoadingImageView;
+	private ImageView mLoadingBgImageView;
+	private TextView mMsgTextView;
+	private TextView mTipsTextView;
+	private TextView mNameTextView;
+	private Button mConncetButton;
+	private ImageView mIconImageView;
+	private Context mContext;
+	private ViewGroup mContentView;
 
 	// private boolean mShowable = true;
 
 	public DeviceMsgView(Context context) {
 		super(context, null);
 		mContext = context;
-		View view = LayoutInflater.from(context).inflate(R.layout.view_device_connect_msg, this);
-		this.mNameTextView = (TextView) view.findViewById(R.id.tv_device_connet_name);
-		this.mTipsTextView = (TextView) view.findViewById(R.id.tv_device_connet_tips);
-		this.mMsgTextView = (TextView) view.findViewById(R.id.tv_device_connect_msg);
-		this.mLoadingBgImageView = (ImageView) view.findViewById(R.id.img_device_connect_loading_bg);
-		this.mLoadingImageView = (ImageView) view.findViewById(R.id.img_device_connect_loading);
-		this.mIconImageView = (ImageView) view.findViewById(R.id.img_device_connect_icon);
-		this.mConncetButton = (Button) view.findViewById(R.id.btn_device_connect);
+		View view = LayoutInflater.from(context).inflate(
+				R.layout.view_device_connect_msg, this);
+		this.mNameTextView = (TextView) view
+				.findViewById(R.id.tv_device_connet_name);
+		this.mTipsTextView = (TextView) view
+				.findViewById(R.id.tv_device_connet_tips);
+		this.mMsgTextView = (TextView) view
+				.findViewById(R.id.tv_device_connect_msg);
+		this.mLoadingBgImageView = (ImageView) view
+				.findViewById(R.id.img_device_connect_loading_bg);
+		this.mLoadingImageView = (ImageView) view
+				.findViewById(R.id.img_device_connect_loading);
+		this.mIconImageView = (ImageView) view
+				.findViewById(R.id.img_device_connect_icon);
+		this.mConncetButton = (Button) view
+				.findViewById(R.id.btn_device_connect);
 		this.mConncetButton.setOnClickListener(this);
-		setLayoutParams(new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
+		setLayoutParams(new LayoutParams(
+				android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+				android.view.ViewGroup.LayoutParams.MATCH_PARENT));
 
 		findViewById(R.id.btn_device_back).setOnClickListener(this); // 返回
 
@@ -100,7 +112,8 @@ public class DeviceMsgView extends LinearLayout implements DeviceConnectView, Vi
 				if (mLoadingImageView.getVisibility() != View.VISIBLE) {
 					mLoadingImageView.setVisibility(View.VISIBLE);
 				}
-				mLoadingImageView.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.spinning));
+				mLoadingImageView.startAnimation(AnimationUtils.loadAnimation(
+						getContext(), R.anim.spinning));
 			}
 		});
 
@@ -117,7 +130,8 @@ public class DeviceMsgView extends LinearLayout implements DeviceConnectView, Vi
 		});
 	}
 
-	private void initView(final int backgroundId, final int iconId, final String btnText) {
+	private void initView(final int backgroundId, final int iconId,
+			final String btnText) {
 		mLoadingBgImageView.post(new Runnable() {
 
 			@Override
@@ -126,8 +140,7 @@ public class DeviceMsgView extends LinearLayout implements DeviceConnectView, Vi
 				mIconImageView.setImageResource(iconId);
 				if (btnText.equals("")) {
 					mConncetButton.setVisibility(View.GONE);
-				}
-				else {
+				} else {
 					mConncetButton.setVisibility(View.VISIBLE);
 					mConncetButton.setText(btnText);
 				}
@@ -143,9 +156,11 @@ public class DeviceMsgView extends LinearLayout implements DeviceConnectView, Vi
 		// return;
 		// }
 		if (mContentView == null) {
-			mContentView = (ViewGroup) ((Activity) mContext).getWindow().getDecorView();
+			mContentView = (ViewGroup) ((Activity) mContext).getWindow()
+					.getDecorView();
 		}
-		setName(((NfyhApplication) getContext().getApplicationContext()).getApiMonitor().getDeviceInfo().getDeviceName());
+		setName(((NfyhApplication) getContext().getApplicationContext())
+				.getApiMonitor().getDeviceInfo().getDeviceName());
 		// showAtLocation(mContentView, Gravity.TOP, 0, 0);
 	}
 
@@ -165,21 +180,24 @@ public class DeviceMsgView extends LinearLayout implements DeviceConnectView, Vi
 	public void onClick(View v) {
 
 		switch (v.getId()) {
-			case R.id.btn_device_back:
-				dismiss();
-				break;
-			default:
-				if (mConncetButton.getText().equals("完成")) {
-					dismiss();
-				}
-				else if (mConncetButton.getText().equals("断开连接")) {
-					((NfyhApplication) getContext().getApplicationContext()).disconnect();
-				}
+		case R.id.btn_device_back:
+			dismiss();
+			break;
+		default:
+			Log.i("rae", "连接按钮文字："+mConncetButton.getText().toString());
+			if (mConncetButton.getText().toString().equals("断开连接")) {
+				((NfyhApplication) getContext().getApplicationContext())
+						.disconnect();
+			} else if (mConncetButton.getText().toString().equals("重新连接")) {
+				((NfyhApplication) getContext().getApplicationContext())
+						.connect();
 
-				else {
-					((NfyhApplication) getContext().getApplicationContext()).connect();
-				}
-				break;
+			} else {
+				// ((NfyhApplication)
+				// getContext().getApplicationContext()).connect();
+				dismiss();
+			}
+			break;
 		}
 
 	}
@@ -193,7 +211,8 @@ public class DeviceMsgView extends LinearLayout implements DeviceConnectView, Vi
 		setMsg(msg);
 		setTips(tips);
 		startAnim();
-		initView(R.drawable.device_connect_search_bg, R.drawable.icon_search, "");
+		initView(R.drawable.device_connect_search_bg, R.drawable.icon_search,
+				"");
 		show();
 	}
 
@@ -202,7 +221,8 @@ public class DeviceMsgView extends LinearLayout implements DeviceConnectView, Vi
 		setMsg(msg);
 		setTips(tips);
 		stopAnim();
-		initView(R.drawable.device_connect_error_bg, R.drawable.icon_device_info, "重新连接");
+		initView(R.drawable.device_connect_error_bg,
+				R.drawable.icon_device_info, "重新连接");
 		show();
 	}
 
@@ -211,7 +231,8 @@ public class DeviceMsgView extends LinearLayout implements DeviceConnectView, Vi
 		setMsg(msg);
 		setTips(tips);
 		stopAnim();
-		initView(R.drawable.device_connect_search_bg, R.drawable.icon_device_connected, "完成");
+		initView(R.drawable.device_connect_search_bg,
+				R.drawable.icon_device_connected, "完成");
 		show();
 	}
 }

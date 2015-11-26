@@ -94,6 +94,8 @@ public class VersionUpdate implements
 		if (mCurrentVersionCode >= data.getVersionCode()) {
 			if (mShowDialog) {
 				show("太牛了，当前版本已经是最新了！");
+				// 加上分享的二维码
+				
 			}
 			return;
 		}

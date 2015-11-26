@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import cn.rui.framework.ui.RuiDialog;
+import cn.rui.framework.utils.MediaUtil;
 
 import com.yixin.monitors.sdk.model.PackageModel;
 import com.yixin.nfyh.cloud.BaseActivity;
@@ -189,6 +190,10 @@ public class SignDetailActivity extends BaseActivity implements
 	// 上传成功
 	@Override
 	public void onSignCoreSuccess(int code, String msg) {
+
+		// 播放语音
+		MediaUtil.playMusic(this, R.raw.upload_success, false);
+
 		if (viewMsg == null)
 			return;
 		viewMsg.setMsg(msg);
@@ -202,7 +207,7 @@ public class SignDetailActivity extends BaseActivity implements
 			}
 			if (!mConfig.getBooleanConfig(ConfigServer.KEY_AUTO_TIPS)
 					|| mIsTipsWindowDismiss) { // 没有体征提示的直接显示上传成功。
-				showUploadSuccess(msg);
+				// showUploadSuccess(msg);
 			}
 		}
 
@@ -319,7 +324,7 @@ public class SignDetailActivity extends BaseActivity implements
 		}
 
 		mSignCore.saveUserSign(datas); // 保存不含心电的体征数据。
-		
+
 		// 保存后重新把心电赋值进去再进行所有体征上传。
 		if (remoteItem != null) {
 			datas.add(remoteItem);

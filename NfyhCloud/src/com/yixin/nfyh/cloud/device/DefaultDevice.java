@@ -90,7 +90,7 @@ public class DefaultDevice {
 		}
 		else {
 			api.connect();
-			context.startActivity(new Intent(context, DeviceConnectActivity.class));
+			//context.startActivity(new Intent(context, DeviceConnectActivity.class));
 		}
 	}
 }
