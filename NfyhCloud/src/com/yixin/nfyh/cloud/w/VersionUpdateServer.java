@@ -42,9 +42,9 @@ public class VersionUpdateServer extends WebserverConnection {
 				try {
 					JSONObject obj = new JSONObject(json);
 					model.setVersionCode(obj.getInt("Version"));
+					model.setDownloadUrl(obj.getString("DownloadUrl"));
 					if (model.getVersionCode() > mVersionCode) {
 						model.setUpdateContent(obj.getString("UpdateContent"));
-						model.setDownloadUrl(obj.getString("DownloadUrl"));
 						model.setVersionName(obj.getString("VersionName"));
 					}
 				}

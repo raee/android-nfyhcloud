@@ -52,7 +52,7 @@ delete from sign_range;
 insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_type,name) values(1,'1001',30,240,0,'收缩压取值范围');
 insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_type,name) values(2,'1002',60,180,0,'舒张压取值范围');
 insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_type,name) values(3,'1003',50,120,0,'脉搏取值范围');
-insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_type,name) values(4,'2001',1.0,12.0,0,'血糖取值范围');
+insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_type,name) values(4,'2001',1.0,30.0,0,'血糖取值范围');
 insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_type,name) values(5,'3001',0,100,0,'血氧取值范围');
 insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_type,name) values(6,'4001',0,50,0,'体温取值范围');
 insert into sign_range(rangeid,_SignTypes_typeId,left_range,right_range,range_type,name) values(7,'5001',60,850,0,'呼吸峰速取值范围');

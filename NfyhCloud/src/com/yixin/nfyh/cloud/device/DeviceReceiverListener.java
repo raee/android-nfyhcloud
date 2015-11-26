@@ -3,12 +3,14 @@ package com.yixin.nfyh.cloud.device;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.text.Html;
 import android.util.Log;
@@ -25,24 +27,61 @@ import com.yixin.nfyh.cloud.activity.SignDetailActivity;
 
 public class DeviceReceiverListener implements BluetoothListener {
 
-	private static MediaPlayer	Player;
+	private static MediaPlayer Player;
 
-	private Context				context;
-	private int					connectTime;
-	private int					maxConnectTime	= -1;	// 重试一次
-	private ApiMonitor			mApi;
+	private Context context;
+	private int connectTime;
+	private int maxConnectTime = -1; // 重试一次
+	private ApiMonitor mApi;
 
 	public DeviceReceiverListener(Context context, ApiMonitor api) {
 		this.context = context;
 		this.mApi = api;
 	}
 
+	@SuppressWarnings("deprecation")
 	private void startActivity(int type, String tips, String msg) {
 		Intent intent = new Intent(context, DeviceConnectActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+				| Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		intent.putExtra(DeviceConnectActivity.INTENT_EXTRA_TIPS, tips);
 		intent.putExtra(DeviceConnectActivity.INTENT_EXTRA_MESSAGE, msg);
 		intent.putExtra(DeviceConnectActivity.EXTRA_NAME, type);
-		context.startActivity(intent);
+
+		if (tips.contains("连接失败") && !msg.contains("断开")) {
+			context.startActivity(intent);
+			return;
+		}
+
+		PendingIntent penddingIntent = PendingIntent.getActivity(context, 0,
+				intent, PendingIntent.FLAG_ONE_SHOT
+						| PendingIntent.FLAG_UPDATE_CURRENT);
+
+		// 推送到通知栏
+		Notification n = new Notification(
+				R.drawable.bluetooth_connected_normal, tips,
+				System.currentTimeMillis());
+		n.defaults = Notification.DEFAULT_LIGHTS;
+		n.flags = Notification.FLAG_AUTO_CANCEL | Notification.FLAG_SHOW_LIGHTS;
+		n.setLatestEventInfo(context, tips, msg, penddingIntent);
+
+		if (tips.contains("接收数据中")) {
+			n.icon = R.drawable.bluetooth_conneting_anim_list;
+			n.flags = Notification.FLAG_NO_CLEAR;
+		}
+
+		NotificationManager nm = (NotificationManager) context
+				.getSystemService(Context.NOTIFICATION_SERVICE);
+		nm.notify(7210, n);
+
+		// 发送广播
+		Intent broadcastintent = new Intent("com.yixin.nfyh.cloud.device.msg");
+		broadcastintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		broadcastintent.putExtra(DeviceConnectActivity.INTENT_EXTRA_TIPS, tips);
+		broadcastintent.putExtra(DeviceConnectActivity.INTENT_EXTRA_MESSAGE,
+				msg);
+		broadcastintent.putExtra(DeviceConnectActivity.EXTRA_NAME, type);
+		context.sendBroadcast(broadcastintent);
 	}
 
 	private void show(String tips, String msg) {
@@ -70,8 +109,7 @@ public class DeviceReceiverListener implements BluetoothListener {
 	public void onStopDiscovery() {
 		if (mApi.isConnected()) {
 			showSuccess("连接成功", "");
-		}
-		else {
+		} else {
 			showSuccess("扫描完成", "没发现设备！");
 		}
 
@@ -125,7 +163,7 @@ public class DeviceReceiverListener implements BluetoothListener {
 
 	@Override
 	public void onStartReceive() {
-		show("接收数据中", "");
+		show("接收数据中...", "正在接收数据，请稍候...");
 		playMusic();
 	}
 
@@ -135,7 +173,8 @@ public class DeviceReceiverListener implements BluetoothListener {
 
 	@Override
 	public void onReceived(byte[] data) {
-		showSuccess("接收完成", "");
+		showSuccess("接收完成", "请查看您的体征。");
+		clearNotification();
 	}
 
 	@Override
@@ -143,13 +182,12 @@ public class DeviceReceiverListener implements BluetoothListener {
 		stopMusic();
 		Log.i("CoreServerBinder", "---- 接收到数据  -----");
 		for (SignDataModel m : model.getSignDatas()) {
-			Log.i("CoreServerBinder", m.getDataName() + "|" + m.getValue());			
+			Log.i("CoreServerBinder", m.getDataName() + "|" + m.getValue());
 		}
-		
-		// 心电处理
-		
+
 		Intent intent = new Intent(context, SignDetailActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+				| Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
 		intent.putExtra("data", model);
 		intent.putExtra(Intent.EXTRA_TEXT, "-1");
 		intent.putExtra("from", "device"); // 数据来自设备
@@ -163,8 +201,9 @@ public class DeviceReceiverListener implements BluetoothListener {
 
 	@Override
 	public void onConnected(BluetoothDevice device) {
-		showSuccess("连接成功", "");
+		showSuccess("设备连接成功", "");
 		play(R.raw.tips, R.raw.bluetooth_success);
+		clearNotification();
 	}
 
 	@Override
@@ -175,7 +214,8 @@ public class DeviceReceiverListener implements BluetoothListener {
 
 		stopMusic();
 		if (connectTime < maxConnectTime) {
-			msg = "5秒后尝试连接（" + connectTime + "/" + maxConnectTime + "）<br>" + msg;
+			msg = "5秒后尝试连接（" + connectTime + "/" + maxConnectTime + "）<br>"
+					+ msg;
 			msg = Html.fromHtml(msg).toString();
 			showError("连接失败", msg);
 			connectTime++;
@@ -187,8 +227,9 @@ public class DeviceReceiverListener implements BluetoothListener {
 				}
 			}, 5000);
 
-		}
-		else {
+		} else if (msg.contains("断开连接")) {
+			showError("谢谢使用！", "设备已经断开连接了。谢谢您的使用！");
+		} else {
 			showError("连接失败", msg);
 		}
 	}
@@ -196,49 +237,60 @@ public class DeviceReceiverListener implements BluetoothListener {
 	@Override
 	public void onBluetoothCancle() {
 		stopMusic();
-		//showSuccess("连接取消", "设备连接已经取消！");
 	}
-
-	// @Override
-	// public byte[] onSendBluetoothData(byte[] data) {
-	// return null;
-	// }
 
 	private void stopMusic() {
 		MediaUtil.stopPlayMusic(Player);
+		Player = null;
+	}
+
+	private void clearNotification() {
+
+		// 移除通知栏
+		NotificationManager nm = (NotificationManager) context
+				.getSystemService(Context.NOTIFICATION_SERVICE);
+		nm.cancel(7210);
 	}
 
 	private void playMusic() {
 		try {
 			if (Player == null) {
 				Player = MediaUtil.playMusic(context, R.raw.ring);
-				return;
 			}
+
 			if (!Player.isPlaying()) {
-				Player.prepare();
 				Player.start();
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
+			stopMusic();
 		}
 	}
 
+	// 播放提示音
 	private void play(int tips, int wmv) {
-		stopMusic(); // 停止之前播放的
 
-		Player = MediaPlayer.create(context, tips);
 		try {
+
+			stopMusic(); // 停止之前播放的
+
+			if (wmv == 0)
+				wmv = tips;
+			Player = MediaPlayer.create(context, wmv);
+
 			Player.setVolume(1, 1);
 			// player.prepare();
-			Player.setOnPreparedListener(new BluetoothPreparedListener());
-			Player.setOnCompletionListener(new BluetoothCompletionListener(wmv));
+			// Player.setOnPreparedListener(new BluetoothPreparedListener());
+			// Player.setOnCompletionListener(new
+			// BluetoothCompletionListener(wmv));
 
-		}
-		catch (Exception e) {
+			// Player.setLooping(true);
+			Player.start();
+
+		} catch (Exception e) {
 			e.printStackTrace();
 			Toast.makeText(context, "播放提示异常！", Toast.LENGTH_SHORT).show();
-			MediaUtil.stopPlayMusic(Player);
+			stopMusic();
 		}
 	}
 
@@ -250,35 +302,36 @@ public class DeviceReceiverListener implements BluetoothListener {
 		}
 	}
 
-	class BluetoothCompletionListener implements OnCompletionListener {
-		private int	resid;
-
-		BluetoothCompletionListener(int resid) {
-			this.resid = resid;
-		}
-
-		@Override
-		public void onCompletion(MediaPlayer mp) {
-			if (resid != 0) {
-				Player = MediaPlayer.create(context, resid);
-				try {
-					Player.setVolume(1, 1);
-					Player.setOnPreparedListener(new BluetoothPreparedListener());
-				}
-				catch (Exception e) {
-					Toast.makeText(context, "onCompletion Error", Toast.LENGTH_SHORT).show();
-					e.printStackTrace();
-					MediaUtil.stopPlayMusic(Player);
-				}
-			}
-			MediaUtil.stopPlayMusic(mp);
-		}
-	}
+	// class BluetoothCompletionListener implements OnCompletionListener {
+	// private int resid;
+	//
+	// BluetoothCompletionListener(int resid) {
+	// this.resid = resid;
+	// }
+	//
+	// @Override
+	// public void onCompletion(MediaPlayer mp) {
+	// if (resid != 0) {
+	// Player = MediaPlayer.create(context, resid);
+	// try {
+	// Player.setVolume(1, 1);
+	// Player.setOnPreparedListener(new BluetoothPreparedListener());
+	// } catch (Exception e) {
+	// Toast.makeText(context, "onCompletion Error",
+	// Toast.LENGTH_SHORT).show();
+	// e.printStackTrace();
+	// MediaUtil.stopPlayMusic(Player);
+	// }
+	// }
+	// MediaUtil.stopPlayMusic(mp);
+	// }
+	// }
 
 	@Override
 	public void onBluetoothSendData(byte[] arg0) {
-		showSuccess("完成", "您可以开始测量了！");
+		showSuccess("设备通讯成功", "您可以开始测量了！");
 		stopMusic();
+		clearNotification();
 	}
 
 	@Override

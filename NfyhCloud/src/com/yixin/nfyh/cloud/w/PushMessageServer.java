@@ -111,10 +111,10 @@ public class PushMessageServer extends WebserverConnection implements IPushMessa
 	{
 		if (e.getCode() == WebServerException.CODE_NULL_DATA)
 		{
-			log.debug("PushMessageServer", e.getMessage());
+			//log.debug("PushMessageServer", e.getMessage());
 			return; //空数据不处理
 		}
-		log.error("PushMessageServer", e.getMessage());
+		//log.error("PushMessageServer", e.getMessage());
 	}
 	
 	@Override

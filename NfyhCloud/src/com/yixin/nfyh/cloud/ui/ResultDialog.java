@@ -245,19 +245,24 @@ public class ResultDialog extends Dialog implements View.OnClickListener {
 	 *            取值范围1-3：好、中等、差
 	 */
 	public void setTagLevel(int level) {
-		int index = level - 1;
-		index = (index > 0 && index < 4) ? index : 0;
 
-		if (this.mImageRes.length < index) {
-			index = 0;
+		try {
+			int index = level - 1;
+			index = (index > 0 && index < 4) ? index : 0;
+
+			if (this.mImageRes.length < index) {
+				index = 0;
+			}
+			// if (this.mMusicLevelRes.length > index)
+			// {
+			// this.playMusic(mMusicLevelRes[index]);
+			// }
+
+			int resid = this.mImageRes[index];
+			this.mImgTag.setImageResource(resid);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		// if (this.mMusicLevelRes.length > index)
-		// {
-		// this.playMusic(mMusicLevelRes[index]);
-		// }
-
-		int resid = this.mImageRes[index];
-		this.mImgTag.setImageResource(resid);
 	}
 
 	/**

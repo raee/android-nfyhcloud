@@ -3,6 +3,7 @@ package cn.rui.framework.utils;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
 
 /**
@@ -12,6 +13,8 @@ import android.net.Uri;
  * 
  */
 public class MediaUtil {
+	private static MediaPlayer player;
+
 	/**
 	 * 播放音乐
 	 * 
@@ -50,13 +53,30 @@ public class MediaUtil {
 	 *            是否重复播放
 	 * @return
 	 */
-	public static MediaPlayer playMusic(Context context, int resid, boolean isLooping) {
-		MediaPlayer player = MediaPlayer.create(context, resid);
-		player.setLooping(isLooping); // 循环播放
+	public static MediaPlayer playMusic(Context context, int resid,
+			boolean isLooping) {
+		if (resid <= 0)
+			return null;
+		if (player == null) {
+			player = MediaPlayer.create(context, resid);
+			player.setOnCompletionListener(new OnCompletionListener() {
 
-		player.setVolume(1, 1); // 设置声音为最大
-		if (!player.isPlaying()) {
-			player.start();
+				@Override
+				public void onCompletion(MediaPlayer arg0) {
+					player = null; // 播放完成后设置为空
+				}
+			});
+		}
+
+		try {
+			player.setLooping(isLooping); // 循环播放
+
+			player.setVolume(1, 1); // 设置声音为最大
+			if (!player.isPlaying()) {
+				player.start();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return player;
 	}
@@ -70,11 +90,10 @@ public class MediaUtil {
 		try {
 			if (player != null && player.isPlaying()) {
 				player.stop();
-				//player.release();
+				// player.release();
 				player = null;
 			}
-		}
-		catch (IllegalStateException e) {
+		} catch (IllegalStateException e) {
 			e.printStackTrace();
 		}
 	}
@@ -86,15 +105,16 @@ public class MediaUtil {
 	 *            打开或关闭
 	 */
 	public static void openSpeakerphone(Context context, boolean on) {
-		AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+		AudioManager audio = (AudioManager) context
+				.getSystemService(Context.AUDIO_SERVICE);
 		if (on) {
 			audio.setSpeakerphoneOn(true);
 			int index = audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
 			audio.setStreamVolume(AudioManager.STREAM_MUSIC, index, 0);
-		}
-		else {
+		} else {
 			audio.setSpeakerphoneOn(false);// 关闭扬声器
-			audio.setRouting(AudioManager.MODE_NORMAL, AudioManager.ROUTE_EARPIECE, AudioManager.ROUTE_ALL);
+			audio.setRouting(AudioManager.MODE_NORMAL,
+					AudioManager.ROUTE_EARPIECE, AudioManager.ROUTE_ALL);
 			// 把声音设定成Earpiece（听筒）出来，设定为正在通话中
 			audio.setMode(AudioManager.MODE_IN_CALL);
 		}

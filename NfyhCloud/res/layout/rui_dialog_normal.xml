@@ -63,7 +63,7 @@
                 android:background="@drawable/dialog_edit_view_normal"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:padding="10dp"
                 android:visibility="gone" >
 
