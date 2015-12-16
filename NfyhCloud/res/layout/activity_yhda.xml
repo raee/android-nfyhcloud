@@ -27,7 +27,8 @@
                 android:text="@string/yhzp" />
         </LinearLayout>
 
-<!--         <LinearLayout
+        <!--
+             <LinearLayout
             android:id="@+id/ll_menu_yzxx"
             style="@style/list"
             android:orientation="vertical" >
@@ -36,7 +37,8 @@
                 style="@style/default_text_img"
                 android:drawableLeft="@drawable/icon_cloud_async"
                 android:text="@string/yzxx" />
-        </LinearLayout> -->
+        </LinearLayout>
+        -->
 
         <LinearLayout
             android:id="@+id/ll_menu_jkpg"
@@ -50,6 +52,19 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_menu_tzgy"
+            style="@style/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/default_text_img"
+                android:drawableLeft="@drawable/icon_question"
+                android:text="@string/tzgy" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/ll_menu_xxts"
             style="@style/list"
             android:layout_width="match_parent"
@@ -60,7 +75,6 @@
                 android:drawableLeft="@drawable/icon_chats"
                 android:text="@string/xxts" />
         </LinearLayout>
-
     </LinearLayout>
 
 </com.yixin.nfyh.cloud.ui.ScrollLineLayoutView>

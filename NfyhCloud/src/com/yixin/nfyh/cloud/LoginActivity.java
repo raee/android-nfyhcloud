@@ -67,9 +67,9 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 			gotoMainActivity();
 		}
 
-		if (Config.isDebug) {
-			this.btnLogin.performClick();
-		}
+		//		if (Config.isDebug) {
+		//			this.btnLogin.performClick();
+		//		}
 	}
 
 	protected void findView() {

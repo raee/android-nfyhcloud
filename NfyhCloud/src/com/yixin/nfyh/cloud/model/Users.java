@@ -2,6 +2,7 @@
 
 import java.util.Date;
 
+import android.text.TextUtils;
 import cn.rui.framework.utils.CommonUtil;
 
 import com.j256.ormlite.field.DataType;
@@ -17,86 +18,89 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "users")
 public class Users
 {
-
+	
 	// Age
 	@DatabaseField(columnName = "age")
 	private int		Age;
-
+	
 	// Cookie
 	@DatabaseField(columnName = "cookie")
 	private String	Cookie;
-
+	
 	// HeadImage
 	@DatabaseField(columnName = "head_image")
 	private String	HeadImage;
-
+	
 	// Hospital
 	@DatabaseField(columnName = "hospital")
 	private String	Hospital;
-
+	
 	// Location
 	@DatabaseField(columnName = "location")
 	private String	Location;
-
+	
 	// LoginDate
 	@DatabaseField(dataType = DataType.DATE_STRING, format = "yyyy-MM-dd HH:mm:ss", columnName = "login_date")
 	private Date	LoginDate;
-
+	
 	// LoginTime
-	@DatabaseField(canBeNull = false, defaultValue = "0", columnName = "login_time")
+	@DatabaseField(defaultValue = "0", columnName = "login_time")
 	private int		LoginTime;
-
+	
 	// Marks
-	@DatabaseField(canBeNull = false, defaultValue = "0", columnName = "marks")
+	@DatabaseField(defaultValue = "0", columnName = "marks")
 	private double	Marks;
-
+	
 	// Name
 	@DatabaseField(canBeNull = false, columnName = "name")
 	private String	Name;
-
+	
 	// Phonenumber
 	@DatabaseField(columnName = "phonenumber")
 	private String	Phonenumber;
-
+	
 	// PUid
 	@DatabaseField(columnName = "p_uid")
 	private String	PUid;
-
+	
 	// Pwd
 	@DatabaseField(canBeNull = false, columnName = "pwd")
 	private String	Pwd;
-
+	
 	// RecTime
-	@DatabaseField(canBeNull = false, defaultValue = "0", columnName = "rec_time")
+	@DatabaseField(defaultValue = "0", columnName = "rec_time")
 	private int		RecTime;
-
+	
 	// Rid
 	@DatabaseField(columnName = "rid")
 	private String	Rid;
-
+	
 	// Sex
-	@DatabaseField(canBeNull = false, columnName = "sex")
+	@DatabaseField(columnName = "sex", defaultValue = "1")
 	private String	Sex;
-
+	
 	// Uid
 	@DatabaseField(id = true, canBeNull = false, columnName = "uid")
 	private String	Uid;
-
+	
 	// Username
 	@DatabaseField(canBeNull = false, columnName = "username")
 	private String	Username;
-
+	
 	// Zhiye
 	@DatabaseField(columnName = "zhiye")
 	private String	Zhiye;
-
+	
+	//	@DatabaseField(columnName = "AppSecret")
+	private String	AppSecret;
+	
 	/*
 	 * 构造函数
 	 */
 	public Users()
 	{
 	}
-
+	
 	/*
 	 * 获取 Age
 	 */
@@ -104,7 +108,7 @@ public class Users
 	{
 		return Age;
 	}
-
+	
 	/*
 	 * 获取 Cookie
 	 */
@@ -112,23 +116,32 @@ public class Users
 	{
 		return Cookie;
 	}
-
+	
 	/*
 	 * 获取 HeadImage
 	 */
 	public String getHeadImage()
 	{
+		if (TextUtils.isEmpty(HeadImage))
+		{
+			HeadImage = "http://nfyh.smu.edu.cn/Images/head/user.jpg"; // 默认头像地址
+		}
+		
 		return HeadImage;
 	}
-
+	
 	/*
 	 * 获取 Hospital
 	 */
 	public String getHospital()
 	{
+		if (Hospital == null)
+		{
+			Hospital = "南方医院";
+		}
 		return Hospital;
 	}
-
+	
 	/*
 	 * 获取 Location
 	 */
@@ -136,7 +149,7 @@ public class Users
 	{
 		return Location;
 	}
-
+	
 	/*
 	 * 获取 LoginDate
 	 */
@@ -144,7 +157,7 @@ public class Users
 	{
 		return LoginDate;
 	}
-
+	
 	/*
 	 * 获取 LoginTime
 	 */
@@ -152,7 +165,7 @@ public class Users
 	{
 		return LoginTime;
 	}
-
+	
 	/*
 	 * 获取 Marks
 	 */
@@ -160,7 +173,7 @@ public class Users
 	{
 		return Marks;
 	}
-
+	
 	/*
 	 * 获取 Name
 	 */
@@ -168,7 +181,7 @@ public class Users
 	{
 		return Name;
 	}
-
+	
 	/*
 	 * 获取 Phonenumber
 	 */
@@ -176,7 +189,7 @@ public class Users
 	{
 		return Phonenumber;
 	}
-
+	
 	/*
 	 * 获取 PUid
 	 */
@@ -184,7 +197,7 @@ public class Users
 	{
 		return PUid;
 	}
-
+	
 	/*
 	 * 获取 Pwd
 	 */
@@ -192,7 +205,7 @@ public class Users
 	{
 		return CommonUtil.decryptBASE64(this.Pwd);
 	}
-
+	
 	/*
 	 * 获取 RecTime
 	 */
@@ -200,7 +213,7 @@ public class Users
 	{
 		return RecTime;
 	}
-
+	
 	/*
 	 * 获取 Rid
 	 */
@@ -208,7 +221,7 @@ public class Users
 	{
 		return Rid;
 	}
-
+	
 	/*
 	 * 获取 Sex
 	 */
@@ -216,7 +229,7 @@ public class Users
 	{
 		return Sex;
 	}
-
+	
 	/*
 	 * 获取 Uid
 	 */
@@ -224,7 +237,7 @@ public class Users
 	{
 		return Uid;
 	}
-
+	
 	/*
 	 * 获取 Username
 	 */
@@ -232,7 +245,7 @@ public class Users
 	{
 		return Username;
 	}
-
+	
 	/*
 	 * 获取 Zhiye
 	 */
@@ -240,7 +253,7 @@ public class Users
 	{
 		return Zhiye;
 	}
-
+	
 	/*
 	 * 设置 Age
 	 */
@@ -248,7 +261,7 @@ public class Users
 	{
 		this.Age = value;
 	}
-
+	
 	/*
 	 * 设置 Cookie
 	 */
@@ -256,7 +269,7 @@ public class Users
 	{
 		this.Cookie = value;
 	}
-
+	
 	/*
 	 * 设置 HeadImage
 	 */
@@ -264,7 +277,7 @@ public class Users
 	{
 		this.HeadImage = value;
 	}
-
+	
 	/*
 	 * 设置 Hospital
 	 */
@@ -272,7 +285,7 @@ public class Users
 	{
 		this.Hospital = value;
 	}
-
+	
 	/*
 	 * 设置 Location
 	 */
@@ -280,7 +293,7 @@ public class Users
 	{
 		this.Location = value;
 	}
-
+	
 	/*
 	 * 设置 LoginDate
 	 */
@@ -288,7 +301,7 @@ public class Users
 	{
 		this.LoginDate = value;
 	}
-
+	
 	/*
 	 * 设置 LoginTime
 	 */
@@ -296,7 +309,7 @@ public class Users
 	{
 		this.LoginTime = value;
 	}
-
+	
 	/*
 	 * 设置 Marks
 	 */
@@ -304,7 +317,7 @@ public class Users
 	{
 		this.Marks = value;
 	}
-
+	
 	/*
 	 * 设置 Name
 	 */
@@ -312,7 +325,7 @@ public class Users
 	{
 		this.Name = value;
 	}
-
+	
 	/*
 	 * 设置 Phonenumber
 	 */
@@ -320,7 +333,7 @@ public class Users
 	{
 		this.Phonenumber = value;
 	}
-
+	
 	/*
 	 * 设置 PUid
 	 */
@@ -328,7 +341,7 @@ public class Users
 	{
 		this.PUid = value;
 	}
-
+	
 	/*
 	 * 设置 Pwd
 	 */
@@ -336,7 +349,7 @@ public class Users
 	{
 		this.Pwd = CommonUtil.encryptBASE64(value); // 加密
 	}
-
+	
 	/*
 	 * 设置 RecTime
 	 */
@@ -344,7 +357,7 @@ public class Users
 	{
 		this.RecTime = value;
 	}
-
+	
 	/*
 	 * 设置 Rid
 	 */
@@ -352,7 +365,7 @@ public class Users
 	{
 		this.Rid = value;
 	}
-
+	
 	/*
 	 * 设置 Sex
 	 */
@@ -360,7 +373,7 @@ public class Users
 	{
 		this.Sex = value;
 	}
-
+	
 	/*
 	 * 设置 Uid
 	 */
@@ -368,7 +381,7 @@ public class Users
 	{
 		this.Uid = value;
 	}
-
+	
 	/*
 	 * 设置 Username
 	 */
@@ -376,7 +389,7 @@ public class Users
 	{
 		this.Username = value;
 	}
-
+	
 	/*
 	 * 设置 Zhiye
 	 */
@@ -384,5 +397,15 @@ public class Users
 	{
 		this.Zhiye = value;
 	}
-
+	
+	public String getAppSecret()
+	{
+		return AppSecret;
+	}
+	
+	public void setAppSecret(String appSecret)
+	{
+		AppSecret = appSecret;
+	}
+	
 }

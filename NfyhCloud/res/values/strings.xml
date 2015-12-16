@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">南方院后云服务</string>
+    <string name="API_TOKEN">29EE72A252B6481598AF079F61B8F915866582</string>
     <string name="undefind">undefind</string>
     <string name="title_tongbu">同步数据</string>
     <string name="android_login_username">帐号</string>
@@ -26,6 +27,7 @@
     <string name="tab_title_tzcl">体征测量</string>
     <string name="tab_title_yhgl">院后管理</string>
     <string name="tab_title_yhda">院后档案</string>
+    <string name="tab_title_chat">医患互动</string>
     <string name="tab_title_grzx">个人设置</string>
     <string name="tab_title_jjhj">移动呼救</string>
     <string name="menu_myddc">满意度调查</string>
@@ -106,6 +108,7 @@
     <string name="uploading_Data">正在同步数据，请稍候..</string>
     <string name="please_login">请登录</string>
     <string name="myddc">满意度调查</string>
+    <string name="tzgy">体征干预</string>
     <string name="cyxj">出院提醒</string>
     <string name="sf">随访</string>
     <string name="yhhd">医患互动</string>

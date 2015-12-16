@@ -1,5 +1,7 @@
 package com.yixin.nfyh.cloud;
 
+import io.rong.imkit.RongIM;
+
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ import com.rae.core.image.loader.DisplayImageOptions;
 import com.rae.core.image.loader.ImageLoader;
 import com.rae.core.image.loader.ImageLoaderConfiguration;
 import com.rae.core.image.loader.assist.QueueProcessingType;
+import com.rae.im.sdk.rongcloud.RaeRongCloudIM;
 import com.yixin.monitors.sdk.api.ApiMonitor;
 import com.yixin.monitors.sdk.api.BluetoothListener;
 import com.yixin.monitors.sdk.model.PackageModel;
@@ -33,6 +36,7 @@ import com.yixin.nfyh.cloud.bll.DesktopSOS;
 import com.yixin.nfyh.cloud.bll.GlobalSetting;
 import com.yixin.nfyh.cloud.data.IUser;
 import com.yixin.nfyh.cloud.data.NfyhCloudDataFactory;
+import com.yixin.nfyh.cloud.data.NfyhUserProvider;
 import com.yixin.nfyh.cloud.device.DefaultDevice;
 import com.yixin.nfyh.cloud.model.Users;
 import com.yixin.nfyh.cloud.server.NfyhCloudUnHanderException;
@@ -66,6 +70,14 @@ public class NfyhApplication extends Application
 	@Override
 	public void onCreate()
 	{
+		
+		// 连接融云
+		RaeRongCloudIM.getInstance().init(this);
+		if (RongIM.getInstance() != null)
+		{
+			RongIM.setUserInfoProvider(new NfyhUserProvider(this), true); // 用户提供者
+		}
+		
 		context = getApplicationContext();
 		initImageLoader(context);
 		globalsetting = new GlobalSetting(context);

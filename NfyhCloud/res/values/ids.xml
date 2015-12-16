@@ -8,5 +8,12 @@
     <item name="webview" type="id"/>
     <item name="scrollview" type="id"/>
     <item name="msgview" type="id"></item>
+    <item name="empty_message" type="id"></item>
+    <item name="loadding_image" type="id"></item>
+    <item name="loadding_message" type="id"></item>
+    <item name="tvContent" type="id"/>
+    <item name="fm_layout" type="id"/>
+    <item name="loadding_view" type="id"/>
+    <item name="empty_view" type="id"/>
 
 </resources>

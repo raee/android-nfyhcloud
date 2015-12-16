@@ -18,18 +18,21 @@ import com.yixin.nfyh.cloud.model.Users;
  * @author MrChenrui
  * 
  */
-public class LoginServer extends WebserverConnection implements ILogin {
+public class LoginServer extends WebserverConnection implements ILogin
+{
 	private SoapConnectionCallback<Users>	mListener;
 	private String							password	= "123";
 	private IUser							mUser;
-
-	public LoginServer(Context context) {
+	
+	public LoginServer(Context context)
+	{
 		super(context);
 		mUser = NfyhCloudDataFactory.getFactory(context).getUser();
 	}
-
+	
 	@Override
-	public void login(String userName, String pwd) {
+	public void login(String userName, String pwd)
+	{
 		this.password = pwd;
 		String methodName = context.getString(R.string.soap_method_login);
 		NfyhSoapConnection<Users> conn = new NfyhSoapConnection<Users>(context);
@@ -39,38 +42,39 @@ public class LoginServer extends WebserverConnection implements ILogin {
 		conn.setonSoapConnectionCallback(mListener);
 		conn.request(methodName);
 	}
-
-	private class LoginParser implements IWebserverParser<Users> {
-
+	
+	private class LoginParser implements IWebserverParser<Users>
+	{
+		
 		@Override
-		public Users parser(String json) {
-
+		public Users parser(String json)
+		{
+			
 			Users userInfo = new Users();
-
-			try {
+			
+			try
+			{
 				JSONObject obj = new JSONObject(json);
 				Object isNull = obj.get("Userinfo");
-
-				if (isNull.toString().equals("null")) {
-					return userInfo;
-				} // 没有对象
-
+				
+				if (isNull.toString().equals("null")) { return userInfo; } // 没有对象
+				
 				JSONObject user = obj.getJSONObject("Userinfo");
-
+				
 				String username = user.getString("Useraccount");
 				String uid = user.getString("Id");
 				String cookie = obj.getString("Cookie");
 				String realName = user.getString("Username");
 				int sex = user.getInt("Usersex");
-
+				
 				// 模块配置
 				JSONArray signTypeArray = obj.getJSONArray("SignType"); // 体征
 				JSONArray moduleArray = obj.getJSONArray("Service"); // 模块
-
+				
 				// 将模块插入到字典表中。
 				parse(moduleArray, uid, 0);
 				parse(signTypeArray, uid, 1);
-
+				
 				userInfo.setSex(sex == 1 ? "男" : "女");
 				userInfo.setUid(uid);
 				userInfo.setName(realName);
@@ -78,24 +82,33 @@ public class LoginServer extends WebserverConnection implements ILogin {
 				userInfo.setUsername(username);
 				userInfo.setAge(60);
 				userInfo.setPwd(password); // TODO:加密
-
+				
+				// 融云登录凭证
+				if (obj.has("AppSecret"))
+				{
+					userInfo.setAppSecret(obj.getString("AppSecret"));
+				}
+				
 				return userInfo;
 			}
-			catch (JSONException e) {
+			catch (JSONException e)
+			{
 				e.printStackTrace();
 				return userInfo;
 			}
 		}
-
+		
 	}
-
+	
 	@Override
-	public void setOnConnectonCallback(SoapConnectionCallback<Users> l) {
+	public void setOnConnectonCallback(SoapConnectionCallback<Users> l)
+	{
 		this.mListener = l;
 	}
-
+	
 	/**
 	 * 解析模块和体征类型
+	 * 
 	 * @param arr
 	 *            Json
 	 * @param uid
@@ -103,27 +116,34 @@ public class LoginServer extends WebserverConnection implements ILogin {
 	 * @param code
 	 *            类型：[0]-模块；[1]-体征类型
 	 */
-	private void parse(JSONArray arr, String uid, int code) {
-		try {
+	private void parse(JSONArray arr, String uid, int code)
+	{
+		try
+		{
 			String[] values = new String[arr.length()];
-			for (int i = 0; i < arr.length(); i++) {
+			for (int i = 0; i < arr.length(); i++)
+			{
 				values[i] = arr.getString(i);
 			}
-			if (code == 0) {
+			if (code == 0)
+			{
 				mUser.addUserModule(uid, values);
 			}
-			else {
+			else
+			{
 				mUser.addUserSignType(uid, values);
 			}
-
+			
 		}
-		catch (JSONException e) {
+		catch (JSONException e)
+		{
 			e.printStackTrace();
 		}
 	}
-
+	
 	@Override
-	public void loginByQQ(String openId) {
+	public void loginByQQ(String openId)
+	{
 		String methodName = context.getString(R.string.soap_method_login_qq);
 		NfyhSoapConnection<Users> conn = new NfyhSoapConnection<Users>(context);
 		conn.setParser(new LoginParser());
@@ -131,9 +151,10 @@ public class LoginServer extends WebserverConnection implements ILogin {
 		conn.setonSoapConnectionCallback(mListener);
 		conn.request(methodName);
 	}
-
+	
 	@Override
-	public void bindQQ(String username, String pwd, String openId) {
+	public void bindQQ(String username, String pwd, String openId)
+	{
 		String methodName = context.getString(R.string.soap_method_login_bind);
 		NfyhSoapConnection<Users> conn = new NfyhSoapConnection<Users>(context);
 		conn.setParser(new LoginParser());

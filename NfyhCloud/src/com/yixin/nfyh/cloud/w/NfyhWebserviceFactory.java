@@ -12,18 +12,21 @@ import com.yixin.nfyh.cloud.i.ISignServer;
  * @author MrChenrui
  * 
  */
-public class NfyhWebserviceFactory {
+public class NfyhWebserviceFactory
+{
 	
 	public static NfyhWebserviceFactory	factory	= null;
 	
-	public static NfyhWebserviceFactory getFactory(Context context) {
+	public static NfyhWebserviceFactory getFactory(Context context)
+	{
 		if (factory == null) factory = new NfyhWebserviceFactory(context);
 		return factory;
 	}
 	
 	private Context	context;
 	
-	private NfyhWebserviceFactory(Context context) {
+	private NfyhWebserviceFactory(Context context)
+	{
 		this.context = context;
 	}
 	
@@ -32,7 +35,8 @@ public class NfyhWebserviceFactory {
 	 * 
 	 * @return
 	 */
-	public ILogin getLogin() {
+	public ILogin getLogin()
+	{
 		return new LoginServer(context);
 	}
 	
@@ -41,7 +45,8 @@ public class NfyhWebserviceFactory {
 	 * 
 	 * @return
 	 */
-	public IManyidu getManyidu() {
+	public IManyidu getManyidu()
+	{
 		return new ManyiduServer(context);
 	}
 	
@@ -50,7 +55,8 @@ public class NfyhWebserviceFactory {
 	 * 
 	 * @return
 	 */
-	public PhotoCategoryServer getPhotoCategory() {
+	public PhotoCategoryServer getPhotoCategory()
+	{
 		return new PhotoCategoryServer(context);
 	}
 	
@@ -59,7 +65,8 @@ public class NfyhWebserviceFactory {
 	 * 
 	 * @return
 	 */
-	public ISignServer getSignServer() {
+	public ISignServer getSignServer()
+	{
 		return new SignServer(context);
 	}
 	
@@ -68,7 +75,8 @@ public class NfyhWebserviceFactory {
 	 * 
 	 * @return
 	 */
-	public IPushMessage getPushMessage() {
+	public IPushMessage getPushMessage()
+	{
 		return new PushMessageServer(context);
 	}
 	
@@ -77,7 +85,20 @@ public class NfyhWebserviceFactory {
 	 * 
 	 * @return
 	 */
-	public VersionUpdateServer getVersionUpdateServer() {
+	public VersionUpdateServer getVersionUpdateServer()
+	{
 		return new VersionUpdateServer(context);
+	}
+	
+	/**
+	 * 获取用户医生接口
+	 * 
+	 * @param ctx
+	 *            上下文
+	 * @return
+	 */
+	public static IUserDoctor getUserDoctorApi(Context ctx)
+	{
+		return new UserDoctorImpl(ctx);
 	}
 }

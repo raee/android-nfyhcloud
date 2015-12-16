@@ -6,6 +6,10 @@
 >闹钟库[android-lib-alarm](https://github.com/raee/android-lib-alarm)<br>
 >图表库[MPAndroidChart](https://github.com/PhilJay/MPAndroidChart)
 ---
+##V1.0.
+时间：2015-12-16 <br>
+1、添加医患聊天功能。<br>
+2、添加查看体征干预功能。<br>
 
 ##V1.0.7
 时间：2015-11-26 <br>

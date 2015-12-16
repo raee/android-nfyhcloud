@@ -4,7 +4,7 @@
     <item
         android:id="@+id/menu_main_device"
         android:icon="@drawable/ic_menu_switch_device"
-        android:showAsAction="always|withText"
+        android:showAsAction="always"
         android:title="监测设备"/>
 
 </menu>
