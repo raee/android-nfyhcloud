@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 平台选择 ，对应下面的平台名称 -->
+    <string name="platfrom">柯尔迈平台</string>
+
+    <!-- 院后总平台 -->
+    <string name="company">广州南方宜信信息科技有限公司</string>
+    <string name="nfyh_domain">http://nfyh.smu.edu.cn</string>
+    <string name="url_health_assess">/RMBase/SysHealthAM/HealthReport.aspx</string>
+    <string name="url_myddc">/RMBase/SysSurvey/SmsSurveyRecord.aspx</string>
+    <string name="url_yjfk">/RMBase/SysFeedback/Feedback.aspx</string>
+    <string name="url_bqpg">/RMBase/SysAssess/MyAssess_List.aspx?uid=@uid</string>
+    <string name="soap_url">/WebService/Api.asmx</string>
+    <string name="soap_namespace">http://nfyxHospital.org/</string>
+    <string name="url_method_photo_list">/WebService/Data.ashx?action=getImage</string>
+    <string name="url_method_photo_upload">/WebService/Data.ashx?action=uploadImage</string>
+
+    <!-- 柯尔迈平台 -->
+    <string name="company_kermatelmed">重庆科尔迈科技有限公司</string>
+    <string name="kermatelmed_domain">http://nfyh.kermatelmed.com</string>
+
+</resources>

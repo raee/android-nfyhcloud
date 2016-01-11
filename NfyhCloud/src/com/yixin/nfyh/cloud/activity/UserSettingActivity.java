@@ -20,6 +20,7 @@ import cn.rui.framework.widget.RuiSwitch.OnCheckedChangeListener;
 import com.yixin.nfyh.cloud.BaseActivity;
 import com.yixin.nfyh.cloud.LoginActivity;
 import com.yixin.nfyh.cloud.R;
+import com.yixin.nfyh.cloud.bll.ApiController;
 import com.yixin.nfyh.cloud.bll.ConfigServer;
 import com.yixin.nfyh.cloud.bll.VersionUpdate;
 import com.yixin.nfyh.cloud.data.ISignDevice;
@@ -49,6 +50,7 @@ public class UserSettingActivity extends BaseActivity implements OnCheckedChange
 	private CoreBinder			mBinder;
 	private ServiceConnection	mConnection;
 	private RuiSwitch			swAutoUpload;
+	private TextView	tvCompany;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -103,6 +105,8 @@ public class UserSettingActivity extends BaseActivity implements OnCheckedChange
 		
 		this.swAutoUpload.setChecked(config.getBooleanConfig(ConfigServer.KEY_AUTO_UPLOAD)); // 自动上传
 		
+		tvCompany.setText(ApiController.get().getCompany());
+		
 		Devices device;
 		try
 		{
@@ -156,7 +160,7 @@ public class UserSettingActivity extends BaseActivity implements OnCheckedChange
 				break;
 			case R.id.ll_menu_yjfk: // 意见反馈
 				Intent feedbackIntent = new Intent(this, WebViewerActivity.class);
-				Uri feedbackuri = Uri.parse(getString(R.string.url_yjfk));
+				Uri feedbackuri = Uri.parse(ApiController.get().getYiJianFanKuiUrl());
 				feedbackIntent.setData(feedbackuri);
 				feedbackIntent.putExtra(WebViewerActivity.EXTRA_COOKIE, app.getGlobalsetting().getUser().getCookie());
 				startActivity(feedbackIntent);
@@ -196,6 +200,7 @@ public class UserSettingActivity extends BaseActivity implements OnCheckedChange
 		AppInfo appinfo = new AppInfo(this);
 		tvAppVersion.setText("V" + appinfo.getVersion());
 		tvDeviceName = (TextView) findViewById(R.id.tv_setting_device_name);
+		tvCompany = (TextView)findViewById(R.id.tv_company);
 	}
 	
 	@Override

@@ -1,8 +1,11 @@
 package com.yixin.nfyh.cloud;
 
+import com.yixin.nfyh.cloud.bll.ApiController;
+
 import android.content.Intent;
 import android.content.Intent.ShortcutIconResource;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 import cn.rui.framework.utils.AppInfo;
 
@@ -28,13 +31,9 @@ public class WelcomeActivity extends BaseActivity implements Runnable
 			return;
 		}
 		
-		//		if (BuildConfig.DEBUG)
-		//		{
-		//			startActivity(new Intent(this, LoginActivity.class));
-		//			finish();
-		//			return;
-		//		}
-		//
+		ImageView bg = (ImageView) findViewById(R.id.img_welcome_bg);
+		
+		bg.setBackgroundResource(ApiController.get().getWelcomeBackgroundResId());
 		
 		TextView tvVersion = (TextView) findViewById(R.id.tv_welcome_version);
 		String version = new AppInfo(this).getVersion();

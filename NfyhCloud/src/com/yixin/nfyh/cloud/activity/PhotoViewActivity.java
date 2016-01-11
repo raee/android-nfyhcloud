@@ -20,6 +20,7 @@ import com.rae.core.image.utils.CameraUtils;
 import com.rae.core.image.utils.CameraUtils.CameraCallbackListener;
 import com.yixin.nfyh.cloud.BaseActivity;
 import com.yixin.nfyh.cloud.R;
+import com.yixin.nfyh.cloud.bll.ApiController;
 import com.yixin.nfyh.cloud.bll.PhotoCategoryControl;
 import com.yixin.nfyh.cloud.model.Photocategory;
 import com.yixin.nfyh.cloud.model.Photos;
@@ -125,7 +126,7 @@ public class PhotoViewActivity extends BaseActivity implements
 	 * @return
 	 */
 	private String getURI(String id) {
-		return getString(R.string.url_method_photo_list) + "&cookie="
+		return ApiController.get().getPhotoUrl() + "&cookie="
 				+ getUser().getCookie() + "&photoid=" + id;
 	}
 

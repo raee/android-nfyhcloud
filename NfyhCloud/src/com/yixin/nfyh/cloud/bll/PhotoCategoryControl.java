@@ -14,7 +14,6 @@ import android.util.Log;
 import com.rae.core.http.async.AsyncHttpClient;
 import com.rae.core.http.async.AsyncHttpResponseHandler;
 import com.rae.core.http.async.RequestParams;
-import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.activity.UploadPhotoActivity;
 import com.yixin.nfyh.cloud.adapter.PhotocategoryAdapter;
 import com.yixin.nfyh.cloud.data.NfyhCloudDataFactory;
@@ -35,25 +34,23 @@ import com.yixin.nfyh.cloud.w.WebServerException;
  * @author MrChenrui
  * 
  */
-public class PhotoCategoryControl implements
-		SoapConnectionCallback<List<Photocategory>>
+public class PhotoCategoryControl implements SoapConnectionCallback<List<Photocategory>>
 {
 	public static final String		ACTION_UPLOAD_PHOTO_ASYNC_SUCCESS		= "ACTION_UPLOAD_PHOTO_ASYNC_SUCCESS";
 	public static final String		ACTION_UPLOAD_PHOTO_ASYNC_ERROR			= "ACTION_UPLOAD_PHOTO_ASYNC_ERROR";
 	public static final String		ACTION_UPLOAD_PHOTO_ASYNC_PROGRESSING	= "ACTION_UPLOAD_PHOTO_ASYNC_PROGRESSING";
-
+	
 	private PhotocategoryAdapter	mAdapter;
 	private Context					mContext;
 	private PhotoCategoryServer		mPhotocategoryApi;
 	private Users					mUser;
 	private IPhotoCategory			mDbPhotocategoryApi;
-	private ILog					log										= LogUtil
-																					.getLog();
+	private ILog					log										= LogUtil.getLog();
 	private String					tag										= "PhotoCategoryControl";
 	private PhotoCategoryListener	mPhotoCategoryEmptyListener;
 	private String					mCurrentCategoryId						= "0";
 	private AsyncHttpClient			mSyncClient								= new AsyncHttpClient();
-
+	
 	/**
 	 * 没有数据时调用的接口
 	 * 
@@ -63,7 +60,7 @@ public class PhotoCategoryControl implements
 	public interface PhotoCategoryListener
 	{
 		void onPhotocategoryEmpty(String categoryId);
-
+		
 		/**
 		 * 回调
 		 * 
@@ -73,22 +70,20 @@ public class PhotoCategoryControl implements
 		 */
 		void onPhotocategoryCallBack(int state, String categoryId);
 	}
-
+	
 	public PhotoCategoryControl(Context context)
 	{
 		this.mContext = context;
-		this.mPhotocategoryApi = NfyhWebserviceFactory.getFactory(context)
-				.getPhotoCategory(); // webservice 接口
+		this.mPhotocategoryApi = NfyhWebserviceFactory.getFactory(context).getPhotoCategory(); // webservice 接口
 		this.mUser = new GlobalSetting(context).getUser(); // 当前用户
 		this.mPhotocategoryApi.setCookie(this.mUser.getCookie()); // 设置身份验证
 		this.mPhotocategoryApi.setUserId(this.mUser.getUid());
 		this.mPhotocategoryApi.setmPhotocategoryListener(this); // 设置获取分类回调监听
-		this.mDbPhotocategoryApi = NfyhCloudDataFactory.getFactory(context)
-				.getPhotocategory(); // 数据库 接口
+		this.mDbPhotocategoryApi = NfyhCloudDataFactory.getFactory(context).getPhotocategory(); // 数据库 接口
 		this.mDbPhotocategoryApi.setUserId(mUser.getUid());
 		this.mDbPhotocategoryApi.setCookie(mUser.getCookie());
 	}
-
+	
 	/**
 	 * 设置当获取分类为空时候的接口
 	 * 
@@ -98,7 +93,7 @@ public class PhotoCategoryControl implements
 	{
 		this.mPhotoCategoryEmptyListener = l;
 	}
-
+	
 	/**
 	 * 获取webservice 接口
 	 * 
@@ -108,7 +103,7 @@ public class PhotoCategoryControl implements
 	{
 		return this.mDbPhotocategoryApi;
 	}
-
+	
 	/**
 	 * 获取分类
 	 * 
@@ -118,26 +113,23 @@ public class PhotoCategoryControl implements
 	 * @param isFromNet
 	 *            是否从云端下载
 	 */
-	public void getCategories(PhotocategoryAdapter adapter, String categoryid,
-			boolean isFromNet)
+	public void getCategories(PhotocategoryAdapter adapter, String categoryid, boolean isFromNet)
 	{
 		this.mAdapter = adapter;
 		this.mCurrentCategoryId = categoryid;
-
+		
 		// 服务器分类数据
 		if (isFromNet)
 		{
 			mPhotocategoryApi.getCategories(categoryid); // 获取网络数据
 			return;
 		}
-
+		
 		// 本地分类数据
-		List<Photocategory> data = mDbPhotocategoryApi
-				.getCategories(categoryid);
+		List<Photocategory> data = mDbPhotocategoryApi.getCategories(categoryid);
 		if (data != null && data.size() > 0)
 		{
-			this.mPhotoCategoryEmptyListener.onPhotocategoryCallBack(1,
-					categoryid);
+			this.mPhotoCategoryEmptyListener.onPhotocategoryCallBack(1, categoryid);
 			refreshListView(data);
 			Log.i("tt", "从本地加载分类");
 			return;
@@ -146,9 +138,9 @@ public class PhotoCategoryControl implements
 		{
 			mPhotocategoryApi.getCategories(categoryid); // 获取网络数据
 		}
-
+		
 	}
-
+	
 	/**
 	 * 获取分类，数据库不存在则从云端下载
 	 * 
@@ -159,7 +151,7 @@ public class PhotoCategoryControl implements
 	{
 		getCategories(adapter, categoryId, false);
 	}
-
+	
 	/**
 	 * 获取数据库分类信息
 	 * 
@@ -170,7 +162,7 @@ public class PhotoCategoryControl implements
 	{
 		return this.mDbPhotocategoryApi.getCategory(categoryId);
 	}
-
+	
 	/**
 	 * 更新Listview
 	 * 
@@ -182,7 +174,7 @@ public class PhotoCategoryControl implements
 		this.mAdapter.notifyDataSetInvalidated();
 		this.mAdapter.notifyDataSetChanged();
 	}
-
+	
 	/**
 	 * 添加分类
 	 * 
@@ -191,8 +183,7 @@ public class PhotoCategoryControl implements
 	 * @param l
 	 *            操作回调
 	 */
-	public void addCategory(String name,
-			SoapConnectionCallback<WebServerException> l)
+	public void addCategory(String name, SoapConnectionCallback<WebServerException> l)
 	{
 		final Photocategory m = new Photocategory();
 		m.setName(name);
@@ -204,21 +195,19 @@ public class PhotoCategoryControl implements
 		mPhotocategoryApi.setmAddCategoryListener(l);
 		mPhotocategoryApi.addCategory(m);
 	}
-
-	public void getPhotos(String categoryId,
-			SoapConnectionCallback<List<Photos>> l)
+	
+	public void getPhotos(String categoryId, SoapConnectionCallback<List<Photos>> l)
 	{
 		mPhotocategoryApi.setmPhotosListener(l);
 		mPhotocategoryApi.getPhotos(categoryId);
 	}
-
+	
 	@Override
 	public void onSoapConnectSuccess(List<Photocategory> data)
 	{
 		if (data.size() <= 0)
 		{
-			mPhotoCategoryEmptyListener
-					.onPhotocategoryEmpty(this.mCurrentCategoryId);
+			mPhotoCategoryEmptyListener.onPhotocategoryEmpty(this.mCurrentCategoryId);
 			return;
 		}
 		for (Photocategory photocategory : data)
@@ -226,21 +215,18 @@ public class PhotoCategoryControl implements
 			mDbPhotocategoryApi.addCategory(photocategory); // 再把服务器的数据添加到数据库中
 		}
 		refreshListView(data);
-		mPhotoCategoryEmptyListener.onPhotocategoryCallBack(1,
-				mCurrentCategoryId);
+		mPhotoCategoryEmptyListener.onPhotocategoryCallBack(1, mCurrentCategoryId);
 	}
-
+	
 	@Override
 	public void onSoapConnectedFalid(WebServerException e)
 	{
-		this.mPhotoCategoryEmptyListener
-				.onPhotocategoryEmpty(mCurrentCategoryId);
+		this.mPhotoCategoryEmptyListener.onPhotocategoryEmpty(mCurrentCategoryId);
 		refreshListView(new ArrayList<Photocategory>());
 		log.error(tag, "调用失败：" + e.getMessage());
-		mPhotoCategoryEmptyListener.onPhotocategoryCallBack(0,
-				mCurrentCategoryId);
+		mPhotoCategoryEmptyListener.onPhotocategoryCallBack(0, mCurrentCategoryId);
 	}
-
+	
 	/**
 	 * 跳转到上传的视图
 	 * 
@@ -256,21 +242,16 @@ public class PhotoCategoryControl implements
 		intent.putStringArrayListExtra("data", uris);
 		mContext.startActivity(intent);
 	}
-
+	
 	private String getUploadUrl(String categoryId, String uri)
 	{
 		File file = new File(URI.create(uri));
-		String fileName = DateFormat.format("yyyyMMddHHmmss",
-				new Date(file.lastModified())).toString()
-				+ "的照片";
-		String url = mContext.getString(R.string.url_method_photo_upload)
-				+ "&cookie=" + this.mUser.getCookie() + "&albumId="
-				+ categoryId + "&Photodescribe=照片描述&Photoname" + fileName;
+		String fileName = DateFormat.format("yyyyMMddHHmmss", new Date(file.lastModified())).toString() + "的照片";
+		String url = ApiController.get().getPhotoUploadUrl() + "&cookie=" + this.mUser.getCookie() + "&albumId=" + categoryId + "&Photodescribe=照片描述&Photoname" + fileName;
 		return url;
 	}
-
-	public void uploadPhoto(String uri, String categoryId,
-			AsyncHttpResponseHandler handler)
+	
+	public void uploadPhoto(String uri, String categoryId, AsyncHttpResponseHandler handler)
 	{
 		// AsyncFileHttpResponseHandler handler = new
 		// AsyncFileHttpResponseHandler(
@@ -289,9 +270,9 @@ public class PhotoCategoryControl implements
 			e.printStackTrace();
 			handler.onFailure(0, null, null, e);
 		}
-
+		
 	}
-
+	
 	/**
 	 * 刷新分类数据
 	 */
@@ -299,9 +280,9 @@ public class PhotoCategoryControl implements
 	{
 		// 删除分类数据
 		this.mDbPhotocategoryApi.delCategory("0");
-
+		
 		// 重新获取服务器数据
 		this.getCategories(mAdapter, "0");
 	}
-
+	
 }

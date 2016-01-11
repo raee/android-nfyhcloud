@@ -31,6 +31,7 @@ import com.yixin.monitors.sdk.api.BluetoothListener;
 import com.yixin.monitors.sdk.model.PackageModel;
 import com.yixin.monitors.sdk.model.SignDataModel;
 import com.yixin.nfyh.cloud.bll.Account;
+import com.yixin.nfyh.cloud.bll.ApiController;
 import com.yixin.nfyh.cloud.bll.ConfigServer;
 import com.yixin.nfyh.cloud.bll.DesktopSOS;
 import com.yixin.nfyh.cloud.bll.GlobalSetting;
@@ -78,7 +79,10 @@ public class NfyhApplication extends Application
 			RongIM.setUserInfoProvider(new NfyhUserProvider(this), true); // 用户提供者
 		}
 		
+		
+		
 		context = getApplicationContext();
+		ApiController.init(context);
 		initImageLoader(context);
 		globalsetting = new GlobalSetting(context);
 		config = new ConfigServer(context);

@@ -9,6 +9,7 @@ import cn.rui.framework.ui.WebViewerActivity;
 import com.yixin.nfyh.cloud.activity.MessageActivity;
 import com.yixin.nfyh.cloud.activity.PhotoActivity;
 import com.yixin.nfyh.cloud.activity.SignGanyuActivity;
+import com.yixin.nfyh.cloud.bll.ApiController;
 import com.yixin.nfyh.cloud.bll.GlobalSetting;
 
 /**
@@ -53,7 +54,7 @@ public class HospitalFileActivity extends BaseActivity
 			case R.id.ll_menu_jkpg: // 健康评估
 				
 				Intent jkpgIntent = new Intent(this, WebViewerActivity.class);
-				Uri uri = Uri.parse(getResources().getString(R.string.url_health_assess));
+				Uri uri = Uri.parse(ApiController.get().getHealthAssessUrl());
 				jkpgIntent.setData(uri);
 				jkpgIntent.putExtra(WebViewerActivity.EXTRA_COOKIE, getSetting().getUser().getCookie());
 				

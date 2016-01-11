@@ -193,7 +193,6 @@
                 android:layout_weight="0"
                 android:src="@drawable/editcomplete_right"
                 android:visibility="invisible" />
-
         </LinearLayout>
 
         <LinearLayout
@@ -281,6 +280,7 @@
                 android:text="@string/setting_appinfo" />
 
             <TextView
+                android:id="@+id/tv_company"
                 style="@style/setting_item_text_sub"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -308,7 +308,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/canshuxuanzhe" />
         </LinearLayout>
-        
+
         <LinearLayout
             android:id="@+id/ll_menu_yjfk"
             style="@style/setting_item"
@@ -322,7 +322,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/yjfk" />
-
         </LinearLayout>
 
         <Button

@@ -9,6 +9,7 @@ import cn.rui.framework.ui.WebViewerActivity;
 import com.rae.alarm.AlarmListActivity;
 import com.yixin.nfyh.cloud.activity.SMSListActivity;
 import com.yixin.nfyh.cloud.activity.UserSettingActivity;
+import com.yixin.nfyh.cloud.bll.ApiController;
 
 /**
  * 院后管理界面
@@ -44,7 +45,7 @@ public class HospitalManagerActivity extends BaseActivity
 			case R.id.ll_menu_bqpg: // 病情评估
 				
 				Intent bqpgIntent = new Intent(this, WebViewerActivity.class);
-				Uri bqpguri = Uri.parse(getString(R.string.url_bqpg).replace("@uid", app.getCurrentUser().getUid()));
+				Uri bqpguri = Uri.parse(ApiController.get().getBingQingPingGuUrl().replace("@uid", app.getCurrentUser().getUid()));
 				bqpgIntent.setData(bqpguri);
 				bqpgIntent.putExtra(WebViewerActivity.EXTRA_COOKIE, app.getGlobalsetting().getUser().getCookie());
 				startActivity(bqpgIntent);
