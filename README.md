@@ -3,8 +3,9 @@
 
 >依赖下面几个项目，都Clone到同一个目录下。<br>
 >家庭设备监测库[monitorsdk](https://github.com/raee/monitorsdk)<br>
->闹钟库[android-lib-alarm](https://github.com/raee/android-lib-alarm)<br>
->图表库[MPAndroidChart](https://github.com/PhilJay/MPAndroidChart)
+>闹钟库[android-lib-alarm](https://github.com/raee/android-lib-alarm)
+>图表库[MPAndroidChart](https://github.com/raee/MPAndroidChart.git)
+>
 ---
 ##V1.0.
 时间：2015-12-16 <br>
