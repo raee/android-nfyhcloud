@@ -6,11 +6,12 @@ import com.yixin.nfyh.cloud.model.UserSigns;
 import com.yixin.nfyh.cloud.w.SoapConnectionCallback;
 
 /**
+ * 上传体征接口
+ * 
  * @author ChenRui
  * 
  */
-public interface ISignServer extends IAuthentication
-{
+public interface ISignServer extends IAuthentication {
 	/**
 	 * 上传体征数据
 	 * 

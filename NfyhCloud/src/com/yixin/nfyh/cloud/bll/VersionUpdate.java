@@ -62,6 +62,9 @@ public class VersionUpdate implements
 		ruiDialog = new RuiDialog(mContext);
 	}
 
+	/**
+	 * 检查更新
+	 */
 	public void check() {
 		if (mShowDialog) {
 			ruiDialog.setTitle("正在检查更新");
@@ -74,6 +77,11 @@ public class VersionUpdate implements
 		versionApi.check(this);
 	}
 
+	/**
+	 * 显示对话框
+	 * 
+	 * @param val
+	 */
 	public void showDialog(boolean val) {
 		this.mShowDialog = val;
 	}
@@ -95,7 +103,7 @@ public class VersionUpdate implements
 			if (mShowDialog) {
 				show("太牛了，当前版本已经是最新了！");
 				// 加上分享的二维码
-				
+
 			}
 			return;
 		}
@@ -215,6 +223,11 @@ public class VersionUpdate implements
 		}
 	}
 
+	/**
+	 * 显示对话框
+	 * 
+	 * @param msg
+	 */
 	private void show(String msg) {
 		if (ruiDialog == null) {
 			return;
@@ -226,6 +239,11 @@ public class VersionUpdate implements
 		}
 	}
 
+	/**
+	 * 安装更新
+	 * 
+	 * @param file
+	 */
 	private void installApk(File file) {
 		ruiDialog.dismiss();
 		Intent intent = new Intent(Intent.ACTION_VIEW);

@@ -7,18 +7,21 @@ import android.content.Context;
 
 import com.yixin.nfyh.cloud.model.view.DialogViewModel;
 
-public class FloatSelectorDialog extends NumberSelectorDialog
-{
+/**
+ * 浮点类型对话框
+ * 
+ * @author ChenRui
+ * 
+ */
+public class FloatSelectorDialog extends NumberSelectorDialog {
 
 	public FloatSelectorDialog(Context context,
-			DialogPopupWindowListener listener, List<DialogViewModel> model)
-	{
+			DialogPopupWindowListener listener, List<DialogViewModel> model) {
 		super(context, listener, model);
 	}
 
 	@Override
-	public void onCreate(List<DialogViewModel> model)
-	{
+	public void onCreate(List<DialogViewModel> model) {
 		super.onCreate(model);
 
 		DialogViewModel m = new DialogViewModel();
@@ -28,11 +31,9 @@ public class FloatSelectorDialog extends NumberSelectorDialog
 		model.add(m);
 	}
 
-	private List<String> getDatas()
-	{
+	private List<String> getDatas() {
 		List<String> result = new ArrayList<String>();
-		for (int i = 0; i < 10; i++)
-		{
+		for (int i = 0; i < 10; i++) {
 			result.add(i + "");
 		}
 		return result;

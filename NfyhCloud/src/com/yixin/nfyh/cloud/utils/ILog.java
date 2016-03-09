@@ -2,8 +2,13 @@ package com.yixin.nfyh.cloud.utils;
 
 import android.content.Context;
 
-public interface ILog
-{
+/**
+ * Log 接口
+ * 
+ * @author ChenRui
+ * 
+ */
+public interface ILog {
 
 	void info(String tag, Object msg);
 

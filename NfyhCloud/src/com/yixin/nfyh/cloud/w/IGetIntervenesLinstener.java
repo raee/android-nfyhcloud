@@ -10,11 +10,24 @@ import com.yixin.nfyh.cloud.model.GanyuInfo;
  * @author ChenRui
  * 
  */
-public interface IGetIntervenesLinstener
-{
+public interface IGetIntervenesLinstener {
+	/**
+	 * 成功
+	 * 
+	 * @param datas
+	 */
 	void onGetIntervenesSuccess(List<GanyuInfo> datas);
-	
+
+	/**
+	 * 失败
+	 * 
+	 * @param code
+	 * @param msg
+	 */
 	void onGetIntervenesError(int code, String msg);
-	
+
+	/**
+	 * 没有数据
+	 */
 	void onNotIntervenes();
 }

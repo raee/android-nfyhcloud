@@ -21,6 +21,7 @@ import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.yixin.nfyh.cloud.BaseActivity;
 import com.yixin.nfyh.cloud.R;
@@ -51,7 +52,7 @@ public class ECGViewActivity extends BaseActivity
 	private ArrayList<Entry>		myVals		= new ArrayList<Entry>();
 	
 	// 数据列
-	private ArrayList<LineDataSet>	mdataSets	= new ArrayList<LineDataSet>();
+	private List<ILineDataSet>	mdataSets	= new ArrayList<ILineDataSet>();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)

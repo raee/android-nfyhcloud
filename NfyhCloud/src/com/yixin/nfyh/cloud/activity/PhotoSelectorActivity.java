@@ -17,12 +17,18 @@ import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.bll.PhotoCategoryControl;
 import com.yixin.nfyh.cloud.ui.PhotoSelectGridView;
 
+/**
+ * 图片选择，从图片库中选择。
+ * 
+ * @author ChenRui
+ * 
+ */
 public class PhotoSelectorActivity extends BaseActivity implements
 		OnItemClickListener {
-	private PhotoSelectGridView		mGridView;
-	private PhotoCategoryControl	mControl;
-	private String					mCategoryId;
-	private int						type	= 0;
+	private PhotoSelectGridView mGridView;
+	private PhotoCategoryControl mControl;
+	private String mCategoryId;
+	private int type = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,13 +69,13 @@ public class PhotoSelectorActivity extends BaseActivity implements
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch ( item.getItemId() ) {
-			case R.id.menu_save:
-				doSelectPhoto();
-				break;
+		switch (item.getItemId()) {
+		case R.id.menu_save:
+			doSelectPhoto();
+			break;
 
-			default:
-				break;
+		default:
+			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}

@@ -9,32 +9,34 @@ import android.widget.TextView;
 
 import com.yixin.nfyh.cloud.R;
 
-public class EmpteyView extends LinearLayout
-{
-	
-	private TextView	tvTips;
-	
-	public EmpteyView(Context context)
-	{
+/**
+ * 空试图
+ * 
+ * @author ChenRui
+ * 
+ */
+public class EmpteyView extends LinearLayout {
+
+	private TextView tvTips;
+
+	public EmpteyView(Context context) {
 		super(context, null);
 	}
-	
+
 	/**
 	 * @param context
 	 * @param contentView
 	 *            活动视图
 	 */
-	public EmpteyView(Context context, ViewGroup contentView)
-	{
+	public EmpteyView(Context context, ViewGroup contentView) {
 		super(context, null);
 		LayoutInflater.from(context).inflate(R.layout.view_empty, this);
 		this.tvTips = (TextView) findViewById(R.id.tv_empty_title);
 		contentView.addView(this);
 		this.setVisibility(View.GONE);
 	}
-	
-	public void setText(String text)
-	{
+
+	public void setText(String text) {
 		tvTips.setText(text);
 	}
 }

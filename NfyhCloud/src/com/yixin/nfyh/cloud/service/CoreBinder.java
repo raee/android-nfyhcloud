@@ -10,6 +10,12 @@ import android.os.Binder;
 import com.yixin.nfyh.cloud.bll.ConfigServer;
 import com.yixin.nfyh.cloud.receiver.PullMessageReceiver;
 
+/**
+ * 核心服务绑定。
+ * 
+ * @author ChenRui
+ * 
+ */
 public class CoreBinder extends Binder {
 	private int mCheckMessageTimeSpan = 3000; // 消息推送监听间隔
 	private int mCheckMessageId = 13800; // 消息通知id
@@ -33,6 +39,9 @@ public class CoreBinder extends Binder {
 		startPullMessage();
 	}
 
+	/**
+	 * 停止消息推送
+	 */
 	public void stopPullMessage() {
 		Intent intent = new Intent(mPullMessageAction);
 		PendingIntent operation = PendingIntent.getBroadcast(mContext,
@@ -40,7 +49,9 @@ public class CoreBinder extends Binder {
 		mAlarmManager.cancel(operation);
 	}
 
-	// 开启消息监听服务
+	/**
+	 * 开启消息监听服务
+	 */
 	public void startPullMessage() {
 
 		// 允许消息推送

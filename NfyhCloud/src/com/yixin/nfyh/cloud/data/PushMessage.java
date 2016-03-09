@@ -13,6 +13,12 @@ import com.yixin.nfyh.cloud.model.Messages;
 import com.yixin.nfyh.cloud.utils.ILog;
 import com.yixin.nfyh.cloud.utils.LogUtil;
 
+/**
+ * 保存到本地的消息提醒
+ * 
+ * @author ChenRui
+ * 
+ */
 public class PushMessage implements IPushMessage {
 
 	private Dao<Messages, String> mDbMessage;
@@ -65,7 +71,7 @@ public class PushMessage implements IPushMessage {
 			if (model == null) {
 				return;
 			}
-			
+
 			if (exist(model)) {
 				mDbMessage.update(model);
 			} else {

@@ -6,21 +6,26 @@ import java.util.Date;
 
 import android.annotation.SuppressLint;
 
+/**
+ * 通用日期处理
+ * 
+ * @author ChenRui
+ * 
+ */
 @SuppressLint("SimpleDateFormat")
-public class DateUtil
-{
+public class DateUtil {
 
-	public static final int	YEAR	= 0;
+	public static final int YEAR = 0;
 
-	public static final int	MONTH	= 1;
+	public static final int MONTH = 1;
 
-	public static final int	DAY		= 2;
+	public static final int DAY = 2;
 
-	public static final int	HOUR	= 3;
+	public static final int HOUR = 3;
 
-	public static final int	MINUTE	= 4;
+	public static final int MINUTE = 4;
 
-	public static final int	SECOND	= 5;
+	public static final int SECOND = 5;
 
 	/**
 	 * 获取当前时间
@@ -29,8 +34,7 @@ public class DateUtil
 	 *            格式化：yyyy-MM-dd
 	 * @return
 	 */
-	public static String getCurrentDateString(String format)
-	{
+	public static String getCurrentDateString(String format) {
 		Calendar calendar = getCalendar();
 		return getDateString(format, calendar);
 	}
@@ -42,8 +46,7 @@ public class DateUtil
 	 *            格式化：yyyy-MM-dd
 	 * @return
 	 */
-	public static String getDateString(String format, Calendar calendar)
-	{
+	public static String getDateString(String format, Calendar calendar) {
 		SimpleDateFormat dateformat = new SimpleDateFormat(format);
 		return dateformat.format(calendar.getTime());
 	}
@@ -53,8 +56,7 @@ public class DateUtil
 	 * 
 	 * @return 当前时间的日历对象
 	 */
-	public static Calendar getCalendar()
-	{
+	public static Calendar getCalendar() {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(System.currentTimeMillis());
 		return calendar;
@@ -65,8 +67,7 @@ public class DateUtil
 	 * 
 	 * @return
 	 */
-	public static int[] getCurrentDate()
-	{
+	public static int[] getCurrentDate() {
 		Calendar calendar = getCalendar();
 		return getCurrentDate(calendar);
 	}
@@ -78,8 +79,7 @@ public class DateUtil
 	 *            日历
 	 * @return
 	 */
-	public static int[] getCurrentDate(Calendar calendar)
-	{
+	public static int[] getCurrentDate(Calendar calendar) {
 		int[] result = new int[] { calendar.get(Calendar.YEAR),
 				calendar.get(Calendar.MONTH),
 				calendar.get(Calendar.DAY_OF_MONTH),
@@ -93,10 +93,8 @@ public class DateUtil
 	 * 
 	 * @return
 	 */
-	public static int[] getDateSpan(Date date)
-	{
-		try
-		{
+	public static int[] getDateSpan(Date date) {
+		try {
 			Calendar calendar = getCalendar(); // 目标时间
 			calendar.setTime(date);
 			long start = getCalendar().getTimeInMillis();
@@ -107,9 +105,7 @@ public class DateUtil
 			int minute = (int) between % 3600 / 60; // 分
 			int second = (int) between % 60 / 60; // 秒
 			return new int[] { day, hour, minute, second };
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			return null;
 		}
 	}
@@ -120,8 +116,7 @@ public class DateUtil
 	 * @param date
 	 * @return 2天30分20秒
 	 */
-	public static String getDateSpanString(Date date)
-	{
+	public static String getDateSpanString(Date date) {
 		Calendar calendar = getCalendar();
 		calendar.set(Calendar.DAY_OF_MONTH, 1);
 		calendar.roll(Calendar.DAY_OF_MONTH, -1);
@@ -133,25 +128,19 @@ public class DateUtil
 		if (dates[0] < 0)// 目标时间小于当前时间为过时时间
 		{
 			return "过时";
-		}
-		else if (dates[0] > lastMonth) // 大于30的变成月
+		} else if (dates[0] > lastMonth) // 大于30的变成月
 		{
 			sb.append((dates[0] / lastMonth) + "月");
-		}
-		else if (dates[0] != 0)
-		{
+		} else if (dates[0] != 0) {
 			sb.append(dates[0] + "天");
 		}
-		if (dates[1] != 0)
-		{
+		if (dates[1] != 0) {
 			sb.append(dates[1] + "时");
 		}
-		if (dates[2] != 0)
-		{
+		if (dates[2] != 0) {
 			sb.append(dates[2] + "分");
 		}
-		if (dates[3] != 0)
-		{
+		if (dates[3] != 0) {
 			sb.append(dates[3] + "秒");
 		}
 		return sb.toString();
@@ -164,8 +153,7 @@ public class DateUtil
 	 *            字符串
 	 * @return 不成功返回空
 	 */
-	public static Date parser(String str)
-	{
+	public static Date parser(String str) {
 		return parser("yyyy-MM-dd hh:mm:ss", str);
 	}
 
@@ -176,20 +164,15 @@ public class DateUtil
 	 *            字符串
 	 * @return 不成功返回空
 	 */
-	public static Date parser(String format, String str)
-	{
-		try
-		{
-			if (str == null || str.length() <= 0)
-			{
+	public static Date parser(String format, String str) {
+		try {
+			if (str == null || str.length() <= 0) {
 				return null;
 			}
 			SimpleDateFormat dateformat = new SimpleDateFormat(format);
 			Date date = dateformat.parse(str);
 			return date;
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -201,8 +184,7 @@ public class DateUtil
 	 * @param date
 	 * @return
 	 */
-	public static boolean isOutdate(Date date)
-	{
+	public static boolean isOutdate(Date date) {
 		Calendar calendar = getCalendar();
 		calendar.setTime(date);
 		Calendar curCalendar = getCalendar();

@@ -17,15 +17,22 @@ import android.os.StatFs;
 import android.text.format.Formatter;
 import android.view.WindowManager;
 
+/**
+ * 获取程序信息
+ * 
+ * @author ChenRui
+ * 
+ */
 public class AppInfo {
 
-	private Context			mContext;
+	private Context mContext;
 
-	private WindowManager	mManager	= null;
+	private WindowManager mManager = null;
 
 	public AppInfo(Context context) {
 		this.mContext = context;
-		mManager = (WindowManager) this.mContext.getSystemService(Context.WINDOW_SERVICE);
+		mManager = (WindowManager) this.mContext
+				.getSystemService(Context.WINDOW_SERVICE);
 	}
 
 	/**
@@ -88,7 +95,8 @@ public class AppInfo {
 	 * @return
 	 */
 	public String getSDCardSize() {
-		if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+		if (Environment.getExternalStorageState().equals(
+				Environment.MEDIA_MOUNTED)) {
 			File sdcard = Environment.getExternalStorageDirectory();
 			StatFs sf = new StatFs(sdcard.getPath());
 			int size = sf.getBlockSize(); // 每一块占用的空间
@@ -96,9 +104,9 @@ public class AppInfo {
 			long count = (long) sf.getBlockCount() * size;// 总空间
 			String sdcardSize = Formatter.formatFileSize(mContext, count); // 总大小
 			String sdcardAvail = Formatter.formatFileSize(mContext, avail);
-			return sdcardSize + "(可用：" + sdcardAvail + ",已用：" + Formatter.formatFileSize(mContext, count - avail) + ")";
-		}
-		else {
+			return sdcardSize + "(可用：" + sdcardAvail + ",已用："
+					+ Formatter.formatFileSize(mContext, count - avail) + ")";
+		} else {
 			return "null";
 		}
 	}
@@ -109,20 +117,21 @@ public class AppInfo {
 	 * @return
 	 */
 	public String getConnectState() {
-		ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager cm = (ConnectivityManager) mContext
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo netInfo = cm.getActiveNetworkInfo();
 		if (netInfo == null) {
 			return "没打开网络连接";
 		}
 		switch (netInfo.getType()) {
-			case ConnectivityManager.TYPE_WIFI:
-				return "WIFI";
-			case ConnectivityManager.TYPE_MOBILE:
-				return "移动";
-			case ConnectivityManager.TYPE_BLUETOOTH:
-				return "蓝牙";
-			default:
-				break;
+		case ConnectivityManager.TYPE_WIFI:
+			return "WIFI";
+		case ConnectivityManager.TYPE_MOBILE:
+			return "移动";
+		case ConnectivityManager.TYPE_BLUETOOTH:
+			return "蓝牙";
+		default:
+			break;
 		}
 		return netInfo.getTypeName();
 	}
@@ -142,7 +151,8 @@ public class AppInfo {
 	 * @return
 	 */
 	public String getAvailMemory() {
-		ActivityManager am = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
+		ActivityManager am = (ActivityManager) mContext
+				.getSystemService(Context.ACTIVITY_SERVICE);
 		MemoryInfo memory = new MemoryInfo();
 		am.getMemoryInfo(memory);
 		return Formatter.formatFileSize(mContext, memory.availMem); // 可用内存
@@ -160,13 +170,13 @@ public class AppInfo {
 		long initial_memory = 0;
 		try {
 			FileReader localFileReader = new FileReader(str1);
-			BufferedReader localBufferedReader = new BufferedReader(localFileReader, 8192);
+			BufferedReader localBufferedReader = new BufferedReader(
+					localFileReader, 8192);
 			str2 = localBufferedReader.readLine();// 读取meminfo第一行，系统总内存大小
 			arrayOfString = str2.split("\\s+");
 			initial_memory = Integer.valueOf(arrayOfString[1]).intValue() * 1024;// 获得系统总内存，单位是KB，乘以1024转换为Byte
 			localBufferedReader.close();
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 		}
 		return Formatter.formatFileSize(mContext, initial_memory);// Byte转换为KB或者MB，内存大小规格化
 	}
@@ -193,8 +203,7 @@ public class AppInfo {
 			arrayOfString = str2.split("\\s+");
 			cpuInfo[1] += arrayOfString[2];
 			localBufferedReader.close();
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 		}
 		return cpuInfo;
 	}
@@ -208,11 +217,11 @@ public class AppInfo {
 		String version = "0.0";
 		try {
 			PackageManager manager = this.mContext.getPackageManager();
-			PackageInfo info = manager.getPackageInfo(this.mContext.getPackageName(), 0);
+			PackageInfo info = manager.getPackageInfo(
+					this.mContext.getPackageName(), 0);
 			version = info.versionName;
 
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return version;
@@ -226,11 +235,11 @@ public class AppInfo {
 	public int getVersionCode() {
 		try {
 			PackageManager manager = this.mContext.getPackageManager();
-			PackageInfo info = manager.getPackageInfo(this.mContext.getPackageName(), 0);
+			PackageInfo info = manager.getPackageInfo(
+					this.mContext.getPackageName(), 0);
 			return info.versionCode;
 
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return 0;

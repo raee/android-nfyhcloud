@@ -12,23 +12,23 @@ import com.yixin.nfyh.cloud.i.IPushMessage;
 import com.yixin.nfyh.cloud.utils.LogUtil;
 
 /**
+ * 院后数据库工厂
+ * 
  * @author MrChenrui
  * 
  */
-public class NfyhCloudDataFactory extends DataFactory
-{
-	private static NfyhCloudDataFactory	instance	= null;
-	private DataQuery					query;
-	private ISignDevice					signQuery;
-	private IPhotoCategory				photocategory;
-	private Context						context;
+public class NfyhCloudDataFactory extends DataFactory {
+	private static NfyhCloudDataFactory instance = null;
+	private DataQuery query;
+	private ISignDevice signQuery;
+	private IPhotoCategory photocategory;
+	private Context context;
 
-	private NfyhCloudDataFactory(Context context) throws SQLException
-	{
+	private NfyhCloudDataFactory(Context context) throws SQLException {
 		this.context = context;
 		this.query = new DataQuery(context);
 		signQuery = new SignDataQuery(context);
-//		clock = new ClockImpl(context);
+		// clock = new ClockImpl(context);
 	}
 
 	/**
@@ -38,16 +38,12 @@ public class NfyhCloudDataFactory extends DataFactory
 	 * @return
 	 * @throws SQLException
 	 */
-	public static NfyhCloudDataFactory getFactory(Context context)
-	{
+	public static NfyhCloudDataFactory getFactory(Context context) {
 
-		try
-		{
+		try {
 			if (instance == null)
 				instance = new NfyhCloudDataFactory(context);
-		}
-		catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			LogUtil.getLog().setExcetion("NfyhCloudDataFactory", e);
 		}
 		return instance;
@@ -55,48 +51,44 @@ public class NfyhCloudDataFactory extends DataFactory
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see com.yixin.nfyh.cloud.data.DataFactory#getUser()
 	 */
 	@Override
-	public IUser getUser()
-	{
+	public IUser getUser() {
 		return query;
 	}
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see com.yixin.nfyh.cloud.data.DataFactory#getDict()
 	 */
 	@Override
-	public IDict getDict()
-	{
+	public IDict getDict() {
 		return query;
 	}
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see com.yixin.nfyh.cloud.data.DataFactory#getSignDevice()
 	 */
 	@Override
-	public ISignDevice getSignDevice()
-	{
+	public ISignDevice getSignDevice() {
 		return signQuery;
 	}
 
-	public IPhotoCategory getPhotocategory()
-	{
-		if (photocategory == null)
-		{
+	public IPhotoCategory getPhotocategory() {
+		if (photocategory == null) {
 			photocategory = new PhotocategoryImpl(context);
 		}
 
 		return photocategory;
 	}
 
-	public IPushMessage getPushMessage()
-	{
+	public IPushMessage getPushMessage() {
 		return new PushMessage(context);
 	}
-
 
 }

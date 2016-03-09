@@ -24,6 +24,12 @@ import com.yixin.nfyh.cloud.i.IPushMessage;
 import com.yixin.nfyh.cloud.model.Messages;
 import com.yixin.nfyh.cloud.model.view.MessageManager;
 
+/**
+ * 消息提醒界面
+ * 
+ * @author ChenRui
+ * 
+ */
 public class MessageActivity extends BaseActivity {
 	private IPushMessage mDbPushMessage;
 	private ListView mListView;
@@ -100,7 +106,7 @@ public class MessageActivity extends BaseActivity {
 									for (int i = 0; i < mDataList.size(); i++) {
 										Messages model = mDataList.get(i);
 										mDbPushMessage.delete(model); // 从数据库删除
-										//mDataList.remove(i);
+										// mDataList.remove(i);
 									}
 									mDataList.clear();
 									mAdapter.notifyDataSetChanged();

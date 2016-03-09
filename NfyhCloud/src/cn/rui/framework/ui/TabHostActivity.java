@@ -22,26 +22,23 @@ import com.yixin.nfyh.cloud.R;
  */
 @SuppressWarnings("deprecation")
 public abstract class TabHostActivity extends ActivityGroup implements
-		OnTabChangeListener
-{
-	public static final int	TAB_LOCATION_TOP	= 0;
-	public static final int	TAB_LOCATION_BOTTOM	= 1;
+		OnTabChangeListener {
+	public static final int TAB_LOCATION_TOP = 0;
+	public static final int TAB_LOCATION_BOTTOM = 1;
 
-	private TabHost			tabhost;
-	private TabWidget		tabwidget;
-	private int				curIndex			= 0;
-	private int				sIndex				= 0;
-	private float			startX;
-	private boolean			enableGesture		= false;
+	private TabHost tabhost;
+	private TabWidget tabwidget;
+	private int curIndex = 0;
+	private int sIndex = 0;
+	private float startX;
+	private boolean enableGesture = false;
 
-	public void setTabHostView(TabHost tab)
-	{
+	public void setTabHostView(TabHost tab) {
 		this.tabhost = tab;
 	}
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (tabhost != null)
 			return;
@@ -64,23 +61,28 @@ public abstract class TabHostActivity extends ActivityGroup implements
 	 * 
 	 * @param value
 	 */
-	public void enableGesture(boolean value)
-	{
+	public void enableGesture(boolean value) {
 		this.enableGesture = value;
 	}
 
-	public void addTabViews(TabView... tabViews)
-	{
-		for (TabView tabView : tabViews)
-		{
+	/**
+	 * 添加Tab页
+	 * 
+	 * @param tabViews
+	 */
+	public void addTabViews(TabView... tabViews) {
+		for (TabView tabView : tabViews) {
 			addTab(tabView);
 		}
 	}
 
-	private void addTab(TabView tabView)
-	{
-		try
-		{
+	/**
+	 * 添加一个Tab
+	 * 
+	 * @param tabView
+	 */
+	private void addTab(TabView tabView) {
+		try {
 			if (tabView == null)
 				return;
 			TabSpec tab = tabhost.newTabSpec(String.valueOf(tabwidget
@@ -94,9 +96,7 @@ public abstract class TabHostActivity extends ActivityGroup implements
 				tab.setContent(contentId);
 
 			tabhost.addTab(tab);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			Log.e("TabHostActivity", "添加选项卡失败：" + e.getMessage());
 			e.printStackTrace();
 		}
@@ -110,14 +110,12 @@ public abstract class TabHostActivity extends ActivityGroup implements
 	 * 
 	 * @return
 	 */
-	public TabHost getTabHost()
-	{
+	public TabHost getTabHost() {
 		return tabhost;
 	}
 
 	@Override
-	public void onTabChanged(String tabId)
-	{
+	public void onTabChanged(String tabId) {
 
 		int index = Integer.valueOf(tabId); // 点击的索引
 
@@ -128,8 +126,7 @@ public abstract class TabHostActivity extends ActivityGroup implements
 
 		// 保证不超过个数
 		if (curIndex != index && curIndex < tabwidget.getTabCount()
-				&& curIndex > -1)
-		{
+				&& curIndex > -1) {
 
 			// 恢复上一个
 			TabView lastView = (TabView) tabwidget.getChildAt(curIndex);
@@ -141,18 +138,15 @@ public abstract class TabHostActivity extends ActivityGroup implements
 	}
 
 	@Override
-	public boolean onTouchEvent(MotionEvent event)
-	{
+	public boolean onTouchEvent(MotionEvent event) {
 		if (enableGesture)
 			onTouch(event);
 		return super.onTouchEvent(event);
 	}
 
-	private void showPre()
-	{
+	private void showPre() {
 
-		if (sIndex <= 0)
-		{
+		if (sIndex <= 0) {
 			sIndex = 0;
 			return;
 		}
@@ -160,11 +154,9 @@ public abstract class TabHostActivity extends ActivityGroup implements
 		tabhost.setCurrentTab(sIndex);
 	}
 
-	private void showNext()
-	{
+	private void showNext() {
 		int count = tabwidget.getTabCount();
-		if (sIndex >= count)
-		{
+		if (sIndex >= count) {
 			sIndex = count;
 			return;
 		}
@@ -172,26 +164,24 @@ public abstract class TabHostActivity extends ActivityGroup implements
 		tabhost.setCurrentTab(sIndex);
 	}
 
-	public boolean onTouch(MotionEvent event)
-	{
+	public boolean onTouch(MotionEvent event) {
 
 		int action = event.getAction();
-		switch (action)
-		{
-			case MotionEvent.ACTION_DOWN:
-				this.startX = event.getRawX();
-				break;
-			case MotionEvent.ACTION_UP:
-				float x = event.getRawX();
-				if ((this.startX - x) > 120)
-					// 左移
-					showNext();
-				if ((x - this.startX) > 120)
-					// 右移
-					showPre();
-				break;
-			default:
-				break;
+		switch (action) {
+		case MotionEvent.ACTION_DOWN:
+			this.startX = event.getRawX();
+			break;
+		case MotionEvent.ACTION_UP:
+			float x = event.getRawX();
+			if ((this.startX - x) > 120)
+				// 左移
+				showNext();
+			if ((x - this.startX) > 120)
+				// 右移
+				showPre();
+			break;
+		default:
+			break;
 		}
 		return false;
 	}

@@ -40,7 +40,8 @@ public interface ISignDevice {
 	 *            用户ID
 	 * @return
 	 */
-	List<UserSigns> getUserSignByType(String uid, SignTypes types) throws SQLException;
+	List<UserSigns> getUserSignByType(String uid, SignTypes types)
+			throws SQLException;
 
 	/**
 	 * 获取最近的用户体征
@@ -50,7 +51,8 @@ public interface ISignDevice {
 	 * @return
 	 * @throws SQLException
 	 */
-	UserSigns getLastUserSignsByType(String uid, SignTypes types) throws SQLException;
+	UserSigns getLastUserSignsByType(String uid, SignTypes types)
+			throws SQLException;
 
 	/**
 	 * 获取所有的体征测量类型,已经分组的。
@@ -61,6 +63,7 @@ public interface ISignDevice {
 
 	/**
 	 * 获取所有的父类体征测量类型
+	 * 
 	 * @param filter
 	 *            过滤列表，只获取该列表的体征
 	 * 
@@ -158,6 +161,12 @@ public interface ISignDevice {
 	 */
 	int setCurrentDevices(String devid) throws SQLException;
 
+	/**
+	 * 获取所有设备
+	 * 
+	 * @return
+	 * @throws SQLException
+	 */
 	List<Devices> getDevices() throws SQLException;
 
 	/**
@@ -170,7 +179,8 @@ public interface ISignDevice {
 	 * @return
 	 * @throws SQLException
 	 */
-	List<SignRange> getUserSignRange(String typeId, String value) throws SQLException;
+	List<SignRange> getUserSignRange(String typeId, String value)
+			throws SQLException;
 
 	/**
 	 * 获取体征类型，根据类型名称

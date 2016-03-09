@@ -2,7 +2,7 @@
 <resources>
 
     <!-- 平台选择 ，对应下面的平台名称 -->
-    <string name="platfrom">柯尔迈平台</string>
+    <string name="platfrom">院后总平台</string>
 
     <!-- 院后总平台 -->
     <string name="company">广州南方宜信信息科技有限公司</string>

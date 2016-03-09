@@ -6,7 +6,12 @@ package com.yixin.nfyh.cloud.w;
  * @author MrChenrui
  * 
  */
-public interface IWebserverParser<T>
-{
+public interface IWebserverParser<T> {
+	/**
+	 * 解析
+	 * 
+	 * @param json
+	 * @return
+	 */
 	T parser(String json);
 }

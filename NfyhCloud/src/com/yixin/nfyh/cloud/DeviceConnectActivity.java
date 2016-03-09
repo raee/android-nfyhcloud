@@ -10,14 +10,20 @@ import android.util.Log;
 
 import com.yixin.nfyh.cloud.ui.DeviceMsgView;
 
+/**
+ * 设备连接展示界面
+ * 
+ * @author ChenRui
+ * 
+ */
 public class DeviceConnectActivity extends Activity {
 
-	public static final int EXTRA_SHOW = 0;
+	public static final int EXTRA_SHOW = 0; // 正常状态
 
-	public static final int EXTRA_SHOW_SUCCESS = 1;
+	public static final int EXTRA_SHOW_SUCCESS = 1; // 显示成功
 
-	public static final int EXTRA_SHOW_ERROR = 2;
-	public static final int EXTRA_DISMISS = -1;
+	public static final int EXTRA_SHOW_ERROR = 2; // 显示失败
+	public static final int EXTRA_DISMISS = -1; // 取消
 
 	public static final String EXTRA_NAME = "name";
 
@@ -49,6 +55,11 @@ public class DeviceConnectActivity extends Activity {
 		unregisterReceiver(mReceiver);
 	}
 
+	/**
+	 * 初始化
+	 * 
+	 * @param intent
+	 */
 	private void init(Intent intent) {
 		int type = intent.getIntExtra(EXTRA_NAME, EXTRA_SHOW);
 		String tips = intent.getStringExtra(INTENT_EXTRA_TIPS);
@@ -77,6 +88,12 @@ public class DeviceConnectActivity extends Activity {
 		init(intent);
 	}
 
+	/**
+	 * 取消连接广播接收
+	 * 
+	 * @author ChenRui
+	 * 
+	 */
 	class DismissBoradcastReceiver extends BroadcastReceiver {
 
 		@Override

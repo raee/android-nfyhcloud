@@ -10,15 +10,19 @@ import android.widget.PopupWindow;
 import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.model.view.DialogViewModel;
 
-public abstract class DialogPopupWindow extends PopupWindow
-{
+/**
+ * 弹出窗口
+ * 
+ * @author ChenRui
+ * 
+ */
+public abstract class DialogPopupWindow extends PopupWindow {
 
-	protected DialogPopupWindowListener	listener;
-	protected String[]					value;
+	protected DialogPopupWindowListener listener;
+	protected String[] value;
 
 	public DialogPopupWindow(Context context,
-			DialogPopupWindowListener listener, List<DialogViewModel> model)
-	{
+			DialogPopupWindowListener listener, List<DialogViewModel> model) {
 		super(context);
 		this.listener = listener;
 
@@ -40,11 +44,9 @@ public abstract class DialogPopupWindow extends PopupWindow
 	}
 
 	@Override
-	public void dismiss()
-	{
+	public void dismiss() {
 		// 通过校验
-		if (listener.getdialogValidate(value))
-		{
+		if (listener.getdialogValidate(value)) {
 			super.dismiss();
 			listener.onDialogCancle(this, value);
 		}

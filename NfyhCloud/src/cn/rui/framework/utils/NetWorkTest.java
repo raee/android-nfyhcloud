@@ -13,21 +13,25 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
-public class NetWorkTest
-{
-	public static final int		TYPE_NONE			= -1;
-	public static final int		TYPE_MOBILE			= 0;
-	public static final int		TYPE_WIFI			= 1;
-	public static final int		TYPE_MOBILE_CMNET	= 2;
-	public static final int		TYPE_MOBILE_CMWAP	= 3;
-	private Context				context				= null;
+/**
+ * 网络测试
+ * 
+ * @author ChenRui
+ * 
+ */
+public class NetWorkTest {
+	public static final int TYPE_NONE = -1;
+	public static final int TYPE_MOBILE = 0;
+	public static final int TYPE_WIFI = 1;
+	public static final int TYPE_MOBILE_CMNET = 2;
+	public static final int TYPE_MOBILE_CMWAP = 3;
+	private Context context = null;
 
-	private ConnectivityManager	net;
-	private WifiManager			mWifiManager;
-	private NetworkInfo			currentInfo;
+	private ConnectivityManager net;
+	private WifiManager mWifiManager;
+	private NetworkInfo currentInfo;
 
-	public NetWorkTest(Context context)
-	{
+	public NetWorkTest(Context context) {
 		this.context = context;
 		net = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -42,18 +46,15 @@ public class NetWorkTest
 	 * 
 	 * @return 参考NetWorkTest的常量值
 	 */
-	public int getActiveNetWorkType()
-	{
+	public int getActiveNetWorkType() {
 		int type = TYPE_NONE;
-		if (currentInfo == null)
-		{
+		if (currentInfo == null) {
 			return type;
 		}
 
 		type = currentInfo.getType();
 
-		if (type == ConnectivityManager.TYPE_MOBILE)
-		{
+		if (type == ConnectivityManager.TYPE_MOBILE) {
 			if (currentInfo.getExtraInfo().equals("cmwap"))
 				type = TYPE_MOBILE_CMWAP;
 			else
@@ -68,8 +69,7 @@ public class NetWorkTest
 	 * 
 	 * @return
 	 */
-	public boolean isWIFI()
-	{
+	public boolean isWIFI() {
 		return getActiveNetWorkType() == ConnectivityManager.TYPE_WIFI;
 	}
 
@@ -78,8 +78,7 @@ public class NetWorkTest
 	 * 
 	 * @return
 	 */
-	public boolean is3G()
-	{
+	public boolean is3G() {
 		return getActiveNetWorkType() == ConnectivityManager.TYPE_MOBILE;
 	}
 
@@ -88,16 +87,13 @@ public class NetWorkTest
 	 * 
 	 * @return
 	 */
-	public boolean isConnected()
-	{
+	public boolean isConnected() {
 		if (net == null)
 			return false;
 
-		for (NetworkInfo info : net.getAllNetworkInfo())
-		{
+		for (NetworkInfo info : net.getAllNetworkInfo()) {
 			if (info.getState() == NetworkInfo.State.CONNECTED
-					&& info.isAvailable())
-			{
+					&& info.isAvailable()) {
 				return true;
 			}
 		}
@@ -109,10 +105,8 @@ public class NetWorkTest
 	 * 
 	 * @return
 	 */
-	public boolean isAvailable()
-	{
-		if (isConnected())
-		{
+	public boolean isAvailable() {
+		if (isConnected()) {
 			return true;
 			// // 请求一个网络
 			// HttpUtil http = new HttpUtil("http://www.baidu.com");
@@ -139,9 +133,7 @@ public class NetWorkTest
 			// }
 
 			// return available;
-		}
-		else
-		{
+		} else {
 			return false;
 		}
 	}
@@ -149,28 +141,23 @@ public class NetWorkTest
 	/**
 	 * 打开网络异常提示，并跳转置设置页面
 	 */
-	public void openNetWorkErrorDialog()
-	{
+	public void openNetWorkErrorDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
 		builder.setIcon(android.R.drawable.ic_dialog_alert);
 		builder.setTitle("网络异常！");
 		builder.setMessage("当前网络不可用，是否设置网络连接？");
-		builder.setPositiveButton("设置", new DialogInterface.OnClickListener()
-		{
+		builder.setPositiveButton("设置", new DialogInterface.OnClickListener() {
 
 			@Override
-			public void onClick(DialogInterface dialog, int which)
-			{
+			public void onClick(DialogInterface dialog, int which) {
 				context.startActivity(new Intent(
 						android.provider.Settings.ACTION_WIFI_SETTINGS));
 			}
 		});
-		builder.setNegativeButton("取消", new DialogInterface.OnClickListener()
-		{
+		builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
 
 			@Override
-			public void onClick(DialogInterface dialog, int which)
-			{
+			public void onClick(DialogInterface dialog, int which) {
 				dialog.cancel();
 			}
 		});
@@ -181,17 +168,12 @@ public class NetWorkTest
 	/**
 	 * 打开，或关闭Wifi
 	 */
-	public void openWIFI(boolean value)
-	{
-		try
-		{
-			if (!this.mWifiManager.isWifiEnabled())
-			{
+	public void openWIFI(boolean value) {
+		try {
+			if (!this.mWifiManager.isWifiEnabled()) {
 				this.mWifiManager.setWifiEnabled(value);
 			}
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			Log.e("cr", "打开wifi失败！");
 			e.printStackTrace();
 		}
@@ -202,15 +184,13 @@ public class NetWorkTest
 	 * 
 	 * @param value
 	 */
-	public void open3G(boolean value)
-	{
+	public void open3G(boolean value) {
 		Class<?> conMgrClass = null; // ConnectivityManager类
 		Field iConMgrField = null; // ConnectivityManager类中的字段
 		Object iConMgr = null; // IConnectivityManager类的引用
 		Class<?> iConMgrClass = null; // IConnectivityManager类
 		Method setMobileDataEnabledMethod = null; // setMobileDataEnabled方法
-		try
-		{
+		try {
 			// 取得ConnectivityManager类
 			conMgrClass = Class.forName(net.getClass().getName());
 			// 取得ConnectivityManager类中的对象mService
@@ -228,37 +208,21 @@ public class NetWorkTest
 			setMobileDataEnabledMethod.setAccessible(true);
 			// 调用setMobileDataEnabled方法
 			setMobileDataEnabledMethod.invoke(iConMgr, value);
-		}
-		catch (ClassNotFoundException e)
-		{
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-		}
-		catch (NoSuchFieldException e)
-		{
+		} catch (NoSuchFieldException e) {
 			e.printStackTrace();
-		}
-		catch (SecurityException e)
-		{
+		} catch (SecurityException e) {
 			e.printStackTrace();
-		}
-		catch (NoSuchMethodException e)
-		{
+		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
-		}
-		catch (IllegalArgumentException e)
-		{
+		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
-		}
-		catch (IllegalAccessException e)
-		{
+		} catch (IllegalAccessException e) {
 			e.printStackTrace();
-		}
-		catch (InvocationTargetException e)
-		{
+		} catch (InvocationTargetException e) {
 			e.printStackTrace();
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -266,24 +230,18 @@ public class NetWorkTest
 	/**
 	 * 关闭WIFI
 	 */
-	public void closeWIFI()
-	{
-		try
-		{
-			if (!this.mWifiManager.isWifiEnabled())
-			{
+	public void closeWIFI() {
+		try {
+			if (!this.mWifiManager.isWifiEnabled()) {
 				this.mWifiManager.setWifiEnabled(false);
 			}
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			Log.e("cr", "打开wifi失败！");
 			e.printStackTrace();
 		}
 	}
 
-	void show(Object msg)
-	{
+	void show(Object msg) {
 		Log.i("nettest", msg.toString());
 	}
 

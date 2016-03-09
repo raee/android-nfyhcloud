@@ -25,6 +25,12 @@ import com.yixin.nfyh.cloud.DeviceConnectActivity;
 import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.activity.SignDetailActivity;
 
+/**
+ * 蓝牙数据体征回调监听实现。
+ * 
+ * @author ChenRui
+ * 
+ */
 public class DeviceReceiverListener implements BluetoothListener {
 
 	private static MediaPlayer Player;

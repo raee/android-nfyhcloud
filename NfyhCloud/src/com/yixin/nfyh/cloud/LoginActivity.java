@@ -30,21 +30,22 @@ import com.yixin.nfyh.cloud.utils.LogUtil;
  * @author MrChenrui
  * 
  */
-public class LoginActivity extends Activity implements IInputValidate, ILoginCallback, OnClickListener, OnEditorActionListener {
+public class LoginActivity extends Activity implements IInputValidate,
+		ILoginCallback, OnClickListener, OnEditorActionListener {
 
-	private EditText		etUserName, etPwd;
+	private EditText etUserName, etPwd;
 
-	private Button			btnLogin;
+	private Button btnLogin;
 
 	// private TimerProgressDialog dialog;
 
-	private Account			account;
+	private Account account;
 
-	private GlobalSetting	setting;
+	private GlobalSetting setting;
 
-	private Button			btnLoginOffline;
+	private Button btnLoginOffline;
 
-	private ImageButton		btnLoginQQ;
+	private ImageButton btnLoginQQ;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,18 +59,18 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 			loadSave();
 
 			// 退出登录，返回到登录界面
-			if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().containsKey(Intent.EXTRA_TEXT)) {
+			if (getIntent() != null && getIntent().getExtras() != null
+					&& getIntent().getExtras().containsKey(Intent.EXTRA_TEXT)) {
 				return;
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			LogUtil.getLog().setExcetion("LoginActivity", e);
 			gotoMainActivity();
 		}
 
-		//		if (Config.isDebug) {
-		//			this.btnLogin.performClick();
-		//		}
+		// if (Config.isDebug) {
+		// this.btnLogin.performClick();
+		// }
 	}
 
 	protected void findView() {
@@ -102,20 +103,19 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 
 		if (!TextUtils.isEmpty(username)) {
 			this.etUserName.setText(username);
-		}
-		else {
+		} else {
 			etUserName.setText("test");
 		}
 		if (!TextUtils.isEmpty(pwd)) {
 			this.etPwd.setText(pwd);
-		}
-		else {
+		} else {
 			etPwd.setText("123");
 		}
 	}
 
 	public GlobalSetting getSetting() {
-		if (setting == null) setting = new GlobalSetting(this);
+		if (setting == null)
+			setting = new GlobalSetting(this);
 		return setting;
 	}
 
@@ -132,17 +132,17 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-			case R.id.btn_login:
-				login();
-				break;
-			case R.id.btn_login_offline:
-				loginInLocal();
-				break;
-			case R.id.btn_login_qq:
-				loginByQQ();
-				break;
-			default:
-				break;
+		case R.id.btn_login:
+			login();
+			break;
+		case R.id.btn_login_offline:
+			loginInLocal();
+			break;
+		case R.id.btn_login_qq:
+			loginByQQ();
+			break;
+		default:
+			break;
 		}
 	}
 
@@ -151,6 +151,9 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 		account.loginByQQ();
 	}
 
+	/**
+	 * 登录
+	 */
 	private void login() {
 		if (!btnLogin.isEnabled()) {
 			return;
@@ -184,7 +187,8 @@ public class LoginActivity extends Activity implements IInputValidate, ILoginCal
 	 */
 	private boolean loginInLocal() {
 		account.loginInLocal("guest", "guest");
-		TimerToast toast = TimerToast.makeText(this, "离线登录成功！", Toast.LENGTH_SHORT);
+		TimerToast toast = TimerToast.makeText(this, "离线登录成功！",
+				Toast.LENGTH_SHORT);
 		toast.setType(TimerToast.TYPE_SUCCESS);
 		toast.show();
 		gotoMainActivity();

@@ -9,11 +9,17 @@ import android.widget.TextView;
 import com.yixin.nfyh.cloud.bll.Account;
 import com.yixin.nfyh.cloud.bll.ILoginCallback;
 
+/**
+ * 绑定QQ
+ * 
+ * @author ChenRui
+ * 
+ */
 public class QQBindActivity extends BaseActivity implements ILoginCallback {
-	private String		openId;
-	private TextView	mPassword;
-	private TextView	mUserNameTextView;
-	private Account		mAccount;
+	private String openId;
+	private TextView mPassword;
+	private TextView mUserNameTextView;
+	private Account mAccount;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

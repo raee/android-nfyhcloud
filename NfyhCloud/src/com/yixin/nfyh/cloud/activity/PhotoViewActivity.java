@@ -36,13 +36,13 @@ import com.yixin.nfyh.cloud.w.WebServerException;
  */
 public class PhotoViewActivity extends BaseActivity implements
 		OnItemClickListener {
-	private PhotoCategoryControl	mControl;
-	private PhotoGridView			mGridView;
-	private Photocategory			mCurrentCategory;
+	private PhotoCategoryControl mControl;
+	private PhotoGridView mGridView;
+	private Photocategory mCurrentCategory;
 
-	private String[]				mImageUrls;
-	private EmpteyView				emptView;
-	private CameraUtils				utils;
+	private String[] mImageUrls;
+	private EmpteyView emptView;
+	private CameraUtils utils;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +82,9 @@ public class PhotoViewActivity extends BaseActivity implements
 		ImageLoader.getInstance().resume();
 	}
 
+	/**
+	 * 加载照片
+	 */
 	private void loadPhotos() {
 		// 获取照片列表
 		mControl.getPhotos(mCurrentCategory.getPid(),
@@ -137,7 +140,8 @@ public class PhotoViewActivity extends BaseActivity implements
 			String categoryid = getIntent().getStringExtra(Intent.EXTRA_TEXT);
 			mControl = new PhotoCategoryControl(this);
 			mCurrentCategory = mControl.getCategory(categoryid);
-			if (mCurrentCategory != null) return mCurrentCategory.getName();
+			if (mCurrentCategory != null)
+				return mCurrentCategory.getName();
 		}
 
 		return "查看照片";
@@ -155,24 +159,29 @@ public class PhotoViewActivity extends BaseActivity implements
 	@Override
 	public void onClick(View v) {
 		Intent intent = new Intent();
-		switch ( v.getId() ) {
-			case R.id.btn_photo_graph: // 拍照
-				utils.takePhoto();
-				break;
-			case R.id.btn_photo_from_phone: // 媒体库
-				intent.setClass(this, PhotoSelectorActivity.class);
-				intent.putExtra("type", this.mCurrentCategory.getPid());
-				startActivity(intent);
-				break;
+		switch (v.getId()) {
+		case R.id.btn_photo_graph: // 拍照
+			utils.takePhoto();
+			break;
+		case R.id.btn_photo_from_phone: // 媒体库
+			intent.setClass(this, PhotoSelectorActivity.class);
+			intent.putExtra("type", this.mCurrentCategory.getPid());
+			startActivity(intent);
+			break;
 		}
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		utils.onTakePhotoActivityResult(requestCode, resultCode, data);
+		utils.onTakePhotoActivityResult(requestCode, resultCode, data); // 照相机拍照后回调
 	}
 
+	/**
+	 * 显示空视图
+	 * 
+	 * @param msg
+	 */
 	private void showEmptyView(String msg) {
 		if (emptView == null) {
 			ViewGroup view = (ViewGroup) ((Activity) this)
@@ -187,6 +196,9 @@ public class PhotoViewActivity extends BaseActivity implements
 				R.anim.fade_in));
 	}
 
+	/**
+	 * 隐藏空试图
+	 */
 	private void hideEmptyView() {
 		if (emptView != null) {
 			emptView.setVisibility(View.GONE);

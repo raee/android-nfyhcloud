@@ -34,6 +34,12 @@ import com.yixin.nfyh.cloud.ui.ActionbarUtil;
 import com.yixin.nfyh.cloud.ui.InputSignView;
 import com.yixin.nfyh.cloud.ui.TopMsgView;
 
+/**
+ * 【重要】体征详情界面
+ * 
+ * @author ChenRui
+ * 
+ */
 public class SignDetailActivity extends BaseActivity implements
 		SignCoreListener {
 	private boolean keyDownResult = false;
@@ -92,7 +98,7 @@ public class SignDetailActivity extends BaseActivity implements
 		mInputSignView = (InputSignView) findViewById(R.id.sign_view);
 		mUploadButton = mInputSignView.findViewById(R.id.btn_sign_upload);
 		mUploadButton.setOnClickListener(this);
-		initSign();
+		initSign(); // 初始化体征
 
 		if ("device".equals(getIntent().getStringExtra("from"))) {
 			boolean isAutoUpload = mConfig
@@ -167,6 +173,9 @@ public class SignDetailActivity extends BaseActivity implements
 		upload();
 	}
 
+	/**
+	 * 上传体征
+	 */
 	private void upload() {
 		if (mSignCore.isSyncing()) {
 			showMsg("数据正在同步,请稍后...");
@@ -213,6 +222,11 @@ public class SignDetailActivity extends BaseActivity implements
 
 	}
 
+	/**
+	 * 显示上传成功
+	 * 
+	 * @param msg
+	 */
 	private void showUploadSuccess(String msg) {
 		Intent intent = new Intent(SignDetailActivity.this,
 				DeviceConnectActivity.class);

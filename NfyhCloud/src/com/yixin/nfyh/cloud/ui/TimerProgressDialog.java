@@ -11,32 +11,41 @@ import android.widget.TextView;
 
 import com.yixin.nfyh.cloud.R;
 
-public class TimerProgressDialog extends ProgressDialog
-{
+/**
+ * 进度框
+ * 
+ * @author ChenRui
+ * 
+ */
+public class TimerProgressDialog extends ProgressDialog {
 
-	private View			view;
-	private TextView		tvMsg;
-	private Context			context;
+	private View view;
+	private TextView tvMsg;
+	private Context context;
 
-	private CharSequence	textMsg;
+	private CharSequence textMsg;
 
-	public static TimerProgressDialog show(Context context, String message)
-	{
+	/**
+	 * 显示进度框
+	 * 
+	 * @param context
+	 * @param message
+	 * @return
+	 */
+	public static TimerProgressDialog show(Context context, String message) {
 		TimerProgressDialog dialog = new TimerProgressDialog(context);
 		dialog.setMessage(message);
 		dialog.show();
 		return dialog;
 	}
 
-	public TimerProgressDialog(Context context)
-	{
+	public TimerProgressDialog(Context context) {
 		super(context);
 		this.context = context;
 	}
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		view = LayoutInflater.from(context).inflate(
 				R.layout.ui_timer_progressdialog, null);
 		tvMsg = (TextView) view.findViewById(R.id.toast_msg);
@@ -52,8 +61,7 @@ public class TimerProgressDialog extends ProgressDialog
 	}
 
 	@Override
-	public void setMessage(CharSequence message)
-	{
+	public void setMessage(CharSequence message) {
 		textMsg = message;
 	}
 

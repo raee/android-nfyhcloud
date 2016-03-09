@@ -17,6 +17,12 @@ import com.yixin.nfyh.cloud.NfyhApplication;
 import com.yixin.nfyh.cloud.R;
 import com.yixin.nfyh.cloud.device.DeviceConnectView;
 
+/**
+ * 设备连接消息展示界面
+ * 
+ * @author ChenRui
+ * 
+ */
 public class DeviceMsgView extends LinearLayout implements DeviceConnectView,
 		View.OnClickListener {
 
@@ -184,7 +190,7 @@ public class DeviceMsgView extends LinearLayout implements DeviceConnectView,
 			dismiss();
 			break;
 		default:
-			Log.i("rae", "连接按钮文字："+mConncetButton.getText().toString());
+			Log.i("rae", "连接按钮文字：" + mConncetButton.getText().toString());
 			if (mConncetButton.getText().toString().equals("断开连接")) {
 				((NfyhApplication) getContext().getApplicationContext())
 						.disconnect();

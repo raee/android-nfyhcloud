@@ -35,30 +35,37 @@ import com.yixin.nfyh.cloud.model.Users;
 import com.yixin.nfyh.cloud.service.SoapService;
 import com.yixin.nfyh.cloud.ui.TimerToast;
 
+/**
+ * 急救流程
+ * 
+ * @author ChenRui
+ * 
+ */
 public class SOSFlower implements IToast {
 
-	public static String		DEFAULT_SOS_NUMBER	= "15918716307";	// 默认拨打的电话号码
+	public static String DEFAULT_SOS_NUMBER = "15918716307"; // 默认拨打的电话号码
 
-	private IFlowerResult		callback;
+	private IFlowerResult callback;
 
-	private Context				context;
+	private Context context;
 
-	private NetWorkTest			net;
+	private NetWorkTest net;
 
-	private static MediaPlayer	player;
+	private static MediaPlayer player;
 
-	public boolean				isStoped;
+	public boolean isStoped;
 
-	private Caller				caller;
+	private Caller caller;
 
-	private ConfigServer		config;
+	private ConfigServer config;
 
-	private Users				user;
+	private Users user;
 
 	public SOSFlower(Context context, IFlowerResult l) {
 		this.context = context;
 		this.callback = l;
-		this.user = ((NfyhApplication) context.getApplicationContext()).getCurrentUser();
+		this.user = ((NfyhApplication) context.getApplicationContext())
+				.getCurrentUser();
 		config = new ConfigServer(context);
 		this.net = new NetWorkTest(context);
 
@@ -92,18 +99,19 @@ public class SOSFlower implements IToast {
 	 */
 	public class SOSLocationFlower implements IFower, IBaiduLocationResult {
 
-		private BaiduLocation	baiduLocation;
+		private BaiduLocation baiduLocation;
 
-		private Bundle			result;
+		private Bundle result;
 
-		private String			jwd, address;
+		private String jwd, address;
 
 		public Bundle getData() {
 			return result;
 		}
 
 		public SOSLocationFlower(BaiduMap map) {
-			baiduLocation = new BaiduLocation(context.getApplicationContext(), this);
+			baiduLocation = new BaiduLocation(context.getApplicationContext(),
+					this);
 			baiduLocation.setFromBaiduMap(map);
 			this.baiduLocation.start();
 			result = new Bundle();
@@ -126,14 +134,16 @@ public class SOSFlower implements IToast {
 				callback.onLocation(IFlowerResult.FLOW_STATUS_SUCCESS, result);
 				return;
 			}
-			if (!this.baiduLocation.mLocationClient.isStarted()) this.baiduLocation.start();
+			if (!this.baiduLocation.mLocationClient.isStarted())
+				this.baiduLocation.start();
 		}
 
 		@Override
 		public void onReceiveLocationSuccess(BDLocation location) {
 			baiduLocation.stop();
 			// 已经获取到位置
-			if (jwd != null) return;
+			if (jwd != null)
+				return;
 			jwd = location.getLatitude() + "," + location.getLongitude();
 			address = location.getAddrStr();
 			result.putString("address", address);
@@ -144,7 +154,8 @@ public class SOSFlower implements IToast {
 		@Override
 		public void onReceiveLocationFaild(int code, String msg) {
 			baiduLocation.stop();
-			if (jwd != null) return;
+			if (jwd != null)
+				return;
 			this.jwd = "null";
 			result.putString(IFlowerResult.EXTRA_DATA, msg);
 			callback.onLocation(IFlowerResult.FLOW_STATUS_ERROR, result);
@@ -159,11 +170,11 @@ public class SOSFlower implements IToast {
 	 */
 	public class SOSSelectEventFlower implements IFower {
 
-		private String	eventName;
+		private String eventName;
 
-		private Bundle	result;
+		private Bundle result;
 
-		List<String>	datas;
+		List<String> datas;
 
 		@Override
 		public void start(Bundle data) {
@@ -211,13 +222,13 @@ public class SOSFlower implements IToast {
 	 */
 	public class SOSSendSOSToServerFlower implements IFower {
 
-		private GlobalSetting	setting;
+		private GlobalSetting setting;
 
-		private Bundle			result;
+		private Bundle result;
 
-		private SoapService		soap;
+		private SoapService soap;
 
-		private int				tryTime	= 0;
+		private int tryTime = 0;
 
 		@Override
 		public void start(Bundle data) {
@@ -235,14 +246,16 @@ public class SOSFlower implements IToast {
 			send(jwd, eventName, address);
 		}
 
-		private void send(final String jwd, final String eventName, final String address) {
+		private void send(final String jwd, final String eventName,
+				final String address) {
 			tryTime++;
 			Map<String, Object> datas = new HashMap<String, Object>();
 			datas.put("cookie", setting.getUser().getCookie());
 			datas.put("message", eventName);
 			datas.put("jwd", jwd);
 			datas.put("address", address);
-			datas.put("senddate", DateUtil.getCurrentDateString("yyyy-MM-dd hh:mm:ss"));
+			datas.put("senddate",
+					DateUtil.getCurrentDateString("yyyy-MM-dd hh:mm:ss"));
 			// 网络不可用
 			if (!net.isAvailable()) {
 				// player.play(R.raw.sos002).start();
@@ -257,15 +270,20 @@ public class SOSFlower implements IToast {
 
 				@Override
 				public void onSoapResponse(Object response) {
-					TimerToast.makeText(context, "位置上传成功！", Toast.LENGTH_SHORT).show();
-					result.putString(IFlowerResult.EXTRA_DATA, response.toString());
-					callback.onSendToserver(IFlowerResult.FLOW_STATUS_SUCCESS, result);
+					TimerToast.makeText(context, "位置上传成功！", Toast.LENGTH_SHORT)
+							.show();
+					result.putString(IFlowerResult.EXTRA_DATA,
+							response.toString());
+					callback.onSendToserver(IFlowerResult.FLOW_STATUS_SUCCESS,
+							result);
 				}
 
 				@Override
 				public void onSoapError(int code, String msg) {
-					TimerToast.makeText(context, "位置上传失败！", Toast.LENGTH_SHORT).show();
-					callback.onSendToserver(IFlowerResult.FLOW_STATUS_ERROR, result);
+					TimerToast.makeText(context, "位置上传失败！", Toast.LENGTH_SHORT)
+							.show();
+					callback.onSendToserver(IFlowerResult.FLOW_STATUS_ERROR,
+							result);
 					// tts.begin("位置上传失败，这可能导致客服人员无法找到您的地址，我们正在尝试为您打开网络。");
 					if (tryTime < 3) {
 						// 最多尝试３次
@@ -287,14 +305,14 @@ public class SOSFlower implements IToast {
 	 */
 	public class SOSCallPhoneFlower implements IFower {
 
-		private Bundle			result;
+		private Bundle result;
 
-		private int				curCallIndex		= 0;
+		private int curCallIndex = 0;
 
-		private List<String>	watingCallPhoneList;
+		private List<String> watingCallPhoneList;
 
-		private PhoneListener	phoneListener;
-		private boolean			isApplicationCall	= false;	// 是否为应用程序发出的急救
+		private PhoneListener phoneListener;
+		private boolean isApplicationCall = false; // 是否为应用程序发出的急救
 
 		public SOSCallPhoneFlower() {
 			phoneListener = new PhoneListener();
@@ -306,8 +324,7 @@ public class SOSFlower implements IToast {
 		public void start(Bundle data) {
 			if (data == null) {
 				result = new Bundle();
-			}
-			else {
+			} else {
 				result = data;
 			}
 
@@ -320,6 +337,9 @@ public class SOSFlower implements IToast {
 		public void sendMsg() {
 		}
 
+		/**
+		 * 拨打电话
+		 */
 		public void call() {
 			// 是否为程序发出的急救，Bug：普通拨打电话也会发生。
 			if (!isApplicationCall) {
@@ -348,7 +368,9 @@ public class SOSFlower implements IToast {
 					String address = result.getString("address");
 					String userName = user == null ? "无名氏" : user.getName();
 					String event = result.getString(IFlowerResult.EXTRA_DATA);
-					String msg = String.format("【%s】发出紧急信息！他可能发生以下情况：%s\n位置：【%s】", userName, event, address);
+					String msg = String.format(
+							"【%s】发出紧急信息！他可能发生以下情况：%s\n位置：【%s】", userName,
+							event, address);
 					CommonUtil.sendSms(context, num, msg);
 					Log.i("msg", "发送短信：" + msg);
 				}
@@ -369,9 +391,9 @@ public class SOSFlower implements IToast {
 					}
 				}, 3000);
 				result.putString("number", num);
-				callback.onCallingPhone(IFlowerResult.FLOW_STATUS_SUCCESS, result);
-			}
-			catch (Exception e) {
+				callback.onCallingPhone(IFlowerResult.FLOW_STATUS_SUCCESS,
+						result);
+			} catch (Exception e) {
 				e.printStackTrace();
 				callback.onCallingPhone(IFlowerResult.FLOW_STATUS_ERROR, result);
 			}
@@ -403,8 +425,14 @@ public class SOSFlower implements IToast {
 			isApplicationCall = false;
 		}
 
+		/**
+		 * 获取急救定义好的电话号码
+		 * 
+		 * @return
+		 */
 		protected List<String> getSosPhoneNumber() {
-			List<String> result = config.getListConfigs(ConfigServer.KEY_DESKTOP_PHONE_LIST);
+			List<String> result = config
+					.getListConfigs(ConfigServer.KEY_DESKTOP_PHONE_LIST);
 			if (result == null || result.size() <= 0) {
 				result = new ArrayList<String>();
 			}
@@ -425,7 +453,7 @@ public class SOSFlower implements IToast {
 		 */
 		private class PhoneListener extends PhoneStateListener {
 
-			private int	lastState	= 0;
+			private int lastState = 0;
 
 			@Override
 			public void onCallStateChanged(int state, String incomingNumber) {

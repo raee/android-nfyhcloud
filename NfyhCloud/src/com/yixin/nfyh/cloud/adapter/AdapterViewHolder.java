@@ -1,6 +1,11 @@
 package com.yixin.nfyh.cloud.adapter;
 
-public abstract class AdapterViewHolder
-{
-	
+/**
+ * 空的类，不要删除
+ * 
+ * @author ChenRui
+ * 
+ */
+public abstract class AdapterViewHolder {
+
 }

@@ -22,12 +22,18 @@ import com.yixin.nfyh.cloud.bll.PhotoCategoryControl;
 import com.yixin.nfyh.cloud.bll.PhotoCategoryControl.PhotoCategoryListener;
 import com.yixin.nfyh.cloud.model.Photocategory;
 
+/**
+ * 院后照片
+ * 
+ * @author ChenRui
+ * 
+ */
 public class PhotoActivity extends BaseActivity implements OnItemClickListener,
 		PhotoCategoryListener {
 	// private String filePath;
-	private ListView				lvCategories;
-	private PhotocategoryAdapter	adapter;
-	private PhotoCategoryControl	mContorller;
+	private ListView lvCategories;
+	private PhotocategoryAdapter adapter;
+	private PhotoCategoryControl mContorller;
 
 	// private String mCurrentCategory = "0"; //当前分类Id
 	// private String mLastCategory = "0"; // 上一级分类Id
@@ -43,7 +49,7 @@ public class PhotoActivity extends BaseActivity implements OnItemClickListener,
 
 	@Override
 	public void onClick(View v) {
-		switch ( v.getId() ) {
+		switch (v.getId()) {
 		// case R.id.btn_photo_graph:
 		// NfyhApplication app = (NfyhApplication) getApplication();
 		// try
@@ -61,12 +67,12 @@ public class PhotoActivity extends BaseActivity implements OnItemClickListener,
 		//
 		// // startActivity(new Intent(this, PhotoAlbumActivity.class));
 		// break;
-			case R.id.btn_photo_add_category:
-				startActivityForResult(new Intent(this,
-						AddCategoryActivity.class), 0);
-				break;
-			default:
-				break;
+		case R.id.btn_photo_add_category:
+			startActivityForResult(new Intent(this, AddCategoryActivity.class),
+					0);
+			break;
+		default:
+			break;
 		}
 	}
 
@@ -134,20 +140,20 @@ public class PhotoActivity extends BaseActivity implements OnItemClickListener,
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch ( item.getItemId() ) {
-			case android.R.id.home:
-				dismissProgressDialog();
-				if (this.getActionBar().getTitle().equals("院后照片")) {
-					this.finish();
-				} else {
-					loadParent();
-				}
-				break;
-			case R.id.menu_refresh: // 刷新
-				mContorller.refreshCategory();
-				break;
-			default:
-				break;
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			dismissProgressDialog();
+			if (this.getActionBar().getTitle().equals("院后照片")) {
+				this.finish();
+			} else {
+				loadParent();
+			}
+			break;
+		case R.id.menu_refresh: // 刷新
+			mContorller.refreshCategory();
+			break;
+		default:
+			break;
 		}
 		return false;
 	}
@@ -159,7 +165,8 @@ public class PhotoActivity extends BaseActivity implements OnItemClickListener,
 	 */
 	private boolean loadParent() {
 		Object obj = lvCategories.getTag();
-		if (obj == null) return false;
+		if (obj == null)
+			return false;
 
 		String parentId = obj.toString(); // 上一级的分类
 		this.getCategories(parentId); // 加载上一级分类
@@ -186,6 +193,11 @@ public class PhotoActivity extends BaseActivity implements OnItemClickListener,
 		setTitle(model.getName());
 	}
 
+	/**
+	 * 加载上一级分类
+	 * 
+	 * @param categoryId
+	 */
 	private void getCategories(String categoryId) {
 		showProgressDialog();
 		this.mContorller.getCategories(adapter, categoryId); // 加载上一级分类

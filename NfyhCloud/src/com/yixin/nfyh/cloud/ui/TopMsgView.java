@@ -25,30 +25,33 @@ import com.yixin.nfyh.cloud.R;
  * 
  */
 public class TopMsgView extends LinearLayout implements View.OnClickListener {
-	
-	private ImageView	imgIcon;
-	private TextView	tvMsg;
-	private boolean		mKeepShow	= false;	// 保存显示，不自动消失
-												
-	//	private View		contentView;
-	
+
+	private ImageView imgIcon;
+	private TextView tvMsg;
+	private boolean mKeepShow = false; // 保存显示，不自动消失
+
+	// private View contentView;
+
 	public TopMsgView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		View view = LayoutInflater.from(context).inflate(R.layout.view_msg, this);
+		View view = LayoutInflater.from(context).inflate(R.layout.view_msg,
+				this);
 		this.tvMsg = (TextView) this.findViewById(R.id.tv_msg);
 		this.imgIcon = (ImageView) this.findViewById(R.id.img_msg_icon);
 		this.setBackgroundResource(R.drawable.actionbar_bg_green);
 		new Timer().schedule(new TimerTask() {
-			
+
 			@Override
 			public void run() {
-				if (mKeepShow) { return; }
+				if (mKeepShow) {
+					return;
+				}
 				Message.obtain(handler).sendToTarget();
 			}
 		}, 20 * 1000, 20 * 1000); // 每隔60秒后自动隐藏
 		view.setOnClickListener(this);
 	}
-	
+
 	/**
 	 * 不自动消失。
 	 * 
@@ -57,89 +60,122 @@ public class TopMsgView extends LinearLayout implements View.OnClickListener {
 	public void setKeepShow(boolean val) {
 		mKeepShow = val;
 	}
-	
+
+	/**
+	 * 设置消息
+	 * 
+	 * @param msg
+	 */
 	public void setMsg(String msg) {
 		tvMsg.setText(msg);
 	}
-	
+
+	/**
+	 * 设置图表
+	 * 
+	 * @param resId
+	 */
 	public void setIcon(int resId) {
 		imgIcon.setImageResource(resId);
 	}
-	
+
+	/**
+	 * 开始动画
+	 */
 	public void anim() {
-		Animation animation = AnimationUtils.loadAnimation(this.getContext(), R.anim.fade);
+		Animation animation = AnimationUtils.loadAnimation(this.getContext(),
+				R.anim.fade);
 		imgIcon.startAnimation(animation);
 	}
-	
+
+	/**
+	 * 图标
+	 * 
+	 * @return
+	 */
 	public ImageView getIconImageView() {
 		return imgIcon;
 	}
-	
+
+	/**
+	 * 停止动画
+	 */
 	public void stopAnim() {
 		imgIcon.clearAnimation();
 	}
-	
+
+	/**
+	 * 显示
+	 */
 	public void show(ViewGroup parent) {
 		if (getId() == -1) {
 			parent.addView(this, 0);
 			int id = this.getId();
 			id = id == -1 ? R.id.msgview : id;
 			this.setId(id);
-			this.startAnimation(AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in));
+			this.startAnimation(AnimationUtils.loadAnimation(getContext(),
+					android.R.anim.fade_in));
 			setVisibility(View.VISIBLE);
-		}
-		else {
+		} else {
 			show();
 		}
 	}
-	
+
+	/**
+	 * 显示
+	 */
 	public void show() {
 		if (getId() == -1) {
 			setId(R.id.msgview);
 		}
-		this.startAnimation(AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in));
+		this.startAnimation(AnimationUtils.loadAnimation(getContext(),
+				android.R.anim.fade_in));
 		this.setVisibility(View.VISIBLE);
 	}
-	
-	private Handler	handler	= new Handler(new Handler.Callback() {
-								
-								@Override
-								public boolean handleMessage(Message msg) {
-									dismiss();
-									return false;
-								}
-							});
-	
+
+	private Handler handler = new Handler(new Handler.Callback() {
+
+		@Override
+		public boolean handleMessage(Message msg) {
+			dismiss();
+			return false;
+		}
+	});
+
 	@Override
 	public void onClick(View v) {
 		this.setVisibility(View.GONE);
 	}
-	
+
+	/**
+	 * 隐藏
+	 */
 	public void dismiss() {
 		stopAnim();
-		Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
+		Animation animation = AnimationUtils.loadAnimation(getContext(),
+				R.anim.fade_out);
 		animation.setAnimationListener(new Animation.AnimationListener() {
-			
+
 			@Override
 			public void onAnimationStart(Animation animation) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void onAnimationRepeat(Animation animation) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				setVisibility(View.GONE);
 			}
 		});
-		
+
 		// 开始动画
 		startAnimation(animation);
 	}
-	
+
 }

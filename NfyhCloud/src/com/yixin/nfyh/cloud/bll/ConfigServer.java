@@ -23,29 +23,29 @@ import com.yixin.nfyh.cloud.utils.LogUtil;
  */
 public class ConfigServer {
 
-	public static final String	KEY_ENABLE_PULLMSG		= "KEY_ENABLE_PULLMSG";
-	public static final String	KEY_AUTO_UPLOAD			= "KEY_AUTO_UPLOAD";		// 自动上传
-	public static final String	KEY_ENABLE_TIXING		= "KEY_ENABLE_TIXING";
-	public static final String	KEY_ENABLE_FALL			= "KEY_ENABLE_FALL";
-	public static final String	KEY_ENABLE_AUTO_RUN		= "KEY_ENABLE_AUTO_RUN";	// 自动开启体征测量服务
-	public static final String	KEY_ENABLE_DESKTOP		= "KEY_ENABLE_DESKTOP";
-	public static final String	KEY_FALL_BIND_NUMBER	= "KEY_FALL_BIND_NUMBER";
-	public static final String	KEY_AUTO_TIPS			= "KEY_AUTO_TIPS";			// 个性化告警
-	public static final String	KEY_AUTO_CONNECTED		= "KEY_AUTO_CONNECTED";	// 设备连接
+	public static final String KEY_ENABLE_PULLMSG = "KEY_ENABLE_PULLMSG";// 消息推送
+	public static final String KEY_AUTO_UPLOAD = "KEY_AUTO_UPLOAD"; // 自动上传
+	public static final String KEY_ENABLE_TIXING = "KEY_ENABLE_TIXING"; // 闹钟提醒
+	public static final String KEY_ENABLE_FALL = "KEY_ENABLE_FALL";// 跌倒监测
+	public static final String KEY_ENABLE_AUTO_RUN = "KEY_ENABLE_AUTO_RUN"; // 自动开启体征测量服务
+	public static final String KEY_ENABLE_DESKTOP = "KEY_ENABLE_DESKTOP";// 界面悬浮框
+	public static final String KEY_FALL_BIND_NUMBER = "KEY_FALL_BIND_NUMBER"; // 跌倒绑定
+	public static final String KEY_AUTO_TIPS = "KEY_AUTO_TIPS"; // 个性化告警
+	public static final String KEY_AUTO_CONNECTED = "KEY_AUTO_CONNECTED"; // 设备连接
 
-	public static final String	KEY_DESKTOP_PHONE_LIST	= "KEY_DESKTOP_PHONE_LIST"; // 联系人列表
-	public static final String	KEY_DESKTOP_EVENT_LIST	= "KEY_DESKTOP_EVENT_LIST"; // 事件列表
+	public static final String KEY_DESKTOP_PHONE_LIST = "KEY_DESKTOP_PHONE_LIST"; // 联系人列表
+	public static final String KEY_DESKTOP_EVENT_LIST = "KEY_DESKTOP_EVENT_LIST"; // 事件列表
 	/**
 	 * 客服电话
 	 */
-	public static final String	KEY_PHONE_NUMBER		= "KEY_PHONE_NUMBER";
+	public static final String KEY_PHONE_NUMBER = "KEY_PHONE_NUMBER";
 
-	private IDict				api;
-	private ISignDevice			apiDevice;
-	private String				tag						= "ConfigServer";
-	private ILog				log						= LogUtil.getLog();
+	private IDict api;
+	private ISignDevice apiDevice;
+	private String tag = "ConfigServer";
+	private ILog log = LogUtil.getLog();
 	// private DesktopSOS desktopSos;
-	private NfyhApplication		application;
+	private NfyhApplication application;
 
 	// private Context context;
 
@@ -55,14 +55,19 @@ public class ConfigServer {
 		apiDevice = NfyhCloudDataFactory.getFactory(context).getSignDevice();
 	}
 
+	/**
+	 * 移除配置
+	 * 
+	 * @param key
+	 * @param val
+	 */
 	public void removeConfig(String key, String val) {
 		try {
 			Dicts model = api.getDictsByCode(key, key, val);
 			if (model != null) {
 				api.delDicts(model);
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
@@ -80,8 +85,7 @@ public class ConfigServer {
 			m.setDicValue(val);
 			m.setName(key);
 			api.addDicts(m, true);
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 			log.setExcetion(tag, e);
 		}
@@ -100,8 +104,7 @@ public class ConfigServer {
 			if (m == null) {
 				// 添加
 				addConfig(key, val);
-			}
-			else
+			} else
 
 			{
 				// 更新
@@ -110,8 +113,7 @@ public class ConfigServer {
 				m.setName(key);
 				api.updateDicts(m);
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 			log.setExcetion(tag, e);
 		}
@@ -127,8 +129,7 @@ public class ConfigServer {
 		List<Dicts> results = getListConfigModels(key);
 		if (results != null && results.size() > 0) {
 			return results.get(0);
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
@@ -143,8 +144,7 @@ public class ConfigServer {
 		List<String> results = getListConfigs(key);
 		if (results.size() > 0) {
 			return results.get(0);
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
@@ -160,8 +160,7 @@ public class ConfigServer {
 		List<String> results = getListConfigs(key);
 		if (results.size() > 0) {
 			return results.get(0);
-		}
-		else {
+		} else {
 			this.setConfig(key, defalutVal);
 			return defalutVal;
 		}
@@ -178,12 +177,10 @@ public class ConfigServer {
 		boolean result = false;
 		try {
 			result = Boolean.valueOf(val);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			try {
 				result = Integer.valueOf(val) > 0;
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 			}
 		}
 		return result;
@@ -199,8 +196,7 @@ public class ConfigServer {
 		try {
 			List<Dicts> dicts = api.getDictsByCode(key);
 			return dicts;
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 			log.setExcetion(tag, e);
 		}
@@ -221,8 +217,7 @@ public class ConfigServer {
 				result.add(dict.getDicValue());
 			}
 			return result;
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
@@ -261,12 +256,16 @@ public class ConfigServer {
 		setConfig(KEY_AUTO_UPLOAD, val + "");
 	}
 
+	/**
+	 * 是否启动悬浮框
+	 * 
+	 * @param isEnable
+	 */
 	public void enableDesktop(boolean isEnable) {
 		if (isEnable) {
 			// 开启
 			application.showSOSinDesktop();
-		}
-		else {
+		} else {
 			// 关闭
 			application.removeSOSinDesktop();
 		}
@@ -274,6 +273,11 @@ public class ConfigServer {
 		setConfig(KEY_ENABLE_DESKTOP, isEnable + "");
 	}
 
+	/**
+	 * 设置默认监测设备
+	 * 
+	 * @param devid
+	 */
 	public void setDefaultDevice(String devid) {
 		try {
 			Devices curDev = apiDevice.getCurrentDevices();
@@ -286,8 +290,7 @@ public class ConfigServer {
 
 			apiDevice.updateDevices(curDev);
 			apiDevice.updateDevices(dev);
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}

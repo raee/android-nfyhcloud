@@ -8,14 +8,15 @@ import cn.rui.framework.ui.ScrollInputView;
 import com.yixin.nfyh.cloud.model.view.DialogViewModel;
 
 /**
+ * 数字选择对话框
+ * 
  * @author MrChenrui
  * 
  */
 public class NumberSelectorDialog extends DialogPopupWindow implements
-		WheelViewValueChangeListener
-{
+		WheelViewValueChangeListener {
 
-	private ScrollInputView	contentView;
+	private ScrollInputView contentView;
 
 	/**
 	 * @param context
@@ -23,8 +24,7 @@ public class NumberSelectorDialog extends DialogPopupWindow implements
 	 * @param model
 	 */
 	public NumberSelectorDialog(Context context,
-			DialogPopupWindowListener listener, List<DialogViewModel> model)
-	{
+			DialogPopupWindowListener listener, List<DialogViewModel> model) {
 		super(context, listener, model);
 
 		contentView = new ScrollInputView(context);
@@ -37,26 +37,22 @@ public class NumberSelectorDialog extends DialogPopupWindow implements
 		setContentView(contentView);
 	}
 
-	protected void onCreate(List<DialogViewModel> model)
-	{
+	protected void onCreate(List<DialogViewModel> model) {
 
 	}
 
 	@Override
-	public void onValueChange(int which, String oldValues, String newValues)
-	{
+	public void onValueChange(int which, String oldValues, String newValues) {
 		super.listener.onDialogChange(this, which, newValues);
 	}
 
 	@Override
-	public void onValueFinsh(int which, String oldValues, String newValues)
-	{
+	public void onValueFinsh(int which, String oldValues, String newValues) {
 		super.listener.onDialogFinsh(this, which, newValues);
 	}
 
 	@Override
-	public void onCancleFinsh()
-	{
+	public void onCancleFinsh() {
 		this.dismiss();
 	}
 

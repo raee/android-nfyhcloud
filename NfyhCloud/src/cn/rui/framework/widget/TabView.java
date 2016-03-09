@@ -7,8 +7,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public abstract class TabView extends LinearLayout
-{
+/**
+ * TAB 单个View的视图
+ * 
+ * @author ChenRui
+ * 
+ */
+public abstract class TabView extends LinearLayout {
 
 	// private Intent intent;
 	// private int contentViewId;
@@ -17,17 +22,16 @@ public abstract class TabView extends LinearLayout
 	// private int hoverBackroundImageId;
 	// private int iconId;
 
-	private int			iconId, backgoundId, hoverIconId, hoverBackgroundId;
-	private String		title;
+	private int iconId, backgoundId, hoverIconId, hoverBackgroundId;
+	private String title;
 
-	private Intent		intent;
-	private int			contentViewId;
+	private Intent intent;
+	private int contentViewId;
 
-	private ImageView	imgIcon;
-	private TextView	tvTitle;
+	private ImageView imgIcon;
+	private TextView tvTitle;
 
-	public TabView(Context context, AttributeSet attrs)
-	{
+	public TabView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		loadLayout(context);
 		this.imgIcon = getIconView();
@@ -43,8 +47,7 @@ public abstract class TabView extends LinearLayout
 	/**
 	 * @return the iconId
 	 */
-	public int getIconId()
-	{
+	public int getIconId() {
 		return iconId;
 	}
 
@@ -52,8 +55,7 @@ public abstract class TabView extends LinearLayout
 	 * @param iconId
 	 *            the iconId to set
 	 */
-	public void setIconId(int iconId)
-	{
+	public void setIconId(int iconId) {
 		this.iconId = iconId;
 		this.imgIcon.setImageResource(iconId);
 	}
@@ -61,8 +63,7 @@ public abstract class TabView extends LinearLayout
 	/**
 	 * @return the backgoundId
 	 */
-	public int getBackgoundId()
-	{
+	public int getBackgoundId() {
 		return backgoundId;
 	}
 
@@ -70,8 +71,7 @@ public abstract class TabView extends LinearLayout
 	 * @param backgoundId
 	 *            the backgoundId to set
 	 */
-	public void setBackgoundId(int backgoundId)
-	{
+	public void setBackgoundId(int backgoundId) {
 		this.backgoundId = backgoundId;
 		this.setBackgroundResource(backgoundId);
 	}
@@ -79,8 +79,7 @@ public abstract class TabView extends LinearLayout
 	/**
 	 * @return the hoverIconId
 	 */
-	public int getHoverIconId()
-	{
+	public int getHoverIconId() {
 		return hoverIconId;
 	}
 
@@ -88,16 +87,14 @@ public abstract class TabView extends LinearLayout
 	 * @param hoverIconId
 	 *            the hoverIconId to set
 	 */
-	public void setHoverIconId(int hoverIconId)
-	{
+	public void setHoverIconId(int hoverIconId) {
 		this.hoverIconId = hoverIconId;
 	}
 
 	/**
 	 * @return the hoverBackgroundId
 	 */
-	public int getHoverBackgroundId()
-	{
+	public int getHoverBackgroundId() {
 		return hoverBackgroundId;
 	}
 
@@ -105,16 +102,14 @@ public abstract class TabView extends LinearLayout
 	 * @param hoverBackgroundId
 	 *            the hoverBackgroundId to set
 	 */
-	public void setHoverBackgroundId(int hoverBackgroundId)
-	{
+	public void setHoverBackgroundId(int hoverBackgroundId) {
 		this.hoverBackgroundId = hoverBackgroundId;
 	}
 
 	/**
 	 * @return the title
 	 */
-	public String getTitle()
-	{
+	public String getTitle() {
 		return title;
 	}
 
@@ -122,8 +117,7 @@ public abstract class TabView extends LinearLayout
 	 * @param title
 	 *            the title to set
 	 */
-	public void setTitle(String title)
-	{
+	public void setTitle(String title) {
 		this.title = title;
 		this.tvTitle.setText(title);
 	}
@@ -131,8 +125,7 @@ public abstract class TabView extends LinearLayout
 	/**
 	 * @return the intent
 	 */
-	public Intent getIntent()
-	{
+	public Intent getIntent() {
 		return intent;
 	}
 
@@ -140,16 +133,14 @@ public abstract class TabView extends LinearLayout
 	 * @param intent
 	 *            the intent to set
 	 */
-	public void setIntent(Intent intent)
-	{
+	public void setIntent(Intent intent) {
 		this.intent = intent;
 	}
 
 	/**
 	 * @return the contentViewId
 	 */
-	public int getContentViewId()
-	{
+	public int getContentViewId() {
 		return contentViewId;
 	}
 
@@ -157,8 +148,7 @@ public abstract class TabView extends LinearLayout
 	 * @param contentViewId
 	 *            the contentViewId to set
 	 */
-	public void setContentViewId(int contentViewId)
-	{
+	public void setContentViewId(int contentViewId) {
 		this.contentViewId = contentViewId;
 	}
 

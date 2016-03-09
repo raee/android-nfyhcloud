@@ -18,36 +18,33 @@ import android.util.Log;
  * @author MrChenrui
  * 
  */
-public class SoapConnection
-{
-	private final String		tag							= "SoapConnection";
-	public static final int		SOAP_ERROR_RESPONSE_EMPT	= 0;
-	public static final int		SOAP_ERROR_INVOKE			= 1;
+public class SoapConnection {
+	private final String tag = "SoapConnection";
+	public static final int SOAP_ERROR_RESPONSE_EMPT = 0;
+	public static final int SOAP_ERROR_INVOKE = 1;
 
 	// 版本1.0
-	public static final int		VER10						= 100;
+	public static final int VER10 = 100;
 
 	// 版本1.1
-	public static final int		VER11						= 110;
+	public static final int VER11 = 110;
 
 	// 版本1.2
-	public static final int		VER12						= 120;
+	public static final int VER12 = 120;
 
-	private SoapCallback		callback;
-	private String				namespace;
-	private String				methodName;
-	private Map<String, Object>	requestParams;
-	private String				url;
-	private String				soapAction					= null;
-	private int					version						= SoapEnvelope.VER11;
+	private SoapCallback callback;
+	private String namespace;
+	private String methodName;
+	private Map<String, Object> requestParams;
+	private String url;
+	private String soapAction = null;
+	private int version = SoapEnvelope.VER11;
 
-	public void setSoapCallbackListener(SoapCallback l)
-	{
+	public void setSoapCallbackListener(SoapCallback l) {
 		this.callback = l;
 	}
 
-	public void setWebServiceVersion(int version)
-	{
+	public void setWebServiceVersion(int version) {
 		this.version = version;
 	}
 
@@ -60,8 +57,7 @@ public class SoapConnection
 	 *            需要调用的方法名称
 	 */
 	public void request(String url, String namespace, String methodName,
-			Map<String, Object> params)
-	{
+			Map<String, Object> params) {
 		if (callback == null)
 			return;
 
@@ -74,14 +70,18 @@ public class SoapConnection
 		new AsyncInVokeWebService().start();
 	}
 
-	class AsyncInVokeWebService extends Thread
-	{
+	/**
+	 * 异步调用
+	 * 
+	 * @author ChenRui
+	 * 
+	 */
+	class AsyncInVokeWebService extends Thread {
 
-		protected static final int	MSG_RESPONSE	= 0;
-		protected static final int	MSG_ERROR		= 1;
+		protected static final int MSG_RESPONSE = 0;
+		protected static final int MSG_ERROR = 1;
 
-		protected void call()
-		{
+		protected void call() {
 			// soap对象
 			SoapObject soap = new SoapObject(namespace, methodName);
 
@@ -91,8 +91,7 @@ public class SoapConnection
 			Log.i(tag, "调用的命名空间：" + namespace);
 
 			// 调用参数赋值
-			for (Entry<String, Object> param : requestParams.entrySet())
-			{
+			for (Entry<String, Object> param : requestParams.entrySet()) {
 				String key = param.getKey();
 				Object value = param.getValue();
 				soap.addProperty(key, value);
@@ -112,27 +111,20 @@ public class SoapConnection
 
 			HttpTransportSE request = new HttpTransportSE(url);
 
-			try
-			{
+			try {
 
 				request.call(soapAction, envelope);
 				SoapObject response = (SoapObject) envelope.bodyIn;
 
-				if (response == null)
-				{
+				if (response == null) {
 					Message.obtain(handler, MSG_ERROR, "服务端返回内容为空")
 							.sendToTarget();
-				}
-				else
-				{
+				} else {
 					String json = response.getProperty(0).toString();
-					if (json.equals("") || json.equals("null"))
-					{
+					if (json.equals("") || json.equals("null")) {
 						Message.obtain(handler, MSG_ERROR, "服务端返回内容为空")
 								.sendToTarget();
-					}
-					else
-					{
+					} else {
 						Log.i(tag, "服务器返回内容：");
 						Log.i(tag, json);
 						Message.obtain(handler, MSG_RESPONSE, json)
@@ -140,22 +132,16 @@ public class SoapConnection
 					}
 				}
 
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				String msg = "接口调用失败," + e.getMessage();
 				int code = 0;
-				try
-				{
-					if (msg.contains("status:"))
-					{
+				try {
+					if (msg.contains("status:")) {
 						String strcode = msg
 								.substring(msg.lastIndexOf(":") + 1).trim();
 						code = Integer.parseInt(strcode);
 					}
-				}
-				catch (NumberFormatException e1)
-				{
+				} catch (NumberFormatException e1) {
 					e1.printStackTrace();
 				}
 				Log.e(tag, msg);
@@ -165,35 +151,27 @@ public class SoapConnection
 			}
 		}
 
-		private Handler	handler	= new Handler(new Handler.Callback()
-								{
-									@Override
-									public boolean handleMessage(Message msg)
-									{
-										switch (msg.what)
-										{
-											case MSG_RESPONSE:
-												callback.onSoapResponse(msg.obj);
-												break;
-											case MSG_ERROR:
-												callback.onSoapError(msg.arg1,
-														msg.obj.toString());
-											default:
-												break;
-										}
-										return false;
-									}
-								});
+		private Handler handler = new Handler(new Handler.Callback() {
+			@Override
+			public boolean handleMessage(Message msg) {
+				switch (msg.what) {
+				case MSG_RESPONSE:
+					callback.onSoapResponse(msg.obj);
+					break;
+				case MSG_ERROR:
+					callback.onSoapError(msg.arg1, msg.obj.toString());
+				default:
+					break;
+				}
+				return false;
+			}
+		});
 
 		@Override
-		public void run()
-		{
-			try
-			{
+		public void run() {
+			try {
 				call();
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				Message.obtain(handler, MSG_ERROR, "登录失败,请重试！");
 			}
 		}

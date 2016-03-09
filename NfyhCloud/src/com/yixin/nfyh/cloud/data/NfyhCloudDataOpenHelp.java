@@ -28,47 +28,53 @@ import com.yixin.nfyh.cloud.model.Users;
 import com.yixin.nfyh.cloud.utils.ILog;
 import com.yixin.nfyh.cloud.utils.LogUtil;
 
+/**
+ * 院后数据库操作，入口。
+ * 
+ * @author ChenRui
+ * 
+ */
 public class NfyhCloudDataOpenHelp extends OrmLiteSqliteOpenHelper {
-	
-	private static String				databaseName	= "nfyh.db";
-	
-	private static String				TAG				= "NfyhCloudDataOpenHelp";
-	
-	private ILog						log				= LogUtil.getLog();
-	
-	private Context						context;
-	
-	private Dao<Users, String>			UsersDao;
-	
-	private Dao<Devices, String>		DevicesDao;
-	
-	private Dao<Dicts, Long>			DictsDao;
-	
-	private Dao<MarksRole, Integer>		MarksRoleDao;
-	
-	private Dao<MarksDetail, Long>		MarksDetailDao;
-	
-	private Dao<Photocategory, String>	PhotocategoryDao;
-	
-	private Dao<Photos, String>			PhotosDao;
-	
-	private Dao<SignTypes, String>		SignTypesDao;
-	
-	private Dao<SignRange, Long>		SignRangeDao;
-	
-	private Dao<UserSigns, Long>		UserSignsDao;
-	
-	private Dao<SignTips, Long>			SignTipsDao;
-	
-	private Dao<SignReport, String>		SignReportDao;
-	
-	private Dao<Messages, String>		MessagesDao;
-	
+
+	private static String databaseName = "nfyh.db";
+
+	private static String TAG = "NfyhCloudDataOpenHelp";
+
+	private ILog log = LogUtil.getLog();
+
+	private Context context;
+
+	private Dao<Users, String> UsersDao;
+
+	private Dao<Devices, String> DevicesDao;
+
+	private Dao<Dicts, Long> DictsDao;
+
+	private Dao<MarksRole, Integer> MarksRoleDao;
+
+	private Dao<MarksDetail, Long> MarksDetailDao;
+
+	private Dao<Photocategory, String> PhotocategoryDao;
+
+	private Dao<Photos, String> PhotosDao;
+
+	private Dao<SignTypes, String> SignTypesDao;
+
+	private Dao<SignRange, Long> SignRangeDao;
+
+	private Dao<UserSigns, Long> UserSignsDao;
+
+	private Dao<SignTips, Long> SignTipsDao;
+
+	private Dao<SignReport, String> SignReportDao;
+
+	private Dao<Messages, String> MessagesDao;
+
 	public NfyhCloudDataOpenHelp(Context context) {
 		super(context, databaseName, null, 104);
 		this.context = context;
 	}
-	
+
 	@Override
 	public void onCreate(SQLiteDatabase db, ConnectionSource conn) {
 		try {
@@ -87,13 +93,12 @@ public class NfyhCloudDataOpenHelp extends OrmLiteSqliteOpenHelper {
 			TableUtils.createTable(conn, SignReport.class);
 			TableUtils.createTable(conn, Messages.class);
 			initData(db);
-		}
-		catch (java.sql.SQLException e) {
+		} catch (java.sql.SQLException e) {
 			log.error(TAG, "数据库创建失败！" + e.getMessage());
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 初始化数据
 	 */
@@ -108,24 +113,25 @@ public class NfyhCloudDataOpenHelp extends OrmLiteSqliteOpenHelper {
 			}
 			String[] sqls = outStream.toString().split(";");
 			for (String sql : sqls) {
-				//log.info(TAG, "正在执行sql语句：" + sql);
+				// log.info(TAG, "正在执行sql语句：" + sql);
 				try {
-					if (sql != null && sql.length() > 1) db.execSQL(sql);
-				}
-				catch (Exception e) {
-					log.error(TAG, "执行Sql语句错误：" + sql + ";\r\n" + e.getMessage());
+					if (sql != null && sql.length() > 1)
+						db.execSQL(sql);
+				} catch (Exception e) {
+					log.error(TAG,
+							"执行Sql语句错误：" + sql + ";\r\n" + e.getMessage());
 					continue;
 				}
 			}
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 			log.error(TAG, "初始化数据库数据发生错误：" + e.getMessage());
 		}
 	}
-	
+
 	@Override
-	public void onUpgrade(SQLiteDatabase db, ConnectionSource conn, int old, int version) {
+	public void onUpgrade(SQLiteDatabase db, ConnectionSource conn, int old,
+			int version) {
 		// 删除表
 		try {
 			TableUtils.dropTable(conn, Users.class, false);
@@ -142,13 +148,12 @@ public class NfyhCloudDataOpenHelp extends OrmLiteSqliteOpenHelper {
 			TableUtils.dropTable(conn, SignReport.class, false);
 			TableUtils.dropTable(conn, Messages.class, false);
 			onCreate(db, conn); // 重新创建
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			log.error(TAG, "删除表失败失败！");
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 获取users
 	 * 
@@ -161,7 +166,7 @@ public class NfyhCloudDataOpenHelp extends OrmLiteSqliteOpenHelper {
 		}
 		return UsersDao;
 	}
-	
+
 	/**
 	 * 获取devices
 	 * 
@@ -174,7 +179,7 @@ public class NfyhCloudDataOpenHelp extends OrmLiteSqliteOpenHelper {
 		}
 		return DevicesDao;
 	}
-	
+
 	/**
 	 * 获取dicts
 	 * 
@@ -187,7 +192,7 @@ public class NfyhCloudDataOpenHelp extends OrmLiteSqliteOpenHelper {
 		}
 		return DictsDao;
 	}
-	
+
 	/**
 	 * 获取marks_role
 	 * 
@@ -200,7 +205,7 @@ public class NfyhCloudDataOpenHelp extends OrmLiteSqliteOpenHelper {
 		}
 		return MarksRoleDao;
 	}
-	
+
 	/**
 	 * 获取marks_detail
 	 * 
@@ -213,7 +218,7 @@ public class NfyhCloudDataOpenHelp extends OrmLiteSqliteOpenHelper {
 		}
 		return MarksDetailDao;
 	}
-	
+
 	/**
 	 * 获取Photocategory
 	 * 
@@ -226,7 +231,7 @@ public class NfyhCloudDataOpenHelp extends OrmLiteSqliteOpenHelper {
 		}
 		return PhotocategoryDao;
 	}
-	
+
 	/**
 	 * 获取photos
 	 * 
@@ -239,7 +244,7 @@ public class NfyhCloudDataOpenHelp extends OrmLiteSqliteOpenHelper {
 		}
 		return PhotosDao;
 	}
-	
+
 	/**
 	 * 获取sign_types
 	 * 
@@ -252,7 +257,7 @@ public class NfyhCloudDataOpenHelp extends OrmLiteSqliteOpenHelper {
 		}
 		return SignTypesDao;
 	}
-	
+
 	/**
 	 * 获取sign_range
 	 * 
@@ -265,7 +270,7 @@ public class NfyhCloudDataOpenHelp extends OrmLiteSqliteOpenHelper {
 		}
 		return SignRangeDao;
 	}
-	
+
 	/**
 	 * 获取user_signs
 	 * 
@@ -278,7 +283,7 @@ public class NfyhCloudDataOpenHelp extends OrmLiteSqliteOpenHelper {
 		}
 		return UserSignsDao;
 	}
-	
+
 	/**
 	 * 获取sign_tips
 	 * 
@@ -291,7 +296,7 @@ public class NfyhCloudDataOpenHelp extends OrmLiteSqliteOpenHelper {
 		}
 		return SignTipsDao;
 	}
-	
+
 	/**
 	 * 获取sign_report
 	 * 
@@ -304,7 +309,7 @@ public class NfyhCloudDataOpenHelp extends OrmLiteSqliteOpenHelper {
 		}
 		return SignReportDao;
 	}
-	
+
 	/**
 	 * 获取messages
 	 * 
