@@ -74,3 +74,8 @@
 
 ##V1.0.0
 更新说明：第一版本。<br>
+
+##开源协议
+[GPL](http://www.gnu.org/licenses/licenses.en.html)
+
+
