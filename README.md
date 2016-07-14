@@ -5,9 +5,9 @@
 >家庭设备监测库[monitorsdk](https://github.com/raee/monitorsdk)<br>
 >闹钟库[android-lib-alarm](https://github.com/raee/android-lib-alarm)
 >图表库[MPAndroidChart](https://github.com/raee/MPAndroidChart.git)
->
+
 ---
-##V1.0.
+##V1.0.8
 时间：2015-12-16 <br>
 1、添加医患聊天功能。<br>
 2、添加查看体征干预功能。<br>
